@@ -25,9 +25,8 @@ create table Posting (
 	postingCompanyName varchar(64) not null,
 	postingDate varchar(64) not null,
 	postingEndDate varchar(64) not null,
-	postingProfileRole varchar (32) not null,
+	postingRole varchar (32) not null,
 	primary key(postingId),
-	foreign key(postingProfileRole) references Profile(profileRole)
 );
 
 create Job (
