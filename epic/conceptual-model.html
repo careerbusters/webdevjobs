@@ -10,56 +10,43 @@
 			<strong>Profile</strong>
 		</p>
 		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li>profileId (pk)</li>
+			<li>profileActivationToken</li>
+			<li>profileBio</li>
+			<li>profileEmail</li>
+			<li>profileHash</li>
+			<li>profileImage</li>
+			<li>profileLocation</li>
+			<li>profileRole</li>
+			<li>profileUsername</li>
 		</ul>
 		<p>
-			<strong>Profile</strong>
+			<strong>JobPosting</strong>
 		</p>
 		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li>jobPostingId</li>
+			<li>jobPostingCloseDate</li>
+			<li>jobPostingCompanyName</li>
+			<li>jobPostingContact</li>
+			<li>jobPostingContent</li>
+			<li>jobPostingDate</li>
+			<li>jobPostingLocation</li>
+			<li>jobPostingPay</li>
+			<li>jobPostingRole</li>
+			<li>jobPostingTitle</li>
 		</ul>
 		<p>
-			<strong>Profile</strong>
+			<strong>SavedJob</strong>
 		</p>
 		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li>savedJobJobPostingId (fk->jobPosting)</li>
+			<li>savedJobProfileId (fk->profile)</li>
 		</ul>
 		<p>
-			<strong>Profile</strong>
+			<strong>UserRole</strong>
 		</p>
 		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li>userRoleProfileRole (fk->profile)</li>
+			<li>userRoleJobPostingRole (fk->jobPosting)</li>
 		</ul>
 	</body>
