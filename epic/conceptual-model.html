@@ -11,43 +11,43 @@
 		</p>
 		<ul>
 			<li>profileId (pk)</li>
+			<li>profileRoleName (fk->Role)</li>
 			<li>profileActivationToken</li>
 			<li>profileBio</li>
 			<li>profileEmail</li>
 			<li>profileHash</li>
 			<li>profileImage</li>
 			<li>profileLocation</li>
-			<li>profileRole</li>
 			<li>profileUsername</li>
 		</ul>
 		<p>
-			<strong>JobPosting</strong>
+			<strong>Posting</strong>
 		</p>
 		<ul>
-			<li>jobPostingId</li>
-			<li>jobPostingCloseDate</li>
-			<li>jobPostingCompanyName</li>
-			<li>jobPostingContact</li>
-			<li>jobPostingContent</li>
-			<li>jobPostingDate</li>
-			<li>jobPostingLocation</li>
-			<li>jobPostingPay</li>
-			<li>jobPostingRole</li>
-			<li>jobPostingTitle</li>
+			<li>postingId</li>
+			<li>postingCloseDate</li>
+			<li>postingCompanyName</li>
+			<li>postingContact</li>
+			<li>postingContent</li>
+			<li>postingDate</li>
+			<li>postingLocation</li>
+			<li>postingPay</li>
+			<li>postingRole</li>
+			<li>postingTitle</li>
 		</ul>
 		<p>
-			<strong>SavedJob</strong>
+			<strong>Job</strong>
 		</p>
 		<ul>
-			<li>savedJobJobPostingId (fk->jobPosting)</li>
-			<li>savedJobProfileId (fk->profile)</li>
+			<li>jobPostingId (fk->Posting)</li>
+			<li>jobProfileId (fk->profile)</li>
 		</ul>
 		<p>
-			<strong>UserRole</strong>
+			<strong>Role</strong>
 		</p>
 		<ul>
-			<li>userRoleProfileRole (fk->profile)</li>
-			<li>userRoleJobPostingRole (fk->jobPosting)</li>
+			<li>roleId (pk)</li>
+			<li>roleName</li>
 		</ul>
 		<a href="index.html"> Directory </a>
 	</body>
