@@ -1,9 +1,9 @@
 alter database tgray19 character set utf8 collate utf8_unicode_ci;
 drop table if exists Job;
+drop table if exists SavedJob;
 drop table if exists Posting;
 drop table if exists Profile;
 drop table if exists Role;
-
 create table Role (
 	roleId binary(16) not null,
 	roleName varchar(32) not null,
@@ -14,9 +14,9 @@ create table Profile (
 	profileRoleId BINARY(16) not null,
 	profileActivationToken char(32) not null,
 	profileHash char(97) not null,
-	profileUsername VARCHAR(32) not null,
+	profileUsername VARCHAR(64) not null,
 	profileImage VARCHAR(64),
-	profileBio VARCHAR(1024),
+	profileBio BLOB,
 	profileLocation VARCHAR(64),
 	profileEmail VARCHAR(32) not null,
 	unique(profileUsername),
@@ -28,8 +28,8 @@ create table Profile (
 
 create table Posting (
 	postingId binary(16) not null,
-	postingContent varchar(1024) not null,
-	postingContact varchar(512) not null,
+	postingContent BLOB not null,
+	postingEmail varchar(512) not null,
 	postingLocation varchar(64) not null,
 	postingTitle varchar(128) not null,
 	postingPay varchar(64) not null,
@@ -40,12 +40,12 @@ create table Posting (
 	primary key(postingId)
 );
 
-create table Job (
-	jobProfileId binary(16) not null,
-	jobPostingId binary(16) not null,
-	index(jobProfileId),
-	index(jobPostingId),
-	foreign key(jobProfileId) references Profile(profileId),
-	foreign key(jobPostingId) references Posting(postingId)
+create table SavedJob (
+	savedJobProfileId binary(16) not null,
+	savedJobPostingId binary(16) not null,
+	index(savedJobProfileId),
+	index(savedJobPostingId),
+	foreign key(savedJobProfileId) references Profile(profileId),
+	foreign key(savedJobPostingId) references Posting(postingId)
 );
 
