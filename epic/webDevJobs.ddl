@@ -11,7 +11,7 @@ create table Role (
 );
 create table Profile (
 	profileId BINARY(16) not null,
-	profileRoleName varchar(32) not null,
+	profileRoleId BINARY(16) not null,
 	profileActivationToken char(32) not null,
 	profileHash char(97) not null,
 	profileUsername VARCHAR(32) not null,
@@ -21,9 +21,9 @@ create table Profile (
 	profileEmail VARCHAR(32) not null,
 	unique(profileUsername),
 	unique(profileEmail),
-	index(profileRoleName),
+	index(profileRoleId),
 	primary key(profileId),
-	foreign key(profileRoleName) references Role(roleName)
+	foreign key(profileRoleId) references Role(roleId)
 );
 
 create table Posting (
