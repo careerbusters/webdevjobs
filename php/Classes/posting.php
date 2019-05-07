@@ -62,9 +62,18 @@ class Posting implements \JsonSerializable {
 	 *
 	 * @param string/Uuid $newPostingId from Posting
 	 * @param string $newPostingContent when Posting date is newPostingDate
-	 * 
+	 * @param string $newPostingEmail when postingId doesn't match
+	 * @param string $newPostingLocation Id from posting or postingContent
+	 * @param string $newPostingTile Id from posting or postingContent
+	 * @param string $newPostingPay Id from posting or postingContent
+	 * @param string $newPostingCompanyName Id from posting or postingContent
+	 * @param DateTime $newPostingDate date and time Posting was sent
+	 * @param DateTime $newPostingEndDate date and time Posting was ending
+	 * @param string $newPostingRole Id from posting or postingContent
 	 *
 	 */
+
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *
