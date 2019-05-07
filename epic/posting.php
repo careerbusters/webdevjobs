@@ -58,6 +58,14 @@ class Posting implements \JsonSerializable {
 	private $postingRole;
 
 	/**
+	 * constructor for this Posting
+	 *
+	 * @param string/Uuid $newPostingId from Posting
+	 * @param string $newPostingContent when Posting date is newPostingDate
+	 * 
+	 *
+	 */
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
