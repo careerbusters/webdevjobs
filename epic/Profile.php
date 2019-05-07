@@ -65,4 +65,52 @@ class Profile {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
-}
+	/**
+	 *Accessor method for profileId
+	 * @return string|Uuid for profileId (or null if new Profile)
+	 */
+	public function getProfileId(): Uuid {
+		return ($this->profileId);
+	}
+	/**
+	 * mutator method for profile id
+	 *
+	 * @param  string $newProfileId value of new profile id
+	 * @throws \RangeException if $newProfileId is not positive
+	 * @throws \TypeError if the profileId is not positive
+	 **/
+	public function setProfileId($newProfileId): void {
+		try {
+			$uuid = self::ValidateUuid($newProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		// convert and store the profile id
+		$this->profileId = $uuid;
+	}
+
+	/**
+	 *Accessor method for profileRoleId
+	 * @return string|Uuid for profileRoleId (or null if new Profile)
+	 */
+	public function getProfileRoleId(): Uuid {
+		return ($this->profileRoleId);
+	}
+	/**
+	 * mutator method for profileRole id
+	 *
+	 * @param  string $newProfileRoleId value of new profileRole id
+	 * @throws \RangeException if $newProfileRoleId is not positive
+	 * @throws \TypeError if the profileRoleId is not positive
+	 **/
+	public function setProfileRoleId($newProfileRoleId): void {
+		try {
+			$uuid = self::ValidateUuid($newProfileRoleId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		// convert and store the profileRole id
+		$this->profileRoleId = $uuid;
+	}
