@@ -1,5 +1,9 @@
 <?php
 
+namespace tgray19\webdevjobs;
+require_once(dirname(__DIR__) . "/Classes/autoload.php");
+use Ramsey\Uuid\Uuid;
+
 /** create class for table posting */
 
 
@@ -45,12 +49,12 @@ class Posting implements \JsonSerializable {
 	private $postingCompanyName;
 	/**
 	 * start date and time the Posting began
-	 * @var DateTime $postingDate
+	 * @var /DateTime $postingDate
 	 **/
 	private $postingDate;
 	/**
 	 * date and time this Posting will end
-	 * @var DateTime $postingEndDate
+	 * @var /DateTime $postingEndDate
 	 **/
 	private $postingEndDate;
 	/**
@@ -69,12 +73,12 @@ class Posting implements \JsonSerializable {
 	 * @param string $newPostingTitle Id from posting or postingContent
 	 * @param string $newPostingPay Id from posting or postingContent
 	 * @param string $newPostingCompanyName Id from posting or postingContent
-	 * @param DateTime $newPostingDate date and time Posting was sent
-	 * @param DateTime $newPostingEndDate date and time Posting was ending
+	 * @param /DateTime $newPostingDate date and time Posting was sent
+	 * @param /DateTime $newPostingEndDate date and time Posting was ending
 	 * @param string $newPostingRole Id from posting or postingContent
-	 * @throws RangeException if data values are out of bounds (e.g., strings too long, negative integers)
-	 * @throws TypeError if data types violate type hints
-	 * @throws 	Exception if some other exception occurs
+	 * @throws /RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws /TypeError if data types violate type hints
+	 * @throws 	/Exception if some other exception occurs
 	 *
 	 */
 	public function __construct($newPostingId, string $newPostingContent, string $newPostingEmail, string $newPostingLocation, string $newPostingTitle, $newPostingPay, string $newPostingCompanyName, $newPostingDate, $newPostingEndDate, string $newPostingRole = null) {
