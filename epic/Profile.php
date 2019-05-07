@@ -114,3 +114,35 @@ class Profile {
 		// convert and store the profileRole id
 		$this->profileRoleId = $uuid;
 	}
+
+	/**
+	 *Accessor method for profileActivationToken
+	 * @return string for profileActivationToken
+	 */
+	public function getProfileActivationToken(): ?string {
+		return ($this->profileActivationToken);
+	}
+	/**
+	 * mutator method for profile activation token
+	 *
+	 * @param  string $newProfileActivationToken value of new profile activation token
+	 * @throws \InvalidArgumentException if $newProfileActivationToken is not a valid url or insecure
+	 * @throws \RangeException if $newProfileActivationToken is over charset
+	 * @throws \TypeError if the profile activation is not a string
+	 **/
+	public function setProfileActivationToken(?string $newProfileActivationToken): void {
+		if($newProfileActivationToken === null) {
+			$this->profileActivationToken = $newProfileActivationToken;
+			return;
+		}
+		$newProfileActivationToken = strtolower(trim($newProfileActivationToken));
+		if(ctype_xdigit($newProfileActivationToken) === false) {
+			throw(new\TypeError("profile activation is not valid"));
+		}
+		//make sure profile activation token is 32 characters
+		if(strlen($newProfileActivationToken) === 32) {
+			throw(new\RangeException("profile activation token has to be 32 characters"));
+		}
+		// convert and store the activation token
+		$this->profileActivationToken = $newProfileActivationToken;
+	}
