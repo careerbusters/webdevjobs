@@ -4,6 +4,7 @@ drop table if exists SavedJob;
 drop table if exists Posting;
 drop table if exists Profile;
 drop table if exists Role;
+
 create table Role (
 	roleId binary(16) not null,
 	roleName varchar(32) not null,
