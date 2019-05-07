@@ -1,6 +1,6 @@
 <?php
 namespace tgray19\webdevjobs;
-require_once(dirname(__DIR__) . "/classes/autoload.php");
+require_once(dirname(__DIR__) . "/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
  * Trait to validate a uuid
