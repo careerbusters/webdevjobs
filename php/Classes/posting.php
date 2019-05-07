@@ -2,9 +2,11 @@
 
 /** create class for table posting */
 
+
+
 class Posting implements \JsonSerializable {
-	use validatedDate;
-	use validatedUuid;
+	use validateDate;
+	use validateUuid;
 
 	/**
 	 * id for this Posting; this is the primary key
@@ -60,20 +62,39 @@ class Posting implements \JsonSerializable {
 	/**
 	 * constructor for this Posting
 	 *
-	 * @param string/Uuid $newPostingId from Posting
+	 * @param string/Uuid $newPostingId Id from Posting
 	 * @param string $newPostingContent when Posting date is newPostingDate
 	 * @param string $newPostingEmail when postingId doesn't match
 	 * @param string $newPostingLocation Id from posting or postingContent
-	 * @param string $newPostingTile Id from posting or postingContent
+	 * @param string $newPostingTitle Id from posting or postingContent
 	 * @param string $newPostingPay Id from posting or postingContent
 	 * @param string $newPostingCompanyName Id from posting or postingContent
 	 * @param DateTime $newPostingDate date and time Posting was sent
 	 * @param DateTime $newPostingEndDate date and time Posting was ending
 	 * @param string $newPostingRole Id from posting or postingContent
+	 * @throws RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws TypeError if data types violate type hints
+	 * @throws 	Exception if some other exception occurs
 	 *
 	 */
-
-
+	public function __construct($newPostingId, string $newPostingContent, string $newPostingEmail, string $newPostingLocation, string $newPostingTitle, $newPostingPay, string $newPostingCompanyName, $newPostingDate, $newPostingEndDate, string $newPostingRole = null) {
+		try {
+			$this->setPostingId($newPostingId);
+			$this->setPostingContent($newPostingContent);
+			$this->setPostingEmail($newPostingEmail);
+			$this->setPostingLocation($newPostingLocation);
+			$this->setPostingTitle($newPostingTitle);
+			$this->setPostingPay($newPostingPay);
+			$this->setPostingCompanyName($newPostingCompanyName);
+			$this->setPostingDate($newPostingDate);
+			$this->setPostingEndDate($newPostingEndDate);
+			$this->setPostingRole($newPostingRole);
+		}
+//determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}}
 	/**
 	 * formats the state variables for JSON serialization
 	 *
