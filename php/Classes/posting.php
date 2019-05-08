@@ -266,6 +266,7 @@ class Posting implements \JsonSerializable {
 	 * @param \DateTime|string|null $newPostingDate date as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newPostingDate is not a valid object or string
 	 * @throws \RangeException if $newPostingDate is a date that does not exist
+	 * @throws  \typeError if $eventStartTime is no a /Datetime
 	 **/
 	public function setPostingDate($newPostingDate = null) : void {
 		// base case: if the date is null, use the current date and time
@@ -295,6 +296,7 @@ class Posting implements \JsonSerializable {
 	 * @param \DateTime|string|null $newPostingEndDate date as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newPostingEndDate is not a valid object or string
 	 * @throws \RangeException if $newPostingEndDate is a date that does not exist
+	 *  * @throws  \typeError if $eventStartTime is no a /Datetime
 	 **/
 	public function setPostingEndDate($newPostingEndDate = null) : void {
 		// base case: if the date is null, use the current date and time
@@ -333,6 +335,41 @@ class Posting implements \JsonSerializable {
 			throw(new \InvalidArgumentException("your role is missing"));
 		}}
 	/**
+	/**
+	 * gets the posting by posting id
+	 *
+	 * 	@param \PDO $pdo PDO connection object
+	 *	 	@param Uuid|string $postingId posting id to search by
+	 * 	@return \SplFixedArray SplFixedArray of posting found
+	 * 	@throws \PDOException when mySQL related errors occur
+	 * 	@throws \TypeError when variables are not the correct data type
+
+	 **/
+	public function getPostingByPostingId(\PDO $pdo, $postingId) : \SplFixedArray {
+
+		try {
+			$postingId = self::validateUuid($postingId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		// create query template
+		$query = "SELECT postingId, postingContent, postingEmail, postingLocation, postingTitle, postingPay, postingCompanyName, postingDate, postingEndDate, postingRole from posting where postingId = :postingId";
+		$statement = $pdo->prepare($query);
+		// build an array of posting
+		$authors = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$posting = new posting($row["postingId"], $row["postingContent"], $row["postingEmail"], $row["postingLocation"], $row["postingTitle"], $row["postingPay"], $row["postingCompanyName"], $row["postingDate"], $row["postingEndDate"], $row["postingRole"]);
+				$posting[$posting->key()] = $posting;
+				$posting->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}}
+		return($posting);}
+
+
 /**
  * formats the state variables for JSON serialization
  *
