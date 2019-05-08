@@ -19,7 +19,7 @@ create table Profile (
 	profileImage VARCHAR(64),
 	profileBio BLOB,
 	profileLocation VARCHAR(64),
-	profileEmail VARCHAR(32) not null,
+	profileEmail VARCHAR(64) not null,
 	unique(profileUsername),
 	unique(profileEmail),
 	index(profileRoleId),
