@@ -208,3 +208,32 @@ class Profile {
 		// store the username
 		$this->profileUsername = $newProfileUsername;
 	}
+	/**
+	 *Accessor method for profileImage
+	 * @return string for profileImage
+	 */
+	public function getProfileImage(): ?string {
+		return ($this->profileImage);
+	}
+	/**
+	 * mutator method for profileImage
+	 *
+	 * @param  string $newProfileImage value of new profile url
+	 * @throws \InvalidArgumentException if $newProfileImage is not a valid url or insecure
+	 * @throws \RangeException if $newProfileImage is over charset
+	 * @throws \TypeError if the $newProfileImage is not a string
+	 **/
+	public function setProfileImage(?string $newProfileImage): void {
+// verify the image content is secure
+		$newProfileImage = trim($newProfileImage);
+		$newProfileImage = filter_var($newProfileImage, FILTER_SANITIZE_URL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileImage) === true) {
+			throw(new \InvalidArgumentException("Image url is empty or insecure"));
+		}
+		// verify the image content will fit in the database
+		if(strlen($newProfileImage) > 64) {
+			throw(new \RangeException("image content too large"));
+		}
+		// store the image content
+		$this->$newProfileImage = $newProfileImage;
+	}
