@@ -233,6 +233,13 @@ class Posting implements \JsonSerializable {
 		if(empty($newPostingPay) === true) {
 			throw(new \InvalidArgumentException("no pay on file"));
 		}}
+	/**
+	 * accessor method for posting company name
+	 * @return string value of posting company name
+	 **/
+	public function getPostingCompanyName(): string {
+		return ($this->postingCompanyName);
+	}
 
 	/**
 	 * mutator method for Posting company name
@@ -246,6 +253,36 @@ class Posting implements \JsonSerializable {
 		if(empty($newPostingCompanyName) === true) {
 			throw(new \InvalidArgumentException("company name is empty"));
 		}}
+	/**
+	 * accessor method for posting date
+	 * @return \DateTime value of posting date
+	 **/
+	public function getPostingDate() : \DateTime {
+		return($this->postingDate);
+	}
+
+	/**
+	 * mutator method for posting date
+	 * @param \DateTime|string|null $newPostingDate date as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newPostingDate is not a valid object or string
+	 * @throws \RangeException if $newPostingDate is a date that does not exist
+	 **/
+	public function setPostingDate($newPostingDate = null) : void {
+		// base case: if the date is null, use the current date and time
+		if($newPostingDate === null) {
+			$this->postingDate = new \DateTime();
+			return;
+		}
+
+		// store the like date using the ValidateDate trait
+		try {
+			$newPostingDate = self::validateDateTime($newPostingDate);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->postingDate = $newPostingDate;
+	}
 /**
  * formats the state variables for JSON serialization
  *
