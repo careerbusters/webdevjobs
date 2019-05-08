@@ -102,7 +102,6 @@ class Posting implements \JsonSerializable {
 
 	/**
 	 * accessor method for posting id
-	 *
 	 * @return Uuid value of posting id
 	 **/
 	public function getPostingId(): Uuid {
@@ -110,9 +109,9 @@ class Posting implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for Posting Id
+	 * mutator method for posting id
 	 *
-	 * @param Uuid|string $newPostingId new value of Posting Id
+	 * @param Uuid|string $newPostingId new value of posting id
 	 * @throws \RangeException if $newPostingId is not positive
 	 * @throws \TypeError if $newPostingId is not a uuid or string
 	 **/
@@ -124,9 +123,9 @@ class Posting implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
+
 	/**
 	 * accessor method for posting content
-	 *
 	 * @return string value of posting content
 	 **/
 	public function getPostingContent(): string {
@@ -134,11 +133,9 @@ class Posting implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for Posting content
-	 *
-	 * @param string $newPostingContent new value of Posting content
-	 * @throws \RangeException if $newPostingId is not positive
-	 * @throws \TypeError if $newPostingId is not a uuid or string
+	 * mutator method for posting content
+	 * @param string $newPostingContent new value of posting content
+	 * @throws \TypeError if $newPostingContent is not a string
 	 **/
 	public function setPostingContent($newPostingContent): void {
 		$newPostingContent = trim($newPostingContent);
@@ -146,8 +143,109 @@ class Posting implements \JsonSerializable {
 		if(empty($newPostingContent) === true) {
 			throw(new \InvalidArgumentException("posting content is empty or insecure"));
 		}
+
+
+		// verify the posting content will fit in the database
+		if(strlen($newPostingContent) > 65535) {
+			throw(new \RangeException("posting content too large"));
+		}
 	}
 
+	/**
+	 * accessor method for posting email
+	 * @return string value of posting email
+	 **/
+	public function getPostingEmail(): string {
+		return ($this->postingEmail);
+	}
+
+	/**
+	 * mutator method for posting email
+	 * @param string $newPostingEmail new value of posting email
+	 * @throws \typeError if $newPostingEmail is not a string
+
+	 **/
+	public function setPostingEmail($newPostingEmail): void {
+		$newPostingEmail = trim($newPostingEmail);
+		$newPostingEmail = filter_var($newPostingEmail, FILTER_SANITIZE_EMAIL);
+		if(empty($newPostingEmail) === true) {
+			throw(new \InvalidArgumentException("posting content is empty or insecure"));
+		}
+	}
+	/**
+	 * accessor method for posting location
+	 * @return string value of posting location
+	 **/
+	public function getPostingLocation(): string {
+		return ($this->postingLocation);
+	}
+
+	/**
+	 * mutator method for posting location
+	 * @param string $newPostingLocation new value of posting location
+	 * @throws \typeError if $newPostingLocation is not a string
+
+	 **/
+	public function setPostingLocation($newPostingLocation): void {
+		$newPostingLocation = trim($newPostingLocation);
+		$newPostingLocation = filter_var($newPostingLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingLocation) === true) {
+			throw(new \InvalidArgumentException("posting location isn't in New Mexico"));
+		}
+	}
+	/**
+	 * accessor method for posting title
+	 * @return string value of posting title
+	 **/
+	public function getPostingTitle(): string {
+		return ($this->postingTitle);
+	}
+
+	/**
+	 * mutator method for posting title
+	 * @param string $newPostingTitle new value of posting title
+	 * @throws \typeError if $newPostingTitle is not a string
+
+	 **/
+	public function setPostingTitle($newPostingTitle): void {
+		$newPostingTitle = trim($newPostingTitle);
+		$newPostingTitle = filter_var($newPostingTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingTitle) === true) {
+			throw(new \InvalidArgumentException("posting title is empty or insecure"));
+		}}
+	/**
+	 * accessor method for posting pay
+	 * @return string value of posting title
+	 **/
+	public function getPostingPay(): string {
+		return ($this->postingPay);
+	}
+
+	/**
+ * mutator method for posting pay
+ * @param string $newPostingPay new value of posting pay
+ * @throws \typeError if $newPostingPay is not a string
+
+ **/
+	public function setPostingPay($newPostingPay): void {
+		$newPostingPay = trim($newPostingPay);
+		$newPostingPay = filter_var($newPostingPay, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingPay) === true) {
+			throw(new \InvalidArgumentException("no pay on file"));
+		}}
+
+	/**
+	 * mutator method for Posting company name
+	 * @param string $newPostingCompanyName new value of Posting company name
+	 * @throws \typeError if $newPostingCompanyName is not a string
+
+	 **/
+	public function setPostingCompanyName($newPostingCompanyName): void {
+		$newPostingCompanyName = trim($newPostingCompanyName);
+		$newPostingCompanyName = filter_var($newPostingCompanyName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingCompanyName) === true) {
+			throw(new \InvalidArgumentException("company name is empty"));
+		}}
 /**
  * formats the state variables for JSON serialization
  *
