@@ -324,3 +324,21 @@ class Profile {
 		// store the email content
 		$this->$newProfileEmail = $newProfileEmail;
 	}
+	/**
+	 * inserts into profile class in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo): void {
+		// create query template
+		$query = "INSERT INTO Profile(profileId, profileRoleId, profileActivationToken, profileHash, profileUsername, profileImage, profileBio, profileLocation, profileEmail) 
+VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profileUsername, :profileImage, :profileBio, :profileLocation, :profileEmail)";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holders in the template
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
+			"profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash,
+			"profileUsername" => $this->profileUsername, "profileImage" => $this->profileImage, "profileBio" => $this->profileBio, "profileLocation" => $this->profileLocation, "profileEmail" => $this->profileEmail];
+		$statement->execute($parameters);
+	}
