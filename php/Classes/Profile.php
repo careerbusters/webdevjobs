@@ -179,3 +179,32 @@ class Profile {
 		//store the hash
 		$this->profileHash = $newProfileHash;
 	}
+	/**
+	 *Accessor method for profileUsername
+	 * @return string for profileUsername
+	 */
+	public function getProfileUsername(): ?string {
+		return ($this->profileUsername);
+	}
+	/**
+	 * mutator method for profileUsername
+	 *
+	 * @param  string $newProfileUsername value of new profile username
+	 * @throws \InvalidArgumentException if $newProfileUsername is not valid or insecure
+	 * @throws \RangeException if $newProfileUsername is over charset
+	 * @throws \TypeError if the $newProfileUsername is not a string
+	 **/
+	public function setProfileUsername(?string $newProfileUsername): void {
+		// verify the username is secure
+		$newProfileUsername = trim($newProfileUsername);
+		$newProfileUsername = filter_var($newProfileUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileUsername) === true) {
+			throw(new \InvalidArgumentException("Profile username is empty or insecure"));
+		}
+		// verify the username will fit in the database
+		if(strlen($newProfileUsername) > 64) {
+			throw(new \RangeException("Username is too large"));
+		}
+		// store the username
+		$this->profileUsername = $newProfileUsername;
+	}
