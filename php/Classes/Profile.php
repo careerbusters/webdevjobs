@@ -266,3 +266,61 @@ class Profile {
 		// store the bio
 		$this->profileBio = $newProfileBio;
 	}
+	/**
+	 *Accessor method for profileLocation
+	 * @return string for profileLocation
+	 */
+	public function getProfileLocation(): ?string {
+		return ($this->profileLocation);
+	}
+	/**
+	 * mutator method for profileLocation
+	 *
+	 * @param  string $newProfileLocation value of new profile location
+	 * @throws \InvalidArgumentException if $newProfileLocation is not or insecure
+	 * @throws \RangeException if $newProfileLocation is over charset
+	 * @throws \TypeError if the $newProfileLocation is not a string
+	 **/
+	public function setProfileLocation(?string $newProfileLocation): void {
+		// verify the location is secure
+		$newProfileLocation = trim($newProfileLocation);
+		$newProfileLocation = filter_var($newProfileLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileLocation) === true) {
+			throw(new \InvalidArgumentException("Profile location is empty or insecure"));
+		}
+		// verify the location will fit in the database
+		if(strlen($newProfileLocation) > 64) {
+			throw(new \RangeException("Location is too large"));
+		}
+		// store the location
+		$this->profileLocation = $newProfileLocation;
+	}
+	/**
+	 *Accessor method for profileEmail
+	 * @return string for profileEmail
+	 */
+	public function getProfileEmail(): ?string {
+		return ($this->profileEmail);
+	}
+	/**
+	 * mutator method for profile email
+	 *
+	 * @param  string $newProfileEmail value of new profile email
+	 * @throws \InvalidArgumentException if $newProfileEmail is not a valid email or insecure
+	 * @throws \RangeException if $newProfileEmail is over charset
+	 * @throws \TypeError if the profile email is not a string
+	 **/
+	public function setProfileEmail(?string $newProfileEmail): void {
+// verify the email content is secure
+		$newProfileEmail = trim($newProfileEmail);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileEmail) === true) {
+			throw(new \InvalidArgumentException("Email is empty or insecure"));
+		}
+		// verify the email content will fit in the database
+		if(strlen($newProfileEmail) > 64) {
+			throw(new \RangeException("email content too large"));
+		}
+		// store the email content
+		$this->$newProfileEmail = $newProfileEmail;
+	}
