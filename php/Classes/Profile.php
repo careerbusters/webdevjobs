@@ -81,7 +81,7 @@ class Profile implements \JsonSerializable {
 	 * @param string $newProfileHash string for profile password.
 	 * @param string $newProfileUsername string containing profile username.
 	 * @param string $newProfileImage url for profile picture.
-	 * @param BLOB string $newProfileBio blob string for profile bio.
+	 * @param blob $newProfileBio for profile bio.
 	 * @param string $newProfileLocation string for profile location.
 	 * @param string $newProfileEmail profiles email address.
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -92,7 +92,7 @@ class Profile implements \JsonSerializable {
 	 **/
 
 	public function __construct($newProfileId, $newProfileRoleId, string $newProfileActivationToken, string $newProfileHash,
-										 string $newProfileUsername, string $newProfileImage, BLOB $newProfileBio, string $newProfileLocation, string $newProfileEmail) {
+										 string $newProfileUsername, string $newProfileImage, blob $newProfileBio, string $newProfileLocation, string $newProfileEmail) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileRoleId($newProfileRoleId);
