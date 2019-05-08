@@ -13,20 +13,63 @@ use Ramsey\Uuid\Uuid;
  * @author Trystan Gray <trystangray7@gmail.com>
  *@version 1.0.0
  */
+
 class Profile {
 	use ValidateUuid;
 	use ValidateDate;
+
 	/**
-	 * Naming all my attributes as private.
+	 * id and P.K. for Profile
+	 * @var string Uuid $profileId
 	 */
 	private $profileId;
+
+	/**
+	 * another id but for role for Profile
+	 * @var string Uuid $profileRoleId
+	 */
 	private $profileRoleId;
+
+	/**
+	 *This is the activation token verifying Profile isn't malicious
+	 * @var $profileActivationToken
+	 */
 	private $profileActivationToken;
+
+	/**
+	 * This is part of password protection;
+	 * @var $profileHash
+	 */
 	private $profileHash;
+
+	/**
+	 * This is the profiles username;
+	 * @var $profileUsername
+	 */
 	private $profileUsername;
+
+	/**
+	 * This is the profile picture;
+	 * @var $profileImage
+	 */
 	private $profileImage;
+
+	/**
+	 * This is the bio about the profile;
+	 * @var $profileBio
+	 */
 	private $profileBio;
+
+	/**
+	 * This is the profiles location;
+	 * @var $profileLocation
+	 */
 	private $profileLocation;
+
+	/**
+	 * This is the profiles email;
+	 * @var $profileEmail
+	 */
 	private $profileEmail;
 
 	/**
@@ -47,6 +90,7 @@ class Profile {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
+
 	public function __construct($newProfileId, $newProfileRoleId, string $newProfileActivationToken, string $newProfileHash,
 										 string $newProfileUsername, string $newProfileImage, string $newProfileBio, string $newProfileLocation, string $newProfileEmail) {
 		try {
@@ -65,13 +109,16 @@ class Profile {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
+
 	/**
 	 *Accessor method for profileId
 	 * @return string|Uuid for profileId (or null if new Profile)
 	 */
+
 	public function getProfileId(): Uuid {
 		return ($this->profileId);
 	}
+
 	/**
 	 * mutator method for profile id
 	 *
@@ -79,6 +126,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileId is not positive
 	 * @throws \TypeError if the profileId is not positive
 	 **/
+
 	public function setProfileId($newProfileId): void {
 		try {
 			$uuid = self::ValidateUuid($newProfileId);
@@ -94,9 +142,11 @@ class Profile {
 	 *Accessor method for profileRoleId
 	 * @return string|Uuid for profileRoleId (or null if new Profile)
 	 */
+
 	public function getProfileRoleId(): Uuid {
 		return ($this->profileRoleId);
 	}
+
 	/**
 	 * mutator method for profileRole id
 	 *
@@ -104,6 +154,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileRoleId is not positive
 	 * @throws \TypeError if the profileRoleId is not positive
 	 **/
+
 	public function setProfileRoleId($newProfileRoleId): void {
 		try {
 			$uuid = self::ValidateUuid($newProfileRoleId);
@@ -119,9 +170,11 @@ class Profile {
 	 *Accessor method for profileActivationToken
 	 * @return string for profileActivationToken
 	 */
+
 	public function getProfileActivationToken(): ?string {
 		return ($this->profileActivationToken);
 	}
+
 	/**
 	 * mutator method for profile activation token
 	 *
@@ -130,6 +183,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileActivationToken is over charset
 	 * @throws \TypeError if the profile activation is not a string
 	 **/
+
 	public function setProfileActivationToken(?string $newProfileActivationToken): void {
 		if($newProfileActivationToken === null) {
 			$this->profileActivationToken = $newProfileActivationToken;
@@ -146,13 +200,16 @@ class Profile {
 		// convert and store the activation token
 		$this->profileActivationToken = $newProfileActivationToken;
 	}
+
 	/**
 	 *Accessor method for profileHash
 	 * @return string for profileHash
 	 */
+
 	public function getProfileHash(): ?string {
 		return ($this->profileHash);
 	}
+
 	/**
 	 * mutator method for profile hash
 	 *
@@ -161,6 +218,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileHash is over charset
 	 * @throws \TypeError if the $newProfileHash is not a string
 	 **/
+
 	public function setProfileHash(?string $newProfileHash): void {
 //enforce that the hash is properly formatted
 		$newProfileHash = trim($newProfileHash);
@@ -179,13 +237,16 @@ class Profile {
 		//store the hash
 		$this->profileHash = $newProfileHash;
 	}
+
 	/**
 	 *Accessor method for profileUsername
 	 * @return string for profileUsername
 	 */
+
 	public function getProfileUsername(): ?string {
 		return ($this->profileUsername);
 	}
+
 	/**
 	 * mutator method for profileUsername
 	 *
@@ -194,6 +255,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileUsername is over charset
 	 * @throws \TypeError if the $newProfileUsername is not a string
 	 **/
+
 	public function setProfileUsername(?string $newProfileUsername): void {
 		// verify the username is secure
 		$newProfileUsername = trim($newProfileUsername);
@@ -208,13 +270,16 @@ class Profile {
 		// store the username
 		$this->profileUsername = $newProfileUsername;
 	}
+
 	/**
 	 *Accessor method for profileImage
 	 * @return string for profileImage
 	 */
+
 	public function getProfileImage(): ?string {
 		return ($this->profileImage);
 	}
+
 	/**
 	 * mutator method for profileImage
 	 *
@@ -223,6 +288,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileImage is over charset
 	 * @throws \TypeError if the $newProfileImage is not a string
 	 **/
+
 	public function setProfileImage(?string $newProfileImage): void {
 // verify the image content is secure
 		$newProfileImage = trim($newProfileImage);
@@ -237,13 +303,16 @@ class Profile {
 		// store the image content
 		$this->$newProfileImage = $newProfileImage;
 	}
+
 	/**
 	 *Accessor method for profileBio
 	 * @return string for profileBio
 	 */
+
 	public function getProfileBio(): ?string {
 		return ($this->profileBio);
 	}
+
 	/**
 	 * mutator method for profileBio
 	 *
@@ -252,6 +321,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileBio is over charset
 	 * @throws \TypeError if the $newProfileBio is not a string
 	 **/
+
 	public function setProfileBio(?blob $newProfileBio): void {
 		// verify the at handle is secure
 		$newProfileBio = trim($newProfileBio);
@@ -266,13 +336,16 @@ class Profile {
 		// store the bio
 		$this->profileBio = $newProfileBio;
 	}
+
 	/**
 	 *Accessor method for profileLocation
 	 * @return string for profileLocation
 	 */
+
 	public function getProfileLocation(): ?string {
 		return ($this->profileLocation);
 	}
+
 	/**
 	 * mutator method for profileLocation
 	 *
@@ -281,6 +354,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileLocation is over charset
 	 * @throws \TypeError if the $newProfileLocation is not a string
 	 **/
+
 	public function setProfileLocation(?string $newProfileLocation): void {
 		// verify the location is secure
 		$newProfileLocation = trim($newProfileLocation);
@@ -295,13 +369,16 @@ class Profile {
 		// store the location
 		$this->profileLocation = $newProfileLocation;
 	}
+
 	/**
 	 *Accessor method for profileEmail
 	 * @return string for profileEmail
 	 */
+
 	public function getProfileEmail(): ?string {
 		return ($this->profileEmail);
 	}
+
 	/**
 	 * mutator method for profile email
 	 *
@@ -310,6 +387,7 @@ class Profile {
 	 * @throws \RangeException if $newProfileEmail is over charset
 	 * @throws \TypeError if the profile email is not a string
 	 **/
+
 	public function setProfileEmail(?string $newProfileEmail): void {
 // verify the email content is secure
 		$newProfileEmail = trim($newProfileEmail);
@@ -324,6 +402,7 @@ class Profile {
 		// store the email content
 		$this->$newProfileEmail = $newProfileEmail;
 	}
+
 	/**
 	 * inserts into profile class in mySQL
 	 *
@@ -331,6 +410,7 @@ class Profile {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
+
 	public function insert(\PDO $pdo): void {
 		// create query template
 		$query = "INSERT INTO Profile(profileId, profileRoleId, profileActivationToken, profileHash, profileUsername, profileImage, profileBio, profileLocation, profileEmail) 
@@ -360,5 +440,21 @@ VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profi
 			"profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash,
 			"profileUsername" => $this->profileUsername, "profileImage" => $this->profileImage, "profileBio" => $this->profileBio,
 			"profileLocation" => $this->profileLocation, "profileEmail" => $this->profileEmail];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * deletes this Profile from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo): void {
+		// create query template
+		$query = "DELETE FROM Profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holder in the template
+		$parameters = ["profileId" => $this->profileId->getBytes()];
 		$statement->execute($parameters);
 	}
