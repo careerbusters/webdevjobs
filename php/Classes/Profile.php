@@ -146,3 +146,36 @@ class Profile {
 		// convert and store the activation token
 		$this->profileActivationToken = $newProfileActivationToken;
 	}
+	/**
+	 *Accessor method for profileHash
+	 * @return string for profileHash
+	 */
+	public function getProfileHash(): ?string {
+		return ($this->profileHash);
+	}
+	/**
+	 * mutator method for profile hash
+	 *
+	 * @param  string $newProfileHash value of profile hash
+	 * @throws \InvalidArgumentException if $newProfileHash is not a valid hash key or insecure
+	 * @throws \RangeException if $newProfileHash is over charset
+	 * @throws \TypeError if the $newProfileHash is not a string
+	 **/
+	public function setProfileHash(?string $newProfileHash): void {
+//enforce that the hash is properly formatted
+		$newProfileHash = trim($newProfileHash);
+		if(empty($newProfileHash) === true) {
+			throw(new \InvalidArgumentException("Profile password hash empty or insecure"));
+		}
+		//enforce the hash is really an Argon hash
+		$profileHashInfo = password_get_info($newProfileHash);
+		if($profileHashInfo["algoName"] !== "argon2i") {
+			throw(new \InvalidArgumentException("Profile hash is not a valid hash"));
+		}
+		//enforce that the hash is exactly 97 characters.
+		if(strlen($newProfileHash) !== 97) {
+			throw(new \RangeException("Profile hash must be 97 characters"));
+		}
+		//store the hash
+		$this->profileHash = $newProfileHash;
+	}
