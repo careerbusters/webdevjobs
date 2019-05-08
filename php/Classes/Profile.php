@@ -14,7 +14,7 @@ use Ramsey\Uuid\Uuid;
  *@version 1.0.0
  */
 
-class Profile {
+class Profile implements \JsonSerializable {
 	use ValidateUuid;
 	use ValidateDate;
 
@@ -458,3 +458,17 @@ VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profi
 		$parameters = ["profileId" => $this->profileId->getBytes()];
 		$statement->execute($parameters);
 	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+
+		$fields["profileId"] = $this->profileId->toString();
+		$fields["profileRoleId"] = $this->profileRoleId->toString();
+		return($fields);
+	}
+}
