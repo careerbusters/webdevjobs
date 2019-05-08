@@ -169,7 +169,7 @@ class Posting implements \JsonSerializable {
 		$newPostingEmail = trim($newPostingEmail);
 		$newPostingEmail = filter_var($newPostingEmail, FILTER_SANITIZE_EMAIL);
 		if(empty($newPostingEmail) === true) {
-			throw(new \InvalidArgumentException("posting content is empty or insecure"));
+			throw(new \InvalidArgumentException("posting email is empty"));
 		}
 	}
 	/**
@@ -211,7 +211,7 @@ class Posting implements \JsonSerializable {
 		$newPostingTitle = trim($newPostingTitle);
 		$newPostingTitle = filter_var($newPostingTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostingTitle) === true) {
-			throw(new \InvalidArgumentException("posting title is empty or insecure"));
+			throw(new \InvalidArgumentException("job title is missing"));
 		}}
 	/**
 	 * accessor method for posting pay
@@ -231,7 +231,7 @@ class Posting implements \JsonSerializable {
 		$newPostingPay = trim($newPostingPay);
 		$newPostingPay = filter_var($newPostingPay, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostingPay) === true) {
-			throw(new \InvalidArgumentException("no pay on file"));
+			throw(new \InvalidArgumentException("how much job pays is missing"));
 		}}
 	/**
 	 * accessor method for posting company name
@@ -283,6 +283,56 @@ class Posting implements \JsonSerializable {
 		}
 		$this->postingDate = $newPostingDate;
 	}
+	/**
+	 * accessor method for posting end date
+	 * @return \DateTime value of posting end date
+	 **/
+	public function getPostingEndDate() : \DateTime {
+		return($this->postingEndDate);
+	}
+	/**
+	 * mutator method for posting end date
+	 * @param \DateTime|string|null $newPostingEndDate date as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newPostingEndDate is not a valid object or string
+	 * @throws \RangeException if $newPostingEndDate is a date that does not exist
+	 **/
+	public function setPostingEndDate($newPostingEndDate = null) : void {
+		// base case: if the date is null, use the current date and time
+		if($newPostingEndDate === null) {
+			$this->postingEndDate = new \DateTime();
+			return;
+		}
+
+		// store the like date using the ValidateDate trait
+		try {
+			$newPostingEndDate = self::validateDateTime($newPostingEndDate);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->postingEndDate = $newPostingEndDate;
+	}
+	/**
+	 * accessor method for posting role
+	 * @return string value of posting role
+	 **/
+	public function getPostingRole(): string {
+		return ($this->postingRole);
+	}
+
+	/**
+	 * mutator method for posting role
+	 * @param string $newPostingRole new value of posting role
+	 * @throws \typeError if $newPostingRole is not a string
+
+	 **/
+	public function setPostingRole($newPostingRole): void {
+		$newPostingRole = trim($newPostingRole);
+		$newPostingRole = filter_var($newPostingRole, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingRole) === true) {
+			throw(new \InvalidArgumentException("your role is missing"));
+		}}
+	/**
 /**
  * formats the state variables for JSON serialization
  *
