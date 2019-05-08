@@ -237,3 +237,32 @@ class Profile {
 		// store the image content
 		$this->$newProfileImage = $newProfileImage;
 	}
+	/**
+	 *Accessor method for profileBio
+	 * @return string for profileBio
+	 */
+	public function getProfileBio(): ?string {
+		return ($this->profileBio);
+	}
+	/**
+	 * mutator method for profileBio
+	 *
+	 * @param  string $newProfileBio value of new profile bio
+	 * @throws \InvalidArgumentException if $newProfileBio is not valid or insecure
+	 * @throws \RangeException if $newProfileBio is over charset
+	 * @throws \TypeError if the $newProfileBio is not a string
+	 **/
+	public function setProfileBio(?blob $newProfileBio): void {
+		// verify the at handle is secure
+		$newProfileBio = trim($newProfileBio);
+		$newProfileBio = filter_var($newProfileBio, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileBio) === true) {
+			throw(new \InvalidArgumentException("Profile bio is empty or insecure"));
+		}
+		// verify the bio will fit in the database
+		if(strlen($newProfileBio) > 65535) {
+			throw(new \RangeException("Bio is too large"));
+		}
+		// store the bio
+		$this->profileBio = $newProfileBio;
+	}
