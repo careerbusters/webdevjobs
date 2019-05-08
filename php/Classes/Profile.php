@@ -339,6 +339,26 @@ VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profi
 		// bind the member variables to the place holders in the template
 		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
 			"profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash,
-			"profileUsername" => $this->profileUsername, "profileImage" => $this->profileImage, "profileBio" => $this->profileBio, "profileLocation" => $this->profileLocation, "profileEmail" => $this->profileEmail];
+			"profileUsername" => $this->profileUsername, "profileImage" => $this->profileImage, "profileBio" => $this->profileBio,
+			"profileLocation" => $this->profileLocation, "profileEmail" => $this->profileEmail];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this Profile class in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
+		// create query template
+		$query = "UPDATE Profile SET profileRoleId = :profileRoleId, profileActivationToken = :profileActivationToken, profileHash = :profileHash, 
+	profileUsername = :profileUsername, profileImage = :profileImage, profileBio = :profileBio, profileLocation = :profileLocation, profileEmail = :profileEmail   WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
+			"profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash,
+			"profileUsername" => $this->profileUsername, "profileImage" => $this->profileImage, "profileBio" => $this->profileBio,
+			"profileLocation" => $this->profileLocation, "profileEmail" => $this->profileEmail];
 		$statement->execute($parameters);
 	}
