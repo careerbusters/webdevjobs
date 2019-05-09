@@ -8,73 +8,73 @@ use Ramsey\Uuid\Uuid;
 
 
 
-class Posting implements \JsonSerializable {
+class posting implements \JsonSerializable {
 	use validateDate;
 	use validateUuid;
 
 	/**
-	 * id for this Posting; this is the primary key
+	 * id for this posting; this is the primary key
 	 * @var Uuid $postingId
 	 **/
 	private $postingId;
 	/**
-	 * actual text content of this Posting
+	 * actual text content of this posting
 	 * @var string postingContent
 	 **/
 	private $postingContent;
 	/**
-	 * actual email address of the Posting
+	 * actual email address of the posting
 	 * @var string postingEmail
 	 **/
 	private $postingEmail;
 	/**
-	 * location based on city and state of the Posting
+	 * location based on city and state of the posting
 	 * @var string $postingLocation
 	 **/
 	private $postingLocation;
 	/**
-	 * actual tile of the Posting
+	 * actual tile of the posting
 	 * @var string $postingTitle
 	 **/
 	private $postingTitle;
 	/**
-	 * actual pay of the Posting
+	 * actual pay of the posting
 	 * @var string $postingPay
 	 **/
 	private $postingPay;
 	/**
-	 * actual company name of the Posting
+	 * actual company name of the posting
 	 * @var string $postingCompanyName
 	 **/
 	private $postingCompanyName;
 	/**
-	 * start date and time the Posting began
+	 * start date and time the posting began
 	 * @var /DateTime $postingDate
 	 **/
 	private $postingDate;
 	/**
-	 * date and time this Posting will end
+	 * date and time this posting will end
 	 * @var /DateTime $postingEndDate
 	 **/
 	private $postingEndDate;
 	/**
-	 * actual role of the Posting
+	 * actual role of the posting
 	 * @var string $postingRole
 	 **/
 	private $postingRole;
 
 	/**
-	 * constructor for this Posting
+	 * constructor for this posting
 	 *
-	 * @param string/Uuid $newPostingId Id from Posting
+	 * @param string/Uuid $newPostingId Id from posting
 	 * @param string $newPostingContent will be associated to postingId or null if content was resubmitted
 	 * @param string $newPostingEmail when postingEmail is new or null if email is already on file
-	 * @param string $newPostingLocation based on city and state of Posting
+	 * @param string $newPostingLocation based on city and state of posting
 	 * @param string $newPostingTitle will be associated to postingId
 	 * @param string $newPostingPay pay will be based on content or null if content was resubmitted
 	 * @param string $newPostingCompanyName Id from posting or postingContent
-	 * @param /DateTime $newPostingDate date and time Posting was started
-	 * @param /DateTime $newPostingEndDate date and time Posting was ending
+	 * @param /DateTime $newPostingDate date and time posting was started
+	 * @param /DateTime $newPostingEndDate date and time posting was ending
 	 * @param string $newPostingRole will be associated to postingId or null if role was resubmitted with previous content
 	 * @throws /RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws /TypeError if data types violate type hints
@@ -190,7 +190,7 @@ class Posting implements \JsonSerializable {
 		$newPostingLocation = trim($newPostingLocation);
 		$newPostingLocation = filter_var($newPostingLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostingLocation) === true) {
-			throw(new \InvalidArgumentException("posting location isn't in New Mexico"));
+			throw(new \InvalidArgumentException("posting location isn't in Albuquerque"));
 		}
 	}
 	/**
@@ -231,7 +231,7 @@ class Posting implements \JsonSerializable {
 		$newPostingPay = trim($newPostingPay);
 		$newPostingPay = filter_var($newPostingPay, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostingPay) === true) {
-			throw(new \InvalidArgumentException("how much job pays is missing"));
+			throw(new \InvalidArgumentException("how much the job pays is missing"));
 		}}
 	/**
 	 * accessor method for posting company name
@@ -242,8 +242,8 @@ class Posting implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for Posting company name
-	 * @param string $newPostingCompanyName new value of Posting company name
+	 * mutator method for posting company name
+	 * @param string $newPostingCompanyName new value of posting company name
 	 * @throws \typeError if $newPostingCompanyName is not a string
 
 	 **/
@@ -334,7 +334,20 @@ class Posting implements \JsonSerializable {
 		if(empty($newPostingRole) === true) {
 			throw(new \InvalidArgumentException("your role is missing"));
 		}}
-	/**
+
+		/** insert this posting into mySQL
+
+		  @param \PDO $pdo PDO connection object
+		 @throws \PDOException when mySQL related errors occur
+		 @throws \TypeError if $pdo is not a PDO connection object*
+		 */
+
+		public function insert(\PDO $pdo) : void {
+
+			// create query template
+			$query = "INSERT INTO posting(postingId, postingContent, postingEmail, postingLocation, postingTitle, postingPay, postingCompanyName, postingDate, postingEndDate, postingRole) VALUES(:postingId, :postingContent, :postingEmail, :postingLocation, :postingTitle, :postingPay, :postingCompanyName, :postingDate, :postingEndDate, :postingRole)"
+		$statement = $pdo->prepare($query);
+
 	/**
 	 * gets the posting by posting id
 	 *
@@ -343,7 +356,6 @@ class Posting implements \JsonSerializable {
 	 * 	@return \SplFixedArray SplFixedArray of posting found
 	 * 	@throws \PDOException when mySQL related errors occur
 	 * 	@throws \TypeError when variables are not the correct data type
-
 	 **/
 	public function getPostingByPostingId(\PDO $pdo, $postingId) : \SplFixedArray {
 
