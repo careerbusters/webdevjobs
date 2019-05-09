@@ -15,14 +15,14 @@ use tgray19\webdevjobs\ValidateUuid;
  * @savedjob Natasha Lovato <nmarshlovato@cnm.edu>
  * @version 1.0.0
  **/
-class savedJob implements \JsonSerializable {
+class savedJobPosting implements \JsonSerializable {
 	use ValidateDate;
 	use ValidateUuid;
 /**
  * id and savedJob (foreign key)
  * @var string Uuid $savedJobId
  **/
-protected $savedJobId;
+protected $savedJobPostingId;
 /**
  * profileId and savedJob (foreign key)
  * @var $savedJobProfileId
@@ -42,10 +42,10 @@ protected $savedJobProfileId;
 	/**
 	 * @return string
 	 */
-	public function __construct($savedJobId, string $savedJobProfileId = null) {
+	public function __construct($savedJobPostingId, string $savedJobProfileId = null) {
 	try {
-		$this->setSavedJobId($savedJobId);
-		$this->savedJobProfileId($savedJobProfileId);
+		$this->setSavedJobPostingId($savedJobPostingId);
+		$this->setSavedJobProfileId($savedJobProfileId);
 	}
 	//determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -53,17 +53,53 @@ protected $savedJobProfileId;
 		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
-}
 
 /**
  * mutator method for saved job id
  *
- * @param string $savedJobId value of saved job id
- * @throws \RangeExceptionif $savedJobId is not positive
- * @throws \TypeError if saved job is is not positive
+ * @param string $savedJobPostingId value of saved job posting id
+ * @throws \RangeException if $savedJobPostingId is not positive
+ * @throws \TypeError if saved job posting id is not positive
  **/
-public function setSavedJobId($savedJobId): void {
+public function setSavedJobId($savedJobPostingId): void {
 	try {
-		$Uuid = self::ValidateUUid($savedJobId);
-	} catch()
+		$Uuid = self::ValidateUUid($savedJobPostingId);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
+
+	// convert and store the saved job posting id
+	$this->savedJobPostingId = $Uuid;
+}
+
+/**
+ * Accessor method for saved job profile id
+ *
+ * @param string $savedJobProfileId value of new saved job profile id
+ * @throws \InvalidArgumentException if $savedProfileId is not a valid profile id or insecure
+ * @throws \RangeException if $savedJobProfileId is over charset
+ * @throws \TypeError if saved job profile id is not a string
+ **/
+public function setSavedJobProfileId(): ?string {
+	return ($this->savedJobProfileId);
+}
+
+/**
+ * mutator method for saved job profile id
+ *
+ * @param string $savedJobProfileId value of saved job profile id
+ * @throws \InvalidArgumentException if $savedJobProfileId is not valid or secure
+ * @throws \RangeException if $savedJobProfileId is over charset
+ * @throws \TypeError if saved job profile id is not a string
+ **/
+public function setSavedJobProfileId(?string $savedJobProfileId): void {
+	//verify saved job profile id is secure
+	$savedJobProfileId = trim($savedJobProfileId);
+	$savedJobProfileId =filter_var($savedJobProfileId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if (empty($savedJobProfileId) === true) {
+		throw(new \InvalidArgumentException("saved profile id invalid or insecure"));
+	}
+}
+
 }
