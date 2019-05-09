@@ -346,7 +346,7 @@ class posting implements \JsonSerializable {
 
 			// create query template
 			$query = "INSERT INTO posting(postingId, postingContent, postingEmail, postingLocation, postingTitle, postingPay, postingCompanyName, postingDate, postingEndDate, postingRole) VALUES(:postingId, :postingContent, :postingEmail, :postingLocation, :postingTitle, :postingPay, :postingCompanyName, :postingDate, :postingEndDate, :postingRole)"
-		$statement = $pdo->prepare($query);
+		$statement = $pdo->prepare($query);}
 
 	/**
 	 * gets the posting by posting id
