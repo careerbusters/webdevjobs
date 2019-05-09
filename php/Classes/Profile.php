@@ -1,6 +1,6 @@
 <?php
 
-namespace tgray19\webdevjobs;
+namespace careerbusters\webdevjobs;
 
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
 require_once("autoload.php");
