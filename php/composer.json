@@ -4,7 +4,7 @@
     "ext-json": "*",
     "ext-pdo": "*",
     "ramsey/uuid": "@stable",
-    "phpunit/dbunit": "@stable",
+    "phpunit/ddunit": "@stable",
     "phpunit/phpunit": "@stable",
     "lcobucci/jwt": "3.2"
   },
