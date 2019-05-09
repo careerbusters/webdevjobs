@@ -1,6 +1,6 @@
 <?php
 
-namespace tgray19\webdevjobs;
+namespace careerbusters\webdevjobs;
 require_once(dirname(__DIR__) . "/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 
