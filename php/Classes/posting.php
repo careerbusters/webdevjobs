@@ -335,18 +335,7 @@ class posting implements \JsonSerializable {
 			throw(new \InvalidArgumentException("your role is missing"));
 		}}
 
-		/** insert this posting into mySQL
 
-		  @param \PDO $pdo PDO connection object
-		 @throws \PDOException when mySQL related errors occur
-		 @throws \TypeError if $pdo is not a PDO connection object*
-		 */
-
-		public function insert(\PDO $pdo) : void {
-
-			// create query template
-			$query = "INSERT INTO posting(postingId, postingContent, postingEmail, postingLocation, postingTitle, postingPay, postingCompanyName, postingDate, postingEndDate, postingRole) VALUES(:postingId, :postingContent, :postingEmail, :postingLocation, :postingTitle, :postingPay, :postingCompanyName, :postingDate, :postingEndDate, :postingRole)"
-		$statement = $pdo->prepare($query);}
 
 	/**
 	 * gets the posting by posting id
@@ -368,7 +357,7 @@ class posting implements \JsonSerializable {
 		$query = "SELECT postingId, postingContent, postingEmail, postingLocation, postingTitle, postingPay, postingCompanyName, postingDate, postingEndDate, postingRole from posting where postingId = :postingId";
 		$statement = $pdo->prepare($query);
 		// build an array of posting
-		$authors = new \SplFixedArray($statement->rowCount());
+		$posting = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
