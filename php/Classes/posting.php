@@ -344,14 +344,51 @@ class posting implements \JsonSerializable {
 public function insert(\PDO $pdo) : void {
 
 	// create query template
-	$query = "INSERT INTO posting(postingId, postingContent, postingEmail, postingLocation, postingTitle, postingPay, postingCompanyName, postingDate, postingEndDate, postingRole) VALUES(:postingId,:postingContent, :postingEmail, :postingLocation, :postingTitle, :postingPay, :postingCompanyName, :postingDate, :postingEndDate, :postingRole)"
+	$query = "INSERT INTO posting(postingId, postingContent, postingEmail, postingLocation, postingTitle, postingPay, postingCompanyName, postingDate, postingEndDate, postingRole) VALUES(:postingId, :postingContent, :postingEmail, :postingLocation, :postingTitle, :postingPay, :postingCompanyName, :postingDate, :postingEndDate, :postingRole)";
 $statement = $pdo->prepare($query);
 
 	// bind the member variable to the place holders in the template
 	$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
-		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent, "postingDate" => $formattedDate];
+		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent, "postingEmail" => $this->postingEmail, "postingLocation" => $this->postingLocation, "postingTitle" => $this->postingTitle, "postingPay" => $this->postingPay, "postingCompanyName" => $this->postingCompanyName, "postingDate" => $formattedDate, "postingEndDate" => $formattedDate, "postingRole" => $this->postingRole];
 		$statement->execute($parameters);
 }
+
+	/**
+	 * deletes this posting from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+
+		// create query template
+		$query = "DELETE FROM posting WHERE postingId = :postingId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["postingId" => $this->postingId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this posting in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
+
+		// create query template
+		$query = "UPDATE posting SET postingId = :postingId, postingContent = :postingContent, postingEmail = :postingEmail, postingLocation = :postinglocation, postingTitle = :postingTitle, postingPay = :postingPay, postingCompanyName =:postingCompanyName, postingDate = :postingDate, postingEndDate = :postingEndDate, postingRole = :postingRole";
+		$statement = $pdo->prepare($query);
+
+
+		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
+		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent, "postingDate" => $formattedDate];
+		$statement->execute($parameters);
+	}
 
 
 	/**
