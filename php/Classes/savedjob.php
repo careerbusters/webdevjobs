@@ -15,7 +15,7 @@ use tgray19\webdevjobs\ValidateUuid;
  * @savedjob Natasha Lovato <nmarshlovato@cnm.edu>
  * @version 1.0.0
  **/
-class savedJobPosting implements \JsonSerializable {
+class savedJobPosting implement \JsonSerializable; {
 	use ValidateDate;
 	use ValidateUuid;
 /**
@@ -31,21 +31,18 @@ protected $savedJobProfileId;
 
 /**
  * Constructor for Saved Job
- * @param string|Uuid $savedJobId id of Saved Job or null if a new Saved Job.
- * @param string $savedJobProfileId for profile id.
+ * @param string|Uuid $newSavedJobId id of Saved Job or null if a new Saved Job.
+ * @param string $newSavedJobProfileId for profile id.
  * @throws \InvalidArgumentException if data types are not valid
  * @throws \RangeException if data types values are out of bounds (e.g., strings too long, negative integers)
  * @throws \TypeError if data types violate type hints
  * @thorws \Exception if some other exception occurs
  * @Documentation https://php.net/manual/en/language.oop5.decon.php
  **/
-	/**
-	 * @return string
-	 */
-	public function __construct($savedJobPostingId, string $savedJobProfileId = null) {
+	public function __construct($newSavedJobPostingId, string $newSavedJobProfileId = null) {
 	try {
-		$this->setSavedJobPostingId($savedJobPostingId);
-		$this->setSavedJobProfileId($savedJobProfileId);
+		$this->setSavedJobPostingId($newSavedJobPostingId);
+		$this->setSavedJobProfileId($newSavedJobProfileId);
 	}
 	//determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -55,15 +52,26 @@ protected $savedJobProfileId;
 	}
 
 /**
- * mutator method for saved job id
+*Accessor method for savedJobPostingId
+* @return string|Uuid for savedJobPostingId (or null if new Profile)
+**/
+	/**
+	 * @return string
+	 */
+	public function getSavedJobPostingId() {
+		return $this->savedJobPostingId;
+	}
+
+/**
+ * mutator method for saved job posting id
  *
- * @param string $savedJobPostingId value of saved job posting id
+ * @param string $newSavedJobPostingId value of saved job posting id
  * @throws \RangeException if $savedJobPostingId is not positive
  * @throws \TypeError if saved job posting id is not positive
  **/
-public function setSavedJobId($savedJobPostingId): void {
+public function setSavedJobId($newSavedJobPostingId): void {
 	try {
-		$Uuid = self::ValidateUUid($savedJobPostingId);
+		$Uuid = self::ValidateUUid($newSavedJobPostingId);
 	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 		$exceptionType = get_class($exception);
 		throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -75,11 +83,7 @@ public function setSavedJobId($savedJobPostingId): void {
 
 /**
  * Accessor method for saved job profile id
- *
- * @param string $savedJobProfileId value of new saved job profile id
- * @throws \InvalidArgumentException if $savedProfileId is not a valid profile id or insecure
- * @throws \RangeException if $savedJobProfileId is over charset
- * @throws \TypeError if saved job profile id is not a string
+ * @return string for savedJobProfileId
  **/
 public function setSavedJobProfileId(): ?string {
 	return ($this->savedJobProfileId);
@@ -88,18 +92,25 @@ public function setSavedJobProfileId(): ?string {
 /**
  * mutator method for saved job profile id
  *
- * @param string $savedJobProfileId value of saved job profile id
+ * @param string $newSavedJobProfileId value of saved job profile id
  * @throws \InvalidArgumentException if $savedJobProfileId is not valid or secure
  * @throws \RangeException if $savedJobProfileId is over charset
  * @throws \TypeError if saved job profile id is not a string
  **/
-public function setSavedJobProfileId(?string $savedJobProfileId): void {
-	//verify saved job profile id is secure
-	$savedJobProfileId = trim($savedJobProfileId);
-	$savedJobProfileId =filter_var($savedJobProfileId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if (empty($savedJobProfileId) === true) {
+public function setSavedJobProfileId(?string $newSavedJobProfileId): void {
+	//verify the email is secure
+	$newSavedJobProfileId = trim($newSavedJobProfileId);
+	$newSavedJobProfileId =filter_var($newSavedJobProfileId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if (empty($newSavedJobProfileId) === true) {
 		throw(new \InvalidArgumentException("saved profile id invalid or insecure"));
 	}
+
+	//verify the email will fit in the database
+	if(strlen($newSavedJobProfileId) > 128) {
+		throw(new\RangeException("profile email is too large"));
+	}
+	// store the email
+	$this->$newSavedJobProfileId = $newSavedJobProfileId;
 }
 
 }
