@@ -334,11 +334,28 @@ class posting implements \JsonSerializable {
 		if(empty($newPostingRole) === true) {
 			throw(new \InvalidArgumentException("your role is missing"));
 		}}
+/**
+ *inserts this posting into mySQL
+ *
+ *@param \PDO $pdo PDO connection object
+ *@throws \PDOException when mySQL related errors occur
+ *@throws |\TypeError if $pdo is not a PDO connection object
+ */
+public function insert(\PDO $pdo) : void {
 
+	// create query template
+	$query = "INSERT INTO posting(postingId, postingContent, postingEmail, postingLocation, postingTitle, postingPay, postingCompanyName, postingDate, postingEndDate, postingRole) VALUES(:postingId,:postingContent, :postingEmail, :postingLocation, :postingTitle, :postingPay, :postingCompanyName, :postingDate, :postingEndDate, :postingRole)"
+$statement = $pdo->prepare($query);
+
+	// bind the member variable to the place holders in the template
+	$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
+		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent, "postingDate" => $formattedDate];
+		$statement->execute($parameters);
+}
 
 
 	/**
-	 * gets the posting by posting id
+	 * gets the posting by postingId
 	 *
 	 * 	@param \PDO $pdo PDO connection object
 	 *	 	@param Uuid|string $postingId posting id to search by
