@@ -158,5 +158,17 @@ pugblic function delete(\PDO $pdo): void {
 	$statement->execute($parameters);
 	}
 
+/**
+ * Updates this Saved Job Posting in mySQL
+ *
+ * @param \PDO $pdo PDO connection object
+ * @throws \PDOExceptionwhe mySql related errors occur
+ * @throws \TypeError if $pdo is not a PDO connection object
+ **/
+public function update(\PDO $pdo): void {
+
+	//create query template
+	$query = "UPDATE savedJobPosting SET savedJobPostingId = :"
+	}
 
 }
