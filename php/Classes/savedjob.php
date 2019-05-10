@@ -2,6 +2,7 @@
 namespace careerbusters\webdevjobs;
 require_once(dirname(__DIR__) . "/classes/autoload.php");
 
+use http\Exception\BadUrlException;
 use Ramsey\Uuid\Uuid;
 use tgray19\webdevjobs\ValidateDate;
 use tgray19\webdevjobs\ValidateUuid;
@@ -105,12 +106,21 @@ public function setSavedJobProfileId(?string $newSavedJobProfileId): void {
 		throw(new \InvalidArgumentException("saved profile id invalid or insecure"));
 	}
 
-	//verify the email will fit in the database
+	//verify the email content  will fit in the database
 	if(strlen($newSavedJobProfileId) > 128) {
 		throw(new\RangeException("profile email is too large"));
 	}
-	// store the email
-	$this->$newSavedJobProfileId = $newSavedJobProfileId;
+	// store the email content
+		$this->$newSavedJobProfileId = $newSavedJobProfileId;
 }
+
+/**
+ * Accessor method for savedjobprofileid
+ * @return string for savedjobprofileid
+ **/
+public function getSavedJobProfileId(): ?string {
+	return ($this->savedJobProfileId);
+	}
+
 
 }
