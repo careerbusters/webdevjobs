@@ -1,9 +1,0 @@
-{
-  "require": {
-    "php": "*",
-    "ext-json": "*",
-    "ext-pdo": "*",
-<<<<<<< HEAD
-
-=======
->>>>>>> fixing merge
