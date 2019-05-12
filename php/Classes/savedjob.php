@@ -4,8 +4,8 @@ require_once(dirname(__DIR__) . "/classes/autoload.php");
 
 use http\Exception\BadUrlException;
 use Ramsey\Uuid\Uuid;
-use tgray19\webdevjobs\ValidateDate;
-use tgray19\webdevjobs\ValidateUuid;
+use webdevjobs\ValidateDate;
+use webdevjobs\ValidateUuid;
 
 /**
  * Cross Section of a Saved Job
@@ -16,7 +16,7 @@ use tgray19\webdevjobs\ValidateUuid;
  * @savedjob Natasha Lovato <nmarshlovato@cnm.edu>
  * @version 1.0.0
  **/
-class savedJobPosting implement \JsonSerializable; {
+class savedJobPosting {
 	use ValidateDate;
 	use ValidateUuid;
 /**
@@ -32,7 +32,7 @@ protected $savedJobProfileId;
 
 /**
  * Constructor for Saved Job
- * @param string|Uuid $newSavedJobId id of Saved Job or null if a new Saved Job.
+ * @param string|Uuid $newSavedJobPostingId id of Saved Job or null if a new Saved Job.
  * @param string $newSavedJobProfileId for profile id.
  * @throws \InvalidArgumentException if data types are not valid
  * @throws \RangeException if data types values are out of bounds (e.g., strings too long, negative integers)
@@ -40,7 +40,7 @@ protected $savedJobProfileId;
  * @thorws \Exception if some other exception occurs
  * @Documentation https://php.net/manual/en/language.oop5.decon.php
  **/
-	public function __construct($newSavedJobPostingId, string $newSavedJobProfileId = null) {
+	public function __construct($newSavedJobPostingId, $newSavedJobProfileId = null) {
 	try {
 		$this->setSavedJobPostingId($newSavedJobPostingId);
 		$this->setSavedJobProfileId($newSavedJobProfileId);
@@ -86,7 +86,7 @@ public function setSavedJobId($newSavedJobPostingId): void {
  * Accessor method for saved job profile id
  * @return string for savedJobProfileId
  **/
-public function setSavedJobProfileId(): ?string {
+public function setSavedJobProfileId(): string {
 	return ($this->savedJobProfileId);
 }
 
@@ -98,7 +98,7 @@ public function setSavedJobProfileId(): ?string {
  * @throws \RangeException if $savedJobProfileId is over charset
  * @throws \TypeError if saved job profile id is not a string
  **/
-public function setSavedJobProfileId(?string $newSavedJobProfileId): void {
+public function setSavedJobProfileId(string $newSavedJobProfileId): void {
 	//verify the email is secure
 	$newSavedJobProfileId = trim($newSavedJobProfileId);
 	$newSavedJobProfileId =filter_var($newSavedJobProfileId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -118,7 +118,7 @@ public function setSavedJobProfileId(?string $newSavedJobProfileId): void {
  * Accessor method for savedjobprofileid
  * @return string for savedjobprofileid
  **/
-public function getSavedJobProfileId(): ?string {
+public function getSavedJobProfileId(): string {
 	return ($this->savedJobProfileId);
 	}
 
@@ -145,7 +145,7 @@ public function insert(\PDO $pdo): void {
  *
  * @param \PDO $pdo PDO connection object
  * @throws \PDOException when mySQL related errors occur
- * @throws \TypeErrorif $pdo is not a PDO connection object
+ * @throws \TypeError if $pdo is not a PDO connection object
  **/
 pugblic function delete(\PDO $pdo): void {
 
@@ -162,7 +162,7 @@ pugblic function delete(\PDO $pdo): void {
  * Updates this Saved Job Posting in mySQL
  *
  * @param \PDO $pdo PDO connection object
- * @throws \PDOExceptionwhe mySql related errors occur
+ * @throws \PDOException when mySql related errors occur
  * @throws \TypeError if $pdo is not a PDO connection object
  **/
 public function update(\PDO $pdo): void {
