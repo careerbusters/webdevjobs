@@ -147,7 +147,7 @@ public function insert(\PDO $pdo): void {
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError if $pdo is not a PDO connection object
  **/
-pugblic function delete(\PDO $pdo): void {
+public function delete(\PDO $pdo): void {
 
 	// create query template
 	$query = "DELETE FROM savedJobPosting WHERE savedJobPostingId = :savedJobPostingId";
@@ -168,7 +168,53 @@ pugblic function delete(\PDO $pdo): void {
 public function update(\PDO $pdo): void {
 
 	//create query template
-	$query = "UPDATE savedJobPosting SET savedJobPostingId = :"
+	$query = "UPDATE savedJobPosting SET savedJobPostingId = :savedJobPostingId, savedJobProfileId = :savedJobProfileId WHERE savedJobPostingId = savedJobPostingId";
+	$statement = $pdo->prepare($query);
+
+	$parameters = ["savedJobPostingId" => $this->savedJobPostingId->getBytes(),$this->savedJobProfileId => $this->savedJobProfileId];
+	$statement->execute(($parameters);)
 	}
+
+	/**
+	 * gets the savedJobPosting by savedJobPostingId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $savedJobPostingId savedJobPosting id to search for
+	 * @return savedJobPosting|null savedJobPosting found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getSavedJobPostingBySavedJobPostingId(\PDO $pdo, $savedJobPostingId): savedJobPosting {
+		//sanitize the savedJobPostingId before searching
+		try {
+			$savedJobPostingId = self::validateUuid($savedJobPostingId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		//create query template
+		$query = "SELECT savedJobPostingId, savedJobProfileId FROM savedJobPosting WHERE savedJobPostingId = :savedJobPostingId";
+		$statement = $pdo->prepare($query);
+
+		//bind the savedJobPosting id to the place holder in the template
+		$parameters = ["savedJobPostingId" => $savedJobPostingId->getBytes()];
+		$statement->execute($parameters);
+
+		//grab the savedJobPosting from mySQL
+		try {
+			$savedJobPostingId = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$savedJobPostingId = new savedJobPosting($row["savedJobPostingId"], $row["savedJobPostingId"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row could't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($savedJobPostingId);
+	}
+
+
 
 }
