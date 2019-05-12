@@ -17,7 +17,7 @@ use tgray19\webdevjobs\ValidateUuid;
  * @savedjob Natasha Lovato <nmarshlovato@cnm.edu>
  * @version 1.0.0
  **/
-class Role {
+class role {
 	use ValidateDate;
 	use ValidateUuid;
 	/**
@@ -104,5 +104,61 @@ public function setRoleName($newRoleName): Void {
 	$this->roleName = $uuid;
 }
 
+/**
+ * Accessor method for roleName
+ * @return srting for roleName
+ **/
+public function getRoleName(): string {
+	return ($this->roleName);
+}
+
+/**
+ * inserts into roles mySQL
+ *
+ * @param \PDO $pdo PDO connection object
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError if $pdo is not a PDO connection object
+ **/
+public function insert(\PDO $pdo): void {
+	//create query template
+	$query = "INSERT INTO role(roleId, roleName) VALUES(:roleId, :roleName)";
+	$statement = $pdo->prepare($query);
+
+	//bind the member variables to the place holders in the template
+	$parameters = ["roleId" => $this->roleId->getBytes(), "roleName" => $this->roleName];
+	$statement->execute($parameters);
+}
+
+/**
+ * deletes this role for mySQL
+ *
+ * @param \PDO $pdo PDOconnection object
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError if $pdo is not a PDO connection object
+ **/
+public function delete(\PDO $pdo): void {
+
+	//create query template
+	$query = "DELETE FROM role WHERE roleId = :roleId";
+	$statement = $pdo->prepare($query);
+
+	//bind the member variables to the place in the template
+	$parameters = ["roleId" => $this->roleId->getBytes()];
+	$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this role in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @thorws \PDOException when mySQL related errors occur
+	 * @thorws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
+
+		//create query template
+		$query = "UPDATE role SET roleId = :roleId, roleName = :roleName"
+
+}
 
 }
