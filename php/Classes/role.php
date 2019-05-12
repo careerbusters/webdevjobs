@@ -79,5 +79,30 @@ public function setRoleId($newRoleId): void {
 	$this->roleId = $uuid;
 }
 
+/**
+ * Accessor method for roleName
+ * @return string|Uuid for roleName (or null if new Role Name)
+ **/
+public function getRoleName(): Uuid {
+	return ($this->roleName);
+}
+
+/**
+ * mutator method for role name
+ *
+ * @param string $newRoleName value of a new role name
+ * @throws \RangeException if $newRoleName is not positive
+ * @throws \TypeError if the role name is not positive
+ **/
+public function setRoleName($newRoleName): Void {
+	try{
+		$uuid = self::validateUuid($newRoleName);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
+	//convert and store role name
+	$this->roleName = $uuid;
+}
+
 
 }
