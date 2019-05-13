@@ -1,6 +1,6 @@
 <?php
 //TODO make pascal case
-namespace careerbusters\webdevjobs;
+namespace CareerBusters\WebDevJobs;
 
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
 require_once("autoload.php");
@@ -297,7 +297,7 @@ class Profile implements \JsonSerializable {
 			throw(new \InvalidArgumentException("Image url is empty or insecure"));
 		}
 		// verify the image content will fit in the database
-		if(strlen($newProfileImage) > 64) {
+		if(strlen($newProfileImage) > 255) {
 			throw(new \RangeException("image content too large"));
 		}
 		// store the image content

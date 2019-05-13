@@ -1,5 +1,9 @@
 alter database tgray19 character set utf8 collate utf8_unicode_ci;
 
+drop table if exists SavedJob;
+drop table if exists Posting;
+drop table if exists Profile;
+drop table if exists Role;
 drop table if exists savedJob;
 drop table if exists posting;
 drop table if exists profile;
@@ -17,7 +21,7 @@ create table profile (
 	profileBio BLOB,
 	profileEmail VARCHAR(64) not null,
 	profileHash char(97) not null,
-	profileImage VARCHAR(64),
+	profileImage VARCHAR(255),
 	profileLocation VARCHAR(64),
 	profileUsername VARCHAR(64) not null,
 	unique(profileUsername),
