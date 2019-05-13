@@ -215,6 +215,44 @@ public function update(\PDO $pdo): void {
 		return ($savedJobPostingId);
 	}
 
+	/**
+	 * gets savedJobPosting by savedJobPosting id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $savedJobPostingId savedJobPositing id to search by
+	 * @return \SplFixedArray SplFixedArray of savedJobPosting found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getSavedJobPostingBySavedJobPosting(\PDO $pdo, string $savedJobPosting): \SplFixedArray {
+		// sanitize the description before searching
+		$savedJobPosting = trim($savedJobPosting);
+		$savedJobPosting = filter_var($savedJobPosting, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($savedJobPosting) === true) {
+			throw(new \PDOException("saved job posting is invalid"));
+		}
 
+		// create query template
+		$query = "SELECT savedJobPostingId, savedJobProfileId FROM savedJobProfileId WHERE savedJobProfileId LIKE :savedJobProfileId";
+		$statement = $pdo->prepare($query);
+		// bind the savedJobPosting id to the place holder in the template
+		$savedJobProfileId="%savedJobProfileId%";
+		$parameters = ["savedProfileId" => $savedJobProfileId];
+		$statement->execute($parameters);
+		// build an array of authors
+		$savedJobPosting = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$savedJobPosting = new Author($row["savedJobPostingId"], $row["savedJobProfileId"]);
+				$savedJobPosting[$savedJobPosting->key()] = $savedJobPosting;
+				$savedJobPosting->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($savedJobPosting);
+	}
 
 }
