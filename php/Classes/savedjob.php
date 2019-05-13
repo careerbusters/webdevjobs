@@ -226,9 +226,9 @@ public function update(\PDO $pdo): void {
 	 **/
 	public static function getSavedJobPostingBySavedJobPosting(\PDO $pdo, string $savedJobPosting): \SplFixedArray {
 		// sanitize the description before searching
-		$savedJobPosting = trim($savedJobPosting);
-		$savedJobPosting = filter_var($savedJobPosting, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($savedJobPosting) === true) {
+		$savedJobPostings = trim($savedJobPostings);
+		$savedJobPostings = filter_var($savedJobPostings, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($savedJobPostings) === true) {
 			throw(new \PDOException("saved job posting is invalid"));
 		}
 
@@ -240,19 +240,19 @@ public function update(\PDO $pdo): void {
 		$parameters = ["savedProfileId" => $savedJobProfileId];
 		$statement->execute($parameters);
 		// build an array of authors
-		$savedJobPosting = new \SplFixedArray($statement->rowCount());
+		$savedJobPostings = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$savedJobPosting = new Author($row["savedJobPostingId"], $row["savedJobProfileId"]);
-				$savedJobPosting[$savedJobPosting->key()] = $savedJobPosting;
-				$savedJobPosting->next();
+				$savedJobPostings[$savedJobPosting->key()] = $savedJobPosting;
+				$savedJobPostings->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($savedJobPosting);
+		return ($savedJobPostings);
 	}
 
 }
