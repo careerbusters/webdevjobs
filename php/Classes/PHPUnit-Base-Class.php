@@ -45,3 +45,15 @@ public final function getSetupOperation() : Composite {
 		FACTORY::INSERT()
 	]);
 }
+/**
+ *templates the teadDown for running test
+ * @return Operation delete command for the database
+ */
+public final function getTearDownOperation() : Operation {
+				return(Factory::DELETE_ALL());
+}
+
+/**
+ * sets up database connection and provides it to PHPUnit
+ *
+ */
