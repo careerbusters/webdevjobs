@@ -2,10 +2,7 @@
 namespace careerbusters\webdevjobs;
 require_once(dirname(__DIR__) . "/classes/autoload.php");
 
-use http\Exception\BadUrlException;
 use Ramsey\Uuid\Uuid;
-use webdevjobs\ValidateDate;
-use webdevjobs\ValidateUuid;
 
 /**
  * Cross Section of a Saved Job
@@ -16,7 +13,7 @@ use webdevjobs\ValidateUuid;
  * @savedjob Natasha Lovato <nmarshlovato@cnm.edu>
  * @version 1.0.0
  **/
-class savedJobPosting {
+class savedJobPosting implements \JsonSerializable {
 	use ValidateDate;
 	use ValidateUuid;
 /**
@@ -131,7 +128,7 @@ public function getSavedJobProfileId(): string {
  **/
 public function insert(\PDO $pdo): void {
 	// create query template
-	$query = "INSERT INTO savedJobPosting(savedJobPostingId, ssvedJobProfileId)
+	$query = "INSERT INTO savedJobPosting(savedJobPostingId, savedJobProfileId)
 		VALUES(:savedJobPostingId, :savedJobProfileId)";
 	$statement = $pdo->prepare($query);
 
@@ -254,5 +251,16 @@ public function update(\PDO $pdo): void {
 		}
 		return ($savedJobPostings);
 	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+
+		$fields["saveJobPostingId"] = $this->savedJobPostingId->toString();
+	}}
 
 }
