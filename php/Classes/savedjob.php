@@ -1,9 +1,9 @@
 <?php
 namespace careerbusters\webdevjobs;
-require_once(dirname(__DIR__) . "/classes/autoload.php");
+require_once(dirname(__DIR__) . "/Classes/autoload.php");
 
 use Ramsey\Uuid\Uuid;
-use tgray19\webdevjobs\ValidateUuid;
+
 
 /**
  * Cross Section of a Saved Job
