@@ -1,5 +1,4 @@
 <?php
-// TODO pascal case namespace
 
 namespace CareerBusters\WebDevJobs;
 require_once(dirname(__DIR__) . "/Classes/autoload.php");
