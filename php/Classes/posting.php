@@ -420,10 +420,10 @@ $statement = $pdo->prepare($query);
 	// TODO write getPostingByPostingId "return to single object"
 	// TODO write postingByRole
 	// TODO write get all current postings "like getAllTweets"
-	public function getPostingByPostingProfileId(\PDO $pdo, $postingId) : \SplFixedArray {
+	public function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId) : \SplFixedArray {
 
 		try {
-			$postingId = self::validateUuid($postingId);
+			$postingProfileId = self::validateUuid($postingProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
@@ -431,18 +431,18 @@ $statement = $pdo->prepare($query);
 		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
 		$statement = $pdo->prepare($query);
 		// build an array of posting
-		$posting = new \SplFixedArray($statement->rowCount());
+		$postingProfileId = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				$posting[$posting->key()] = $posting;
-				$posting->next();
+				$postingProfileId = new postingProfileId($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$postingProfileId[$postingProfileId->key()] = $postingProfileId;
+				$postingProfileId->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}}
-		return($posting);}
+		return($postingProfileId);}
 
 
 /**
