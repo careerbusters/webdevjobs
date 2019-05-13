@@ -2,11 +2,8 @@
 namespace careerbusters\webdevjobs;
 require_once(dirname(__DIR__) . "/classes/autoload.php");
 
-use http\Exception\BadUrlException;
-use http\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
-use tgray19\webdevjobs\ValidateDate;
-use tgray19\webdevjobs\ValidateUuid;
+
 
 /**
  * Cross Section of a Saved Job
@@ -17,7 +14,7 @@ use tgray19\webdevjobs\ValidateUuid;
  * @savedjob Natasha Lovato <nmarshlovato@cnm.edu>
  * @version 1.0.0
  **/
-class role {
+class role implements \JsonSerializable {
 	use ValidateDate;
 	use ValidateUuid;
 	/**
@@ -240,5 +237,16 @@ public function delete(\PDO $pdo): void {
 		}
 		return ($roles);
 	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+
+		$fields["roleId"] = $this->roleId->toString();
+	}}
 
 }
