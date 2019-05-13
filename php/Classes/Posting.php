@@ -1,7 +1,7 @@
 <?php
 // TODO pascal case namespace
 
-namespace careerbusters\webdevjobs;
+namespace CareerBusters\WebDevJobs;
 require_once(dirname(__DIR__) . "/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 
