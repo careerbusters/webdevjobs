@@ -33,7 +33,7 @@ abstract class postingTest extends TestCase {
 		$dataset->addTable("profile");
 		$dataset->addTable("posting");
 	}
-}
+
 
 /**
  * templates for running before each test
@@ -46,7 +46,7 @@ public final function getSetupOperation() : Composite {
 	]);
 }
 /**
- *templates the teadDown for running test
+ *templates the tearDown for running test
  * @return Operation delete command for the database
  */
 public final function getTearDownOperation() : Operation {
@@ -57,3 +57,25 @@ public final function getTearDownOperation() : Operation {
  * sets up database connection and provides it to PHPUnit
  *
  */
+public final function getConnection() : Connection {
+	// if the connection hasn't been established, create it
+	if($this->connection === null) {
+		// connect to mySQL and provide the interface to PHPUnit
+
+
+		$secrets =  new Secrets("/etc/apache2/capstone-mysql/ddctwitter.ini");
+		$pdo = $secrets->getPdoObject();
+		$this->connection = $this->createDefaultDBConnection($pdo, $secrets->getDatabase());
+	}
+	return($this->connection);
+}
+
+	/**
+	 * returns the actual PDO object;
+	 *
+	 * @return \PDO active PDO object
+	 **/
+	public final function getPDO() {
+	return($this->getConnection()->getConnection());
+}
+}
