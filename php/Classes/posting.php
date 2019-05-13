@@ -21,81 +21,88 @@ class Posting implements \JsonSerializable {
 	 **/
 	private $postingId;
 	/**
-	 * actual text content of this posting
-	 * @var string postingContent
+	 * id of the profile that posting the job; this is a foreign key
+	 * @var Uuid $postingRoleId
 	 **/
-	private $postingContent;
+	private $postingProfileId;
 	/**
-	 * actual email address of the posting
-	 * @var string postingEmail
+	 * id of the role that posting the job; this is a foreign key
+	 * @var Uuid $postingRoleId
 	 **/
-	private $postingEmail;
-	/**
-	 * location based on city of the posting
-	 * @var string $postingLocation
-	 **/
-	private $postingLocation;
-	/**
-	 * actual tile of the posting
-	 * @var string $postingTitle
-	 **/
-	private $postingTitle;
-	/**
-	 * actual pay of the posting
-	 * @var string $postingPay
-	 **/
-	private $postingPay;
+	private $postingRoleId;
 	/**
 	 * actual company name of the posting
 	 * @var string $postingCompanyName
 	 **/
 	private $postingCompanyName;
 	/**
+	 * actual text content of this posting
+	 * @var string postingContent
+	 **/
+	private $postingContent;
+	/**
 	 * start date and time the posting began
 	 * @var /DateTime $postingDate
 	 **/
 	private $postingDate;
+	/**
+	 * actual email address of the posting
+	 * @var string postingEmail
+	 **/
+	private $postingEmail;
 	/**
 	 * date and time this posting will end
 	 * @var /DateTime $postingEndDate
 	 **/
 	private $postingEndDate;
 	/**
-	 * actual role of the posting
-	 * @var string $postingRole
+	 * location based on city of the posting
+	 * @var string $postingLocation
 	 **/
-	private $postingRole;
+	private $postingLocation;
+	/**
+	 * actual pay of the posting
+	 * @var string $postingPay
+	 **/
+	private $postingPay;
+	/**
+	 * actual tile of the posting
+	 * @var string $postingTitle
+	 **/
+	private $postingTitle;
 
 	/**
 	 * constructor for this posting
 	 *
 	 * @param string/Uuid $newPostingId Id from posting
-	 * @param string $newPostingContent will be associated to postingId or null if content was resubmitted
-	 * @param string $newPostingEmail when postingEmail is new or null if email is already on file
-	 * @param string $newPostingLocation based on city and state of posting
-	 * @param string $newPostingTitle will be associated to postingId
-	 * @param string $newPostingPay pay will be based on content or null if content was resubmitted
+	 * @param string/Uuid $newPostingProfileId from profile
+	 * @param string/Uuid $newPostingRoleId from role
 	 * @param string $newPostingCompanyName Id from posting or postingContent
+	 * @param string $newPostingContent will be associated to postingId or null if content was resubmitted
 	 * @param /DateTime $newPostingDate date and time posting was started
+	 * @param string $newPostingEmail when postingEmail is new or null if email is already on file
 	 * @param /DateTime $newPostingEndDate date and time posting was ending
-	 * @param string $newPostingRole will be associated to postingId or null if role was resubmitted with previous content
-	 * @throws /RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @param string $newPostingLocation based on city and state of posting
+	 * @param string $newPostingPay pay will be based on content or null if content was resubmitted
+	 * @param string $newPostingTitle will be associated to postingId
+	 	 * @throws /RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws /TypeError if data types violate type hints
 	 * @throws   /Exception if some other exception occurs
 	 *
 	 */
-	public function __construct($newPostingId, string $newPostingContent, string $newPostingEmail, string $newPostingLocation, string $newPostingTitle, $newPostingPay, string $newPostingCompanyName, $newPostingDate, $newPostingEndDate, string $newPostingRole = null) {
+	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle = null) {
 		try {
 			$this->setPostingId($newPostingId);
-			$this->setPostingContent($newPostingContent);
-			$this->setPostingEmail($newPostingEmail);
-			$this->setPostingLocation($newPostingLocation);
-			$this->setPostingTitle($newPostingTitle);
-			$this->setPostingPay($newPostingPay);
+			$this->setPostingProfileId($newPostingProfileId);
+			$this->setPostingRoleId($newPostingRoleId);
 			$this->setPostingCompanyName($newPostingCompanyName);
+			$this->setPostingContent($newPostingContent);
 			$this->setPostingDate($newPostingDate);
+			$this->setPostingEmail($newPostingEmail);
 			$this->setPostingEndDate($newPostingEndDate);
-			$this->setPostingRole($newPostingRole);
+			$this->setPostingLocation($newPostingLocation);
+			$this->setPostingPay($newPostingPay);
+			$this->setPostingTitle($newPostingTitle);
 		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
@@ -126,7 +133,56 @@ class Posting implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
+	/**
+	 * mutator method for posting profile id
+	 *
+	 * @param Uuid|string $newPostingProfileId new value of posting profile id
+	 * @throws \RangeException if $newPostingProfileId is not positive
+	 * @throws \TypeError if $newPostingProfileId is not a uuid or string
+	 **/
+	public function setPostingProfileId($newPostingProfileId): void {
+		try {
+			$uuid = self::validateUuid($newPostingProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
+	/**
+	 * mutator method for posting role id
+	 *
+	 * @param Uuid|string $newPostingRoleId new value of posting role id
+	 * @throws \RangeException if $newPostingRoleId is not positive
+	 * @throws \TypeError if $newPostingRoleId is not a uuid or string
+	 **/
+	public function setPostingRoleId($newPostingRoleId): void {
+		try {
+			$uuid = self::validateUuid($newPostingRoleId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
+	/**
+	 * accessor method for posting company name
+	 * @return string value of posting company name
+	 **/
+	public function getPostingCompanyName(): string {
+		return ($this->postingCompanyName);
+	}
 
+	/**
+	 * mutator method for posting company name
+	 * @param string $newPostingCompanyName new value of posting company name
+	 * @throws \typeError if $newPostingCompanyName is not a string
+
+	 **/
+	public function setPostingCompanyName($newPostingCompanyName): void {
+		$newPostingCompanyName = trim($newPostingCompanyName);
+		$newPostingCompanyName = filter_var($newPostingCompanyName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingCompanyName) === true) {
+			throw(new \InvalidArgumentException("company name is empty"));
+		}}
 	/**
 	 * accessor method for posting content
 	 * @return string value of posting content
@@ -153,109 +209,6 @@ class Posting implements \JsonSerializable {
 			throw(new \RangeException("posting content too large"));
 		}
 	}
-
-	/**
-	 * accessor method for posting email
-	 * @return string value of posting email
-	 **/
-	public function getPostingEmail(): string {
-		return ($this->postingEmail);
-	}
-
-	/**
-	 * mutator method for posting email
-	 * @param string $newPostingEmail new value of posting email
-	 * @throws \typeError if $newPostingEmail is not a string
-
-	 **/
-	public function setPostingEmail($newPostingEmail): void {
-		$newPostingEmail = trim($newPostingEmail);
-		$newPostingEmail = filter_var($newPostingEmail, FILTER_SANITIZE_EMAIL);
-		if(empty($newPostingEmail) === true) {
-			throw(new \InvalidArgumentException("posting email is empty"));
-		}
-	}
-	/**
-	 * accessor method for posting location
-	 * @return string value of posting location
-	 **/
-	public function getPostingLocation(): string {
-		return ($this->postingLocation);
-	}
-
-	/**
-	 * mutator method for posting location
-	 * @param string $newPostingLocation new value of posting location
-	 * @throws \typeError if $newPostingLocation is not a string
-
-	 **/
-	public function setPostingLocation($newPostingLocation): void {
-		$newPostingLocation = trim($newPostingLocation);
-		$newPostingLocation = filter_var($newPostingLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newPostingLocation) === true) {
-			throw(new \InvalidArgumentException("posting location isn't in Albuquerque"));
-		}
-	}
-	/**
-	 * accessor method for posting title
-	 * @return string value of posting title
-	 **/
-	public function getPostingTitle(): string {
-		return ($this->postingTitle);
-	}
-
-	/**
-	 * mutator method for posting title
-	 * @param string $newPostingTitle new value of posting title
-	 * @throws \typeError if $newPostingTitle is not a string
-
-	 **/
-	public function setPostingTitle($newPostingTitle): void {
-		$newPostingTitle = trim($newPostingTitle);
-		$newPostingTitle = filter_var($newPostingTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newPostingTitle) === true) {
-			throw(new \InvalidArgumentException("job title is missing"));
-		}}
-	/**
-	 * accessor method for posting pay
-	 * @return string value of posting title
-	 **/
-	public function getPostingPay(): string {
-		return ($this->postingPay);
-	}
-
-	/**
- * mutator method for posting pay
- * @param string $newPostingPay new value of posting pay
- * @throws \typeError if $newPostingPay is not a string
-
- **/
-	public function setPostingPay($newPostingPay): void {
-		$newPostingPay = trim($newPostingPay);
-		$newPostingPay = filter_var($newPostingPay, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newPostingPay) === true) {
-			throw(new \InvalidArgumentException("how much the job pays is missing"));
-		}}
-	/**
-	 * accessor method for posting company name
-	 * @return string value of posting company name
-	 **/
-	public function getPostingCompanyName(): string {
-		return ($this->postingCompanyName);
-	}
-
-	/**
-	 * mutator method for posting company name
-	 * @param string $newPostingCompanyName new value of posting company name
-	 * @throws \typeError if $newPostingCompanyName is not a string
-
-	 **/
-	public function setPostingCompanyName($newPostingCompanyName): void {
-		$newPostingCompanyName = trim($newPostingCompanyName);
-		$newPostingCompanyName = filter_var($newPostingCompanyName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newPostingCompanyName) === true) {
-			throw(new \InvalidArgumentException("company name is empty"));
-		}}
 	/**
 	 * accessor method for posting date
 	 * @return \DateTime value of posting date
@@ -288,6 +241,27 @@ class Posting implements \JsonSerializable {
 		$this->postingDate = $newPostingDate;
 	}
 	/**
+	 * accessor method for posting email
+	 * @return string value of posting email
+	 **/
+	public function getPostingEmail(): string {
+		return ($this->postingEmail);
+	}
+
+	/**
+	 * mutator method for posting email
+	 * @param string $newPostingEmail new value of posting email
+	 * @throws \typeError if $newPostingEmail is not a string
+
+	 **/
+	public function setPostingEmail($newPostingEmail): void {
+		$newPostingEmail = trim($newPostingEmail);
+		$newPostingEmail = filter_var($newPostingEmail, FILTER_SANITIZE_EMAIL);
+		if(empty($newPostingEmail) === true) {
+			throw(new \InvalidArgumentException("posting email is empty"));
+		}
+	}
+	/**
 	 * accessor method for posting end date
 	 * @return \DateTime value of posting end date
 	 **/
@@ -314,24 +288,67 @@ class Posting implements \JsonSerializable {
 		$this->postingEndDate = $newPostingEndDate;
 	}
 	/**
-	 * accessor method for posting role
-	 * @return string value of posting role
+	 * accessor method for posting location
+	 * @return string value of posting location
 	 **/
-	public function getPostingRole(): string {
-		return ($this->postingRole);
+	public function getPostingLocation(): string {
+		return ($this->postingLocation);
 	}
 
 	/**
-	 * mutator method for posting role
-	 * @param string $newPostingRole new value of posting role
-	 * @throws \typeError if $newPostingRole is not a string
+	 * mutator method for posting location
+	 * @param string $newPostingLocation new value of posting location
+	 * @throws \typeError if $newPostingLocation is not a string
 
 	 **/
-	public function setPostingRole($newPostingRole): void {
-		$newPostingRole = trim($newPostingRole);
-		$newPostingRole = filter_var($newPostingRole, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newPostingRole) === true) {
-			throw(new \InvalidArgumentException("your role is missing"));
+	public function setPostingLocation($newPostingLocation): void {
+		$newPostingLocation = trim($newPostingLocation);
+		$newPostingLocation = filter_var($newPostingLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingLocation) === true) {
+			throw(new \InvalidArgumentException("posting location isn't in Albuquerque"));
+		}
+	}
+/**
+* accessor method for posting pay
+* @return string value of posting title
+**/
+	public function getPostingPay(): string {
+		return ($this->postingPay);
+	}
+
+	/**
+	 * mutator method for posting pay
+	 * @param string $newPostingPay new value of posting pay
+	 * @throws \typeError if $newPostingPay is not a string
+
+	 **/
+	public function setPostingPay($newPostingPay): void {
+		$newPostingPay = trim($newPostingPay);
+		$newPostingPay = filter_var($newPostingPay, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingPay) === true) {
+			throw(new \InvalidArgumentException("how much the job pays is missing"));
+		}}
+
+	/**
+	/**
+	 * accessor method for posting title
+	 * @return string value of posting title
+	 **/
+	public function getPostingTitle(): string {
+		return ($this->postingTitle);
+	}
+
+	/**
+	 * mutator method for posting title
+	 * @param string $newPostingTitle new value of posting title
+	 * @throws \typeError if $newPostingTitle is not a string
+
+	 **/
+	public function setPostingTitle($newPostingTitle): void {
+		$newPostingTitle = trim($newPostingTitle);
+		$newPostingTitle = filter_var($newPostingTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostingTitle) === true) {
+			throw(new \InvalidArgumentException("job title is missing"));
 		}}
 /**
  *inserts this posting into mySQL
