@@ -1,5 +1,5 @@
 <?php
-
+//TODO make pascal case
 namespace careerbusters\webdevjobs;
 
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
@@ -81,7 +81,7 @@ class Profile implements \JsonSerializable {
 	 * @param string $newProfileHash string for profile password.
 	 * @param string $newProfileUsername string containing profile username.
 	 * @param string $newProfileImage url for profile picture.
-	 * @param blob $newProfileBio for profile bio.
+	 * @param string $newProfileBio for profile bio.
 	 * @param string $newProfileLocation string for profile location.
 	 * @param string $newProfileEmail profiles email address.
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -90,9 +90,9 @@ class Profile implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-
-	public function __construct($newProfileId, $newProfileRoleId, string $newProfileActivationToken, string $newProfileHash,
-										 string $newProfileUsername, string $newProfileImage, blob $newProfileBio, string $newProfileLocation, string $newProfileEmail) {
+//TODO pk fk alpha order
+	public function __construct($newProfileId, $newProfileRoleId, ?string $newProfileActivationToken, string $newProfileHash,
+										 string $newProfileUsername, string $newProfileImage, string $newProfileBio, string $newProfileLocation, string $newProfileEmail) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileRoleId($newProfileRoleId);
@@ -219,7 +219,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if the $newProfileHash is not a string
 	 **/
 
-	public function setProfileHash(?string $newProfileHash): void {
+	public function setProfileHash(string $newProfileHash): void {
 //enforce that the hash is properly formatted
 		$newProfileHash = trim($newProfileHash);
 		if(empty($newProfileHash) === true) {
@@ -316,13 +316,13 @@ class Profile implements \JsonSerializable {
 	/**
 	 * mutator method for profileBio
 	 *
-	 * @param  blob $newProfileBio value of new profile bio
+	 * @param  string $newProfileBio value of new profile bio
 	 * @throws \InvalidArgumentException if $newProfileBio is not valid or insecure
 	 * @throws \RangeException if $newProfileBio is over charset
 	 * @throws \TypeError if the $newProfileBio is not a string
 	 **/
 
-	public function setProfileBio(?blob $newProfileBio): void {
+	public function setProfileBio(string $newProfileBio): void {
 		// verify the at handle is secure
 		$newProfileBio = trim($newProfileBio);
 		$newProfileBio = filter_var($newProfileBio, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -330,7 +330,7 @@ class Profile implements \JsonSerializable {
 			throw(new \InvalidArgumentException("Profile bio is empty or insecure"));
 		}
 		// verify the bio will fit in the database
-		if(strlen($newProfileBio) > 65535) {
+		if(strlen($newProfileBio) > 30000) {
 			throw(new \RangeException("Bio is too large"));
 		}
 		// store the bio
@@ -413,7 +413,7 @@ class Profile implements \JsonSerializable {
 
 	public function insert(\PDO $pdo): void {
 		// create query template
-		$query = "INSERT INTO Profile(profileId, profileRoleId, profileActivationToken, profileHash, profileUsername, profileImage, profileBio, profileLocation, profileEmail) 
+		$query = "INSERT INTO profile(profileId, profileRoleId, profileActivationToken, profileHash, profileUsername, profileImage, profileBio, profileLocation, profileEmail) 
 VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profileUsername, :profileImage, :profileBio, :profileLocation, :profileEmail)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
@@ -433,7 +433,7 @@ VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profi
 	 **/
 	public function update(\PDO $pdo): void {
 		// create query template
-		$query = "UPDATE Profile SET profileRoleId = :profileRoleId, profileActivationToken = :profileActivationToken, profileHash = :profileHash, 
+		$query = "UPDATE profile SET profileRoleId = :profileRoleId, profileActivationToken = :profileActivationToken, profileHash = :profileHash, 
 	profileUsername = :profileUsername, profileImage = :profileImage, profileBio = :profileBio, profileLocation = :profileLocation, profileEmail = :profileEmail   WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
@@ -452,7 +452,7 @@ VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profi
 	 **/
 	public function delete(\PDO $pdo): void {
 		// create query template
-		$query = "DELETE FROM Profile WHERE profileId = :profileId";
+		$query = "DELETE FROM profile WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holder in the template
 		$parameters = ["profileId" => $this->profileId->getBytes()];
