@@ -218,5 +218,27 @@ public function delete(\PDO $pdo): void {
 			throw(new \PDOException("role is invalid"));
 		}
 
+		// create query template
+		$query = "SELECT roleId, roleName FROM role WHERE roleName LIKE :roleName";
+		$statement = $pdo->prepare($query);
+		// bind the role id to the place holder in the template
+		$roleName="%roleName%";
+		$parameters = ["roleName" => $roleName];
+		$statement->execute($parameters);
+		// build an array of authors
+		$roless = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$role = new Author($row["roleId"], $row["roleName"]);
+				$roles[$roles->key()] = $role;
+				$roles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($roles);
+	}
 
 }
