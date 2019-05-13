@@ -14,7 +14,7 @@ use Ramsey\Uuid\Uuid;
  * @savedjob Natasha Lovato <nmarshlovato@cnm.edu>
  * @version 1.0.0
  **/
-class savedJobPosting implements \JsonSerializable {
+class savedJob implements \JsonSerializable {
 	use ValidateDate;
 	use ValidateUuid;
 /**
