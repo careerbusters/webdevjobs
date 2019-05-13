@@ -157,8 +157,66 @@ public function delete(\PDO $pdo): void {
 	public function update(\PDO $pdo): void {
 
 		//create query template
-		$query = "UPDATE role SET roleId = :roleId, roleName = :roleName"
+		$query = "UPDATE role SET roleId = :roleId, roleName = :roleName WHERE roleId = roleId";
+		$statement = $pdo->prepare($query);
 
+		$parameters = ["roleId" => $this->roleId->getBytes(), "roleName" => $this->roleName];
+		$statement->execute($parameters);
 }
+
+	/**
+	 * gets the Role by roleId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $roleId role id to search for
+	 * @return Author|null Role found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getroleByRoleId(\PDO $pdo, $roleId): Role {
+		// sanitize the roleId before searching
+		try {
+			$roleId = self::validateUuid($roleId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		// create query template
+		$query = "SELECT roleId, roleName FROM role WHERE roleId = :roleId";
+		$statement = $pdo->prepare($query);
+		// bind the role id to the place holder in the template
+		$parameters = ["roleId" => $roleId->getBytes()];
+		$statement->execute($parameters);
+		// grab the tweet from mySQL
+		try {
+			$roleId = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$roleId = new Role($row["roleId"], $row["roleName"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($roleId);
+	}
+
+	/**
+	 * gets the Role by role id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $roleId role id to search by
+	 * @return \SplFixedArray SplFixedArray of roles found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getRoleByRoleId(\PDO $pdo, string $roles): \SplFixedArray {
+		// sanitize the description before searching
+		$roles = trim($roles);
+		$roles = filter_var($roles, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($roles) === true) {
+			throw(new \PDOException("role is invalid"));
+		}
+
 
 }
