@@ -1,14 +1,18 @@
 <?php
+// TODO pascal case namespace
 
 namespace careerbusters\webdevjobs;
 require_once(dirname(__DIR__) . "/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 
-/** create class for table posting */
+// TODO expand on open comment
+//TODO refactor insert update and constructor for postingProfileId
+//TODO write postingProfileId accessor and mutator
+/** create class for table Posting */
 
 
 
-class posting implements \JsonSerializable {
+class Posting implements \JsonSerializable {
 	use validateDate;
 	use validateUuid;
 
@@ -28,7 +32,7 @@ class posting implements \JsonSerializable {
 	 **/
 	private $postingEmail;
 	/**
-	 * location based on city and state of the posting
+	 * location based on city of the posting
 	 * @var string $postingLocation
 	 **/
 	private $postingLocation;
@@ -146,7 +150,7 @@ class posting implements \JsonSerializable {
 
 
 		// verify the posting content will fit in the database
-		if(strlen($newPostingContent) > 65535) {
+		if(strlen($newPostingContent) > 30000) {
 			throw(new \RangeException("posting content too large"));
 		}
 	}
@@ -298,14 +302,10 @@ class posting implements \JsonSerializable {
 	 * @throws \RangeException if $newPostingEndDate is a date that does not exist
 	 *  * @throws  \typeError if $eventStartTime is no a /Datetime
 	 **/
-	public function setPostingEndDate($newPostingEndDate = null) : void {
+	public function setPostingEndDate($newPostingEndDate) : void {
 		// base case: if the date is null, use the current date and time
-		if($newPostingEndDate === null) {
-			$this->postingEndDate = new \DateTime();
-			return;
-		}
 
-		// store the like date using the ValidateDate trait
+		// store the like date using the validateDate trait
 		try {
 			$newPostingEndDate = self::validateDateTime($newPostingEndDate);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
@@ -400,6 +400,10 @@ $statement = $pdo->prepare($query);
 	 * 	@throws \PDOException when mySQL related errors occur
 	 * 	@throws \TypeError when variables are not the correct data type
 	 **/
+	//TODO change to getPostingbyPostingProfileId
+	// TODO write getPostingByPostingId "return to single object"
+	// TODO write postingByRole
+	// TODO write get all current postings "like getAllTweets"
 	public function getPostingByPostingId(\PDO $pdo, $postingId) : \SplFixedArray {
 
 		try {
