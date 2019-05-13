@@ -3,6 +3,7 @@ namespace careerbusters\webdevjobs;
 require_once(dirname(__DIR__) . "/classes/autoload.php");
 
 use Ramsey\Uuid\Uuid;
+use tgray19\webdevjobs\ValidateUuid;
 
 /**
  * Cross Section of a Saved Job
@@ -83,41 +84,29 @@ public function setSavedJobId($newSavedJobPostingId): void {
  * Accessor method for saved job profile id
  * @return string for savedJobProfileId
  **/
-public function setSavedJobProfileId(): string {
+public function getSavedJobProfileId(): string {
 	return ($this->savedJobProfileId);
 }
 
 /**
  * mutator method for saved job profile id
  *
- * @param string $newSavedJobProfileId value of saved job profile id
- * @throws \InvalidArgumentException if $savedJobProfileId is not valid or secure
- * @throws \RangeException if $savedJobProfileId is over charset
- * @throws \TypeError if saved job profile id is not a string
+ * @param string $newSavedJobProfileId new value of saved job profile id
+ * @throws \RangeException if $newSavedJobProfileId is not positive
+ * @throws \TypeError if $newSavedJobProfileId is not a uuid or string
  **/
-public function setSavedJobProfileId(string $newSavedJobProfileId): void {
-	//verify the email is secure
-	$newSavedJobProfileId = trim($newSavedJobProfileId);
-	$newSavedJobProfileId =filter_var($newSavedJobProfileId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if (empty($newSavedJobProfileId) === true) {
-		throw(new \InvalidArgumentException("saved profile id invalid or insecure"));
-	}
-
-	//verify the email content  will fit in the database
-	if(strlen($newSavedJobProfileId) > 128) {
-		throw(new\RangeException("profile email is too large"));
-	}
-	// store the email content
-		$this->$newSavedJobProfileId = $newSavedJobProfileId;
+public function setSavedJobProfileId( $newSavedJobProfileId): void {
+	try {
+		$uuid = self::validateUuid($newSavedJobProfileId);
+	} catch(\InvalidArgumentException | \RangeException |\Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 }
 
-/**
- * Accessor method for savedjobprofileid
- * @return string for savedjobprofileid
- **/
-public function getSavedJobProfileId(): string {
-	return ($this->savedJobProfileId);
-	}
+	// convert and store the id content
+		$this->$newSavedJobProfileId = $uuid;
+}
+
 
 /**
  *inserts into Saved Job Posting mySQL
@@ -169,7 +158,7 @@ public function update(\PDO $pdo): void {
 	$statement = $pdo->prepare($query);
 
 	$parameters = ["savedJobPostingId" => $this->savedJobPostingId->getBytes(),$this->savedJobProfileId => $this->savedJobProfileId];
-	$statement->execute(($parameters);)
+	$statement->execute(($parameters));
 	}
 
 	/**
@@ -261,6 +250,7 @@ public function update(\PDO $pdo): void {
 		$fields = get_object_vars($this);
 
 		$fields["saveJobPostingId"] = $this->savedJobPostingId->toString();
-	}}
+	}
 
 }
+
