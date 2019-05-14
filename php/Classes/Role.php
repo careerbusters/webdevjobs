@@ -96,8 +96,8 @@ class Role implements \JsonSerializable {
 		try {
 			$uuid = self::validateUuid($newRoleName);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			$exception = get_class($exception);
+			throw(new $exception($exception->getMessage(), 0, $exception));
 		}
 		//convert and store role name
 		$this->roleName = $uuid;
@@ -128,7 +128,7 @@ class Role implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $roleId role id to search for
-	 * @return Author|null Role found or null if not found
+	 * @return Role|null Role found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
