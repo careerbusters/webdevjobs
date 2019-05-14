@@ -11,7 +11,7 @@ use PHPUnit\DdUnit\Operation\{Composite, Factory, Operation};
 // grab the encrypted properties file
 require_once("/etc/apache2/capstone-mysql/Secret.php");
 
-require_once (dirname(__DIR__, 3) . "/vendor/autoload.php");
+require_once (dirname(__DIR__, 3) . "/autoload.php");
 
 /** create abstract class to test */
 abstract class postingTest extends TestCase {
