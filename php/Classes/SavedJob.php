@@ -1,5 +1,5 @@
 <?php
-namespace CareerBusters\WebDevJobs;
+namespace CareerBusters\WebDevjobs;
 require_once(dirname(__DIR__) . "/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
@@ -150,7 +150,7 @@ class SavedJob implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getSavedJobBySavedJobPostingId(\PDO $pdo, $savedJobPostingId): savedJob {
+	public static function getSavedJobBySavedJobPostingId(\PDO $pdo, $savedJobPostingId): savedJobPosting {
 		//sanitize the savedJobPostingId before searching
 		try {
 			$savedJobPostingId = self::validateUuid($savedJobPostingId);
@@ -158,7 +158,7 @@ class SavedJob implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		//create query template
-		$query = "SELECT savedJobPostingId, savedJobProfileId FROM savedJob WHERE savedJobPostingId = :savedJobPostingId";
+		$query = "SELECT savedJobPostingId, savedJobProfileId FROM savedJobPosting WHERE savedJobPostingId = :savedJobPostingId";
 		$statement = $pdo->prepare($query);
 		//bind the saved job posting id to the place holder in the template
 		$parameters = ["savedJobPostingId" => $savedJobPostingId->getBytes()];
