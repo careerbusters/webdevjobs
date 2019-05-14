@@ -1,6 +1,6 @@
 <?php
 
-namespace careerbusters\webdevjobs;
+namespace CareerBusters\WebDevJobs;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\DbUnit\TestCaseTrait;
