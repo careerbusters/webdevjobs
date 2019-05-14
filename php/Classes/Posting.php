@@ -11,7 +11,7 @@ use Ramsey\Uuid\Uuid;
 
 
 
-class posting implements \JsonSerializable {
+class Posting implements \JsonSerializable {
 	use validateDate;
 	use validateUuid;
 
