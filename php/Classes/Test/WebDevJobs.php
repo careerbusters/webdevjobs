@@ -28,7 +28,7 @@ abstract class postingTest extends TestCase {
 	 */
 	public final function getDataSet(): QueryDataSet {
 		$dataset = new QueryDataSet($this->getConnection());
-		$dataset->addTable("job");
+		$dataset->addTable("savedJob");
 		$dataset->addTable("role");
 		$dataset->addTable("profile");
 		$dataset->addTable("posting");
