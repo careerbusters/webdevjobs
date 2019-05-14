@@ -518,3 +518,40 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : ?Profile {
 	}
 	return($profile);
 }
+
+	/**
+	 * gets the Profile by profileActivationToken
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param |string $profileActivationToken profile Activation Token to search for
+	 * @return Profile|null Profile found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getProfileByProfileActivationToken(\PDO $pdo, $profileActivationToken) : ?Profile {
+		// sanitize the profile AT before searching
+		$profileActivationToken = strtolower(trim($profileActivationToken));
+		if(ctype_xdigit($profileActivationToken) === false) {
+			throw(new\PDOException("profile activation is not valid"));
+		}
+		// create query template
+		$query = "SELECT profileId, profileRoleId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, profileLocation, profileUsername FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+		// bind the profile AT to the place holder in the template
+		$profileActivationToken = "%$profileActivationToken%";
+		$parameters = ["profileActivationToken" => $profileActivationToken->getBytes()];
+		$statement->execute($parameters);
+		// grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profile = new profile($row["profileId"], $row["profileRoleId"], $row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileHash"], $row["profileImage"], $row["profileLocation"], $row["profileUsername"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($profile);
+	}
