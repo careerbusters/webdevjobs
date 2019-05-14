@@ -633,4 +633,4 @@ profileLocation, profileUsername FROM profile WHERE profileUsername = :profileUs
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return($profile);
-	}
+	}}
