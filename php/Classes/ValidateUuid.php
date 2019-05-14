@@ -1,5 +1,5 @@
 <?php
-namespace careerbusters\webdevjobs;
+namespace CareerBusters\WebDevJobs;
 require_once(dirname(__DIR__) . "/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
  * 3. Ramsey\Uuid\Uuid object
  *
  * @author Trystan Gray <careerbusters@cnm.edu>
- * @package careerbusters/ webdevjobs
+ * @package CareerBusters/ WebDevJobs
  **/
 trait ValidateUuid {
 	/**

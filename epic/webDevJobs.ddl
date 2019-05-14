@@ -1,52 +1,60 @@
 alter database tgray19 character set utf8 collate utf8_unicode_ci;
-drop table if exists Job;
+
 drop table if exists SavedJob;
 drop table if exists Posting;
 drop table if exists Profile;
 drop table if exists Role;
+drop table if exists savedJob;
+drop table if exists posting;
+drop table if exists profile;
+drop table if exists role;
 
-create table Role (
+create table role (
 	roleId binary(16) not null,
 	roleName varchar(32) not null,
 	primary key(roleId)
 );
-create table Profile (
+create table profile (
 	profileId BINARY(16) not null,
 	profileRoleId BINARY(16) not null,
-	profileActivationToken char(32) not null,
-	profileHash char(97) not null,
-	profileUsername VARCHAR(64) not null,
-	profileImage VARCHAR(64),
+	profileActivationToken char(32),
 	profileBio BLOB,
-	profileLocation VARCHAR(64),
 	profileEmail VARCHAR(64) not null,
+	profileHash char(97) not null,
+	profileImage VARCHAR(255),
+	profileLocation VARCHAR(64),
+	profileUsername VARCHAR(64) not null,
 	unique(profileUsername),
 	unique(profileEmail),
 	index(profileRoleId),
 	primary key(profileId),
-	foreign key(profileRoleId) references Role(roleId)
+	foreign key(profileRoleId) references role(roleId)
 );
 
-create table Posting (
+create table posting (
 	postingId binary(16) not null,
-	postingContent BLOB not null,
-	postingEmail varchar(512) not null,
-	postingLocation varchar(64) not null,
-	postingTitle varchar(128) not null,
-	postingPay varchar(64) not null,
+	postingProfileId binary (16) not null,
+	postingRoleId binary (16) not null,
 	postingCompanyName varchar(64) not null,
+	postingContent BLOB not null,
 	postingDate varchar(64) not null,
+	postingEmail varchar(512) not null,
 	postingEndDate varchar(64) not null,
-	postingRole varchar (32) not null,
+	postingLocation varchar(64) not null,
+	postingPay varchar(64) not null,
+	postingTitle varchar(128) not null,
+	index (postingProfileId),
+	foreign key (postingProfileId) references profile(profileId),
+	foreign key (postingRoleId) references role(roleId),
 	primary key(postingId)
 );
 
-create table SavedJob (
-	savedJobProfileId binary(16) not null,
+create table savedJob (
 	savedJobPostingId binary(16) not null,
-	index(savedJobProfileId),
-	index(savedJobPostingId),
-	foreign key(savedJobProfileId) references Profile(profileId),
-	foreign key(savedJobPostingId) references Posting(postingId)
+	savedJobProfileId binary(16) not null,
+	foreign key (savedJobPostingId) references posting(postingId),
+	foreign key (savedJobProfileId) references profile(profileId),
+	primary key (savedJobPostingId, savedJobProfileId)
 );
+
 
