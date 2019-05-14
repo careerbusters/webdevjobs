@@ -1,5 +1,5 @@
 <?php
-namespace careerbusters\webdevjobs;
+namespace CareerBusters\WebDevJobs;
 /**
  * Trait to Validate a mySQL Date
  *
