@@ -408,7 +408,7 @@ $statement = $pdo->prepare($query);
 
 
 	/**
-	 * gets the posting by posting Id
+	 * gets the posting by postingProfileId
 	 *
 	 * 	@param \PDO $pdo PDO connection object
 	 *	 	@param Uuid|string $postingProfileId posting id to search by
@@ -445,27 +445,27 @@ $statement = $pdo->prepare($query);
 		return($posting);}
 
 	/**
-	 * gets the posting by posting role
+	 * gets the posting by postingRoleId
 	 *
-	 * 	@param \PDO $pdo PDO connection object
-	 *	 	@param Uuid|string $postingRoleId posting id to search by
-	 * 	 @return posting|null posting found or null if not found
-	 * 	@throws \PDOException when mySQL related errors occur
-	 * 	@throws \TypeError when variables are not the correct data type
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $postingRoleId posting id to search for
+	 * @return posting|null posting found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-
-	public function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId) : ?posting {
-
+	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId) : ?posting {
+		// sanitize the tweetId before searching
 		try {
 			$postingRoleId = self::validateUuid($postingRoleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+
 		// create query template
 		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
 		$statement = $pdo->prepare($query);
 		// build an array of posting
-		$postingRoleId = new \SplFixedArray($statement->rowCount());
+		$posting = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
@@ -476,7 +476,8 @@ $statement = $pdo->prepare($query);
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}}
-		return($posting);}
+		return($posting);
+	}
 	/**
 	 * gets all postings
 	 *
@@ -495,7 +496,8 @@ $statement = $pdo->prepare($query);
 		$postings = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
-			try {$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+			try {
+				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
 				$postings[$postings->key()] = $posting;
 				$postings->next();
 			} catch(\Exception $exception) {
