@@ -1,5 +1,5 @@
 <?php
-namespace careerbusters\webdevjobs;;
+namespace CareerBusters\WebDevJobs;;
 
 use careerbusters\webdevjobs\{posting};
 
@@ -7,7 +7,7 @@ use careerbusters\webdevjobs\{posting};
 require_once(dirname(__DIR__) . "/classes/autoload.php");
 
 // grab the uuid generator
-require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
+require_once(dirname(__DIR__, 2) . "/Classes/validateUuid.php");
 
 class postingTest extends DataDesignTest {
 
