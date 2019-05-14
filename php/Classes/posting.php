@@ -397,7 +397,7 @@ $statement = $pdo->prepare($query);
 	public function update(\PDO $pdo) : void {
 
 		// create query template
-		$query = "UPDATE posting SET postingId = :postingId, postingContent = :postingContent, postingEmail = :postingEmail, postingLocation = :postinglocation, postingTitle = :postingTitle, postingPay = :postingPay, postingCompanyName =:postingCompanyName, postingDate = :postingDate, postingEndDate = :postingEndDate, postingRole = :postingRole";
+		$query = "UPDATE posting SET postingId = :postingId, postingProfileId = :postingProfileId, postingRoleId = postingRoleId, postingCompanyName = :postingCompanyName, postingContent = :postingContent, postingDate = :postingDate, postingEmail = :postingEmail, postingEndDate = :postingEndDate, postingLocation = :postingLocation, postingPay = :postingPay, postingTitle = :postingTitle";
 		$statement = $pdo->prepare($query);
 
 
@@ -408,11 +408,11 @@ $statement = $pdo->prepare($query);
 
 
 	/**
-	 * gets the posting by postingId
+	 * gets the posting by posting Id
 	 *
 	 * 	@param \PDO $pdo PDO connection object
-	 *	 	@param Uuid|string $postingId posting id to search by
-	 * 	@return \SplFixedArray SplFixedArray of posting found
+	 *	 	@param Uuid|string $postingProfileId posting id to search by
+	 * 	 @return posting|null posting found or null if not found
 	 * 	@throws \PDOException when mySQL related errors occur
 	 * 	@throws \TypeError when variables are not the correct data type
 	 **/
@@ -420,7 +420,7 @@ $statement = $pdo->prepare($query);
 	// TODO write getPostingByPostingId "return to single object"
 	// TODO write postingByRole
 	// TODO write get all current postings "like getAllTweets"
-	public function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId) : \SplFixedArray {
+	public function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId) : ?posting {
 
 		try {
 			$postingProfileId = self::validateUuid($postingProfileId);
@@ -431,18 +431,80 @@ $statement = $pdo->prepare($query);
 		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
 		$statement = $pdo->prepare($query);
 		// build an array of posting
-		$postingProfileId = new \SplFixedArray($statement->rowCount());
+		$posting = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$postingProfileId = new postingProfileId($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				$postingProfileId[$postingProfileId->key()] = $postingProfileId;
+				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$postingProfileId[$postingProfileId->key()] = $posting;
 				$postingProfileId->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}}
-		return($postingProfileId);}
+		return($posting);}
+
+	/**
+	 * gets the posting by posting role
+	 *
+	 * 	@param \PDO $pdo PDO connection object
+	 *	 	@param Uuid|string $postingRoleId posting id to search by
+	 * 	 @return posting|null posting found or null if not found
+	 * 	@throws \PDOException when mySQL related errors occur
+	 * 	@throws \TypeError when variables are not the correct data type
+	 **/
+
+	public function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId) : ?posting {
+
+		try {
+			$postingRoleId = self::validateUuid($postingRoleId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		// create query template
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
+		$statement = $pdo->prepare($query);
+		// build an array of posting
+		$postingRoleId = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$postingRoleId[$postingRoleId->key()] = $posting;
+				$postingRoleId->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}}
+		return($posting);}
+	/**
+	 * gets all postings
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of postings found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllPostings(\PDO $pdo) : \SPLFixedArray {
+		// create query template
+		$query = "postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle FROM posting";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of postings
+		$postings = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$postings[$postings->key()] = $posting;
+				$postings->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($postings);
+	}
 
 
 /**
