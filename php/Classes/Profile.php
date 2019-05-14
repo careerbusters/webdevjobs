@@ -1,5 +1,5 @@
 <?php
-//TODO make pascal case
+
 namespace CareerBusters\WebDevJobs;
 
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
@@ -37,34 +37,10 @@ class Profile implements \JsonSerializable {
 	private $profileActivationToken;
 
 	/**
-	 * This is part of password protection;
-	 * @var $profileHash
-	 */
-	private $profileHash;
-
-	/**
-	 * This is the profiles username;
-	 * @var $profileUsername
-	 */
-	private $profileUsername;
-
-	/**
-	 * This is the profile picture;
-	 * @var $profileImage
-	 */
-	private $profileImage;
-
-	/**
 	 * This is the bio about the profile;
 	 * @var $profileBio
 	 */
 	private $profileBio;
-
-	/**
-	 * This is the profiles location;
-	 * @var $profileLocation
-	 */
-	private $profileLocation;
 
 	/**
 	 * This is the profiles email;
@@ -73,36 +49,60 @@ class Profile implements \JsonSerializable {
 	private $profileEmail;
 
 	/**
+	 * This is part of password protection;
+	 * @var $profileHash
+	 */
+	private $profileHash;
+
+	/**
+	 * This is the profile picture;
+	 * @var $profileImage
+	 */
+	private $profileImage;
+
+	/**
+	 * This is the profiles location;
+	 * @var $profileLocation
+	 */
+	private $profileLocation;
+
+	/**
+	 * This is the profiles username;
+	 * @var $profileUsername
+	 */
+	private $profileUsername;
+
+	/**
 	 * constructor for this Profile
 	 *
 	 * @param string|Uuid $newProfileId id of this profile or null if new.
 	 * @param string|Uuid $newProfileRoleId id of this profile or null if new.
 	 * @param string $newProfileActivationToken string containing activation token.
-	 * @param string $newProfileHash string for profile password.
-	 * @param string $newProfileUsername string containing profile username.
-	 * @param string $newProfileImage url for profile picture.
 	 * @param string $newProfileBio for profile bio.
-	 * @param string $newProfileLocation string for profile location.
 	 * @param string $newProfileEmail profiles email address.
+	 * @param string $newProfileHash string for profile password.
+	 * @param string $newProfileImage url for profile picture.
+	 * @param string $newProfileLocation string for profile location.
+	 * @param string $newProfileUsername string containing profile username.
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-//TODO pk fk alpha order
-	public function __construct($newProfileId, $newProfileRoleId, ?string $newProfileActivationToken, string $newProfileHash,
-										 string $newProfileUsername, string $newProfileImage, string $newProfileBio, string $newProfileLocation, string $newProfileEmail) {
+
+	public function __construct($newProfileId, $newProfileRoleId, string $newProfileActivationToken,  ?string $newProfileBio,
+										 string $newProfileEmail, string $newProfileHash, ?string $newProfileImage, ?string $newProfileLocation, string $newProfileUsername) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileRoleId($newProfileRoleId);
 			$this->setProfileActivationToken($newProfileActivationToken);
-			$this->setProfileHash($newProfileHash);
-			$this->setProfileUsername($newProfileUsername);
-			$this->setProfileImage($newProfileImage);
 			$this->setProfileBio($newProfileBio);
-			$this->setProfileLocation($newProfileLocation);
 			$this->setProfileEmail($newProfileEmail);
+			$this->setProfileHash($newProfileHash);
+			$this->setProfileImage($newProfileImage);
+			$this->setProfileLocation($newProfileLocation);
+			$this->setProfileUsername($newProfileUsername);
 		}//determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
@@ -184,7 +184,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if the profile activation is not a string
 	 **/
 
-	public function setProfileActivationToken(?string $newProfileActivationToken): void {
+	public function setProfileActivationToken(string $newProfileActivationToken): void {
 		if($newProfileActivationToken === null) {
 			$this->profileActivationToken = $newProfileActivationToken;
 			return;
@@ -199,6 +199,76 @@ class Profile implements \JsonSerializable {
 		}
 		// convert and store the activation token
 		$this->profileActivationToken = $newProfileActivationToken;
+	}
+
+	/**
+	 *Accessor method for profileBio
+	 * @return string for profileBio
+	 */
+
+	public function getProfileBio(): ?string {
+		return ($this->profileBio);
+	}
+
+	/**
+	 * mutator method for profileBio
+	 *
+	 * @param  string $newProfileBio value of new profile bio
+	 * @throws \InvalidArgumentException if $newProfileBio is not valid or insecure
+	 * @throws \RangeException if $newProfileBio is over charset
+	 * @throws \TypeError if the $newProfileBio is not a string
+	 **/
+
+	public function setProfileBio(?string $newProfileBio): void {
+		// verify the at handle is secure
+		if($newProfileBio === null) {
+			$this->profileBio = $newProfileBio;
+			return;
+		}
+		$newProfileBio = trim($newProfileBio);
+		$newProfileBio = filter_var($newProfileBio, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileBio) === true) {
+			throw(new \InvalidArgumentException("Profile bio is empty or insecure"));
+		}
+		// verify the bio will fit in the database
+		if(strlen($newProfileBio) > 30000) {
+			throw(new \RangeException("Bio is too large"));
+		}
+		// store the bio
+		$this->profileBio = $newProfileBio;
+	}
+
+	/**
+	 *Accessor method for profileEmail
+	 * @return string for profileEmail
+	 */
+
+	public function getProfileEmail(): ?string {
+		return ($this->profileEmail);
+	}
+
+	/**
+	 * mutator method for profile email
+	 *
+	 * @param  string $newProfileEmail value of new profile email
+	 * @throws \InvalidArgumentException if $newProfileEmail is not a valid email or insecure
+	 * @throws \RangeException if $newProfileEmail is over charset
+	 * @throws \TypeError if the profile email is not a string
+	 **/
+
+	public function setProfileEmail(string $newProfileEmail): void {
+// verify the email content is secure
+		$newProfileEmail = trim($newProfileEmail);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileEmail) === true) {
+			throw(new \InvalidArgumentException("Email is empty or insecure"));
+		}
+		// verify the email content will fit in the database
+		if(strlen($newProfileEmail) > 64) {
+			throw(new \RangeException("email content too large"));
+		}
+		// store the email content
+		$this->$newProfileEmail = $newProfileEmail;
 	}
 
 	/**
@@ -239,39 +309,6 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
-	 *Accessor method for profileUsername
-	 * @return string for profileUsername
-	 */
-
-	public function getProfileUsername(): ?string {
-		return ($this->profileUsername);
-	}
-
-	/**
-	 * mutator method for profileUsername
-	 *
-	 * @param  string $newProfileUsername value of new profile username
-	 * @throws \InvalidArgumentException if $newProfileUsername is not valid or insecure
-	 * @throws \RangeException if $newProfileUsername is over charset
-	 * @throws \TypeError if the $newProfileUsername is not a string
-	 **/
-
-	public function setProfileUsername(?string $newProfileUsername): void {
-		// verify the username is secure
-		$newProfileUsername = trim($newProfileUsername);
-		$newProfileUsername = filter_var($newProfileUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newProfileUsername) === true) {
-			throw(new \InvalidArgumentException("Profile username is empty or insecure"));
-		}
-		// verify the username will fit in the database
-		if(strlen($newProfileUsername) > 64) {
-			throw(new \RangeException("Username is too large"));
-		}
-		// store the username
-		$this->profileUsername = $newProfileUsername;
-	}
-
-	/**
 	 *Accessor method for profileImage
 	 * @return string for profileImage
 	 */
@@ -291,6 +328,10 @@ class Profile implements \JsonSerializable {
 
 	public function setProfileImage(?string $newProfileImage): void {
 // verify the image content is secure
+		if($newProfileImage === null) {
+			$this->profileImage = $newProfileImage;
+			return;
+		}
 		$newProfileImage = trim($newProfileImage);
 		$newProfileImage = filter_var($newProfileImage, FILTER_SANITIZE_URL, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileImage) === true) {
@@ -302,39 +343,6 @@ class Profile implements \JsonSerializable {
 		}
 		// store the image content
 		$this->$newProfileImage = $newProfileImage;
-	}
-
-	/**
-	 *Accessor method for profileBio
-	 * @return string for profileBio
-	 */
-
-	public function getProfileBio(): ?string {
-		return ($this->profileBio);
-	}
-
-	/**
-	 * mutator method for profileBio
-	 *
-	 * @param  string $newProfileBio value of new profile bio
-	 * @throws \InvalidArgumentException if $newProfileBio is not valid or insecure
-	 * @throws \RangeException if $newProfileBio is over charset
-	 * @throws \TypeError if the $newProfileBio is not a string
-	 **/
-
-	public function setProfileBio(string $newProfileBio): void {
-		// verify the at handle is secure
-		$newProfileBio = trim($newProfileBio);
-		$newProfileBio = filter_var($newProfileBio, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newProfileBio) === true) {
-			throw(new \InvalidArgumentException("Profile bio is empty or insecure"));
-		}
-		// verify the bio will fit in the database
-		if(strlen($newProfileBio) > 30000) {
-			throw(new \RangeException("Bio is too large"));
-		}
-		// store the bio
-		$this->profileBio = $newProfileBio;
 	}
 
 	/**
@@ -357,6 +365,10 @@ class Profile implements \JsonSerializable {
 
 	public function setProfileLocation(?string $newProfileLocation): void {
 		// verify the location is secure
+		if($newProfileLocation === null) {
+			$this->profileLocation = $newProfileLocation;
+			return;
+		}
 		$newProfileLocation = trim($newProfileLocation);
 		$newProfileLocation = filter_var($newProfileLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileLocation) === true) {
@@ -371,36 +383,36 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
-	 *Accessor method for profileEmail
-	 * @return string for profileEmail
+	 *Accessor method for profileUsername
+	 * @return string for profileUsername
 	 */
 
-	public function getProfileEmail(): ?string {
-		return ($this->profileEmail);
+	public function getProfileUsername(): string {
+		return ($this->profileUsername);
 	}
 
 	/**
-	 * mutator method for profile email
+	 * mutator method for profileUsername
 	 *
-	 * @param  string $newProfileEmail value of new profile email
-	 * @throws \InvalidArgumentException if $newProfileEmail is not a valid email or insecure
-	 * @throws \RangeException if $newProfileEmail is over charset
-	 * @throws \TypeError if the profile email is not a string
+	 * @param  string $newProfileUsername value of new profile username
+	 * @throws \InvalidArgumentException if $newProfileUsername is not valid or insecure
+	 * @throws \RangeException if $newProfileUsername is over charset
+	 * @throws \TypeError if the $newProfileUsername is not a string
 	 **/
 
-	public function setProfileEmail(?string $newProfileEmail): void {
-// verify the email content is secure
-		$newProfileEmail = trim($newProfileEmail);
-		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newProfileEmail) === true) {
-			throw(new \InvalidArgumentException("Email is empty or insecure"));
+	public function setProfileUsername(string $newProfileUsername): void {
+		// verify the username is secure
+		$newProfileUsername = trim($newProfileUsername);
+		$newProfileUsername = filter_var($newProfileUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileUsername) === true) {
+			throw(new \InvalidArgumentException("Profile username is empty or insecure"));
 		}
-		// verify the email content will fit in the database
-		if(strlen($newProfileEmail) > 64) {
-			throw(new \RangeException("email content too large"));
+		// verify the username will fit in the database
+		if(strlen($newProfileUsername) > 64) {
+			throw(new \RangeException("Username is too large"));
 		}
-		// store the email content
-		$this->$newProfileEmail = $newProfileEmail;
+		// store the username
+		$this->profileUsername = $newProfileUsername;
 	}
 
 	/**
@@ -413,14 +425,13 @@ class Profile implements \JsonSerializable {
 
 	public function insert(\PDO $pdo): void {
 		// create query template
-		$query = "INSERT INTO profile(profileId, profileRoleId, profileActivationToken, profileHash, profileUsername, profileImage, profileBio, profileLocation, profileEmail) 
-VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profileUsername, :profileImage, :profileBio, :profileLocation, :profileEmail)";
+		$query = "INSERT INTO profile(profileId, profileRoleId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, profileLocation, profileUsername) 
+VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileBio, :profileEmail :profileHash, :profileImage, :profileLocation, :profileUsername)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
-			"profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash,
-			"profileUsername" => $this->profileUsername, "profileImage" => $this->profileImage, "profileBio" => $this->profileBio,
-			"profileLocation" => $this->profileLocation, "profileEmail" => $this->profileEmail];
+			"profileActivationToken" => $this->profileActivationToken, "profileBio" => $this->profileBio, "profileEmail" => $this->profileEmail,
+		"profileHash" => $this->profileHash, "profileImage" => $this->profileImage, "profileLocation" => $this->profileLocation,  "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
 	}
 
@@ -433,13 +444,12 @@ VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileHash, :profi
 	 **/
 	public function update(\PDO $pdo): void {
 		// create query template
-		$query = "UPDATE profile SET profileRoleId = :profileRoleId, profileActivationToken = :profileActivationToken, profileHash = :profileHash, 
-	profileUsername = :profileUsername, profileImage = :profileImage, profileBio = :profileBio, profileLocation = :profileLocation, profileEmail = :profileEmail   WHERE profileId = :profileId";
+		$query = "UPDATE profile SET profileRoleId = :profileRoleId, profileActivationToken = :profileActivationToken, profileBio = :profileBio, profileEmail = :profileEmail,
+ profileHash = :profileHash, profileImage = :profileImage, profileLocation = :profileLocation, profileUsername = :profileUsername WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
-			"profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash,
-			"profileUsername" => $this->profileUsername, "profileImage" => $this->profileImage, "profileBio" => $this->profileBio,
-			"profileLocation" => $this->profileLocation, "profileEmail" => $this->profileEmail];
+			"profileActivationToken" => $this->profileActivationToken, "profileBio" => $this->profileBio, "profileEmail" => $this->profileEmail,
+			"profileHash" => $this->profileHash, "profileImage" => $this->profileImage, "profileLocation" => $this->profileLocation,  "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
 	}
 
