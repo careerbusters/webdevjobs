@@ -1,6 +1,6 @@
 <?php
-namespace careerbusters\webdevjobs;
-use careerbusters\webdevjobs\{Profile};
+namespace CareerBusters\WebDevJobs;
+use CareerBusters\WebDevJobs\{Profile};
 
 // require once statements
 require_once(dirname(__DIR__) . "Classes/autoload.php");
