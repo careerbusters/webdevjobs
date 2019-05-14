@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
  * 3. Ramsey\Uuid\Uuid object
  *
  * @author Trystan Gray <careerbusters@cnm.edu>
- * @package careerbusters/ webdevjobs
+ * @package CareerBusters/ WebDevJobs
  **/
 trait ValidateUuid {
 	/**
