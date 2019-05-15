@@ -216,7 +216,23 @@ class PostingTest extends WebDevjobsTest {
 		$results = Posting::getPostingByPostingCompanyName($this->getPDO(), $posting->getPostingContent());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$this->assertCount(1, $results);
+
 		//enforce no other objects are bleeding into the test
 		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJobs\\Test", $results);
+
+		// grad the results from a array and validate it
+		$pdoPosting = $results[0];
+		$this->assertEquals($pdoPosting->getPostingId(), $postingId);
+		$this->assertEquals($pdoPosting->getPostingRoleId(), $postingId);
+		$this->assertEquals($pdoPosting->getPostingProfileId(), $postingId);
+		$this->assertEquals($pdoPosting->getPostingCompany(), $this->VALID_POSTINGCOMPANYNAME);
+		$this->assertEquals($pdoPosting->getPostingContent(), $this->VALID_POSTINGCONTENT);
+		$this->assertEquals($pdoPosting->getPostingEmail(), $this->VALID_POSTINGEMAIL);
+		$this->assertEquals($pdoPosting->getPostingLocation(), $this->VALID_POSTINGLOCATION);
+		$this->assertEquals($pdoPosting->getPostingPay(), $this->VALID_POSTINGPAY);
+		$this->assertEquals($pdoPosting->getPostingTitle(), $this->VALID_POSTINGTITLE);
+
+		//format the date too seconds since the beginning of time to avoid round off error
+		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
 	}
 	}
