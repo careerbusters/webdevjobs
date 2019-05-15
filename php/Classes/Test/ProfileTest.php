@@ -64,7 +64,7 @@ class ProfileTest extends DataDesignTest {
 	 * placeholder until account username is created
 	 * @var string $VALID_USERNAME1
 	 */
-	protected $VALID_USERNAME1 = "passing";
+	protected $VALID_USERNAME = "passing";
 
 	/**
 	 * placeholder until account location is created
@@ -84,4 +84,27 @@ class ProfileTest extends DataDesignTest {
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 	}
 
+	/**
+	 * test inserting a Profile and verify the mySQL matches
+	 **/
+	public function testInsertValidProfile() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		$profileRoleId = generateUuidV4();
+		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASH);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_IMAGE);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_LOCATION);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_USERNAME);
+	}
 }
