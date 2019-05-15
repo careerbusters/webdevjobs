@@ -40,6 +40,36 @@ final function setUp(): void {
 }
 
 /**
+ * Full PHPUnit test for the Role Class
+ *
+ * This is a complete PHPUnit test of the Role class. It is complete because *ALL*
+ * mySQL/PDO enabled methods
+ * are tested for both invalid and valid inputs.
+ *
+ * @see Role
+ * @author Natasha Lovato <nmarshlovato@cnm.edu>
+ **/
+class RoleTest extends DataDesignTest {
+	/**
+	 * Role id that created the Role; this is for foreign key relations
+	 *@var Role role
+	 **/
+	protected $roleId = nul;
+
+	/**
+	 * contect of the Role Name
+	 * @var string $VALID_ROLENAME
+	 **/
+	protected $VALID_ROLENAME = "PHPUnit test passing";
+
+	/**
+	 * content of the Role Name
+	 * var string $VALID_ROLENAME2 = "PHPUnit test still passing";
+	 **/
+	protected $VALID_ROLENAME2 = "PHPUnit test passing";
+}
+
+/**
  * test inserting a Role, editing it, and then updating it
  **/
 	public function testUpdateValidRole(): void {
