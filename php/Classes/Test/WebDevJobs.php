@@ -14,7 +14,7 @@ require_once("/etc/apache2/capstone-mysql/Secret.php");
 require_once (dirname(__DIR__, 3) . "/autoload.php");
 
 /** create abstract class to test */
-abstract class postingTest extends TestCase {
+abstract class WebDevJobsTest extends TestCase {
 	use TestCaseTrait;
 
 	/** PHPUnit database connection interface
