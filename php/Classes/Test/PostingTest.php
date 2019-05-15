@@ -17,12 +17,12 @@ class PostingTest extends WebDevjobsTest {
 	protected $posting;
 	/**
 	 * Role of Posting; this is for foreign key relations
-	 * @var  $roleId
+	 * @var  $postingroleId
 	 **/
 	protected $role;
 	/**
-	 * Role of Posting; this is for foreign key relations
-	 * @var  $postingId
+	 * Profile of the Posting; this is for foreign key relations
+	 * @var  $postingProfileId
 	 **/
 	protected $profile;
 	/** Posting company name that created the Posting
@@ -109,18 +109,18 @@ class PostingTest extends WebDevjobsTest {
 	$numRows = $this->getConnection()->getRowCount("posting");
 
 	// create a new Posting and insert to into mySQL
-	$postingId = generateUuidV4();
+		$postingId = generateUuidV4();
 		$postingRoleId = generateUuidV4();
 		$postingProfileId = generateUuidV4();
-	$posting = new posting($postingId, $postingRoleId, $postingProfileId, $this->VALID_POSTINGCOMPANY, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
+	$posting = new Posting($postingId, $postingRoleId, $postingProfileId, $this->VALID_POSTINGCOMPANY, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 	$posting->insert($this->getPDO());
 
 	// grab the data from mySQL and enforce the fields match our expectations
 	$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 	$this->assertEquals($pdoPosting->getPostingId(), $postingId);
-	$this->assertEquals($pdoPosting->getPostingRoleId(), $PostingRoleId);
-	$this->assertEquals($pdoPosting->getPostingProfileId(), $PostingProfileId);
+	$this->assertEquals($pdoPosting->getPostingRoleId(), $postingId);
+	$this->assertEquals($pdoPosting->getPostingProfileId(), $postingId);
 	$this->assertEquals($pdoPosting->getPostingCompany(), $this->VALID_POSTINGCOMPANY);
 	$this->assertEquals($pdoPosting->getPostingContent(), $this->VALID_POSTINGCONTENT);
 	$this->assertEquals($pdoPosting->getPostingEmail(), $this->VALID_POSTINGEMAIL);
@@ -129,4 +129,38 @@ class PostingTest extends WebDevjobsTest {
 	$this->assertEquals($pdoPosting->getPostingTitle(), $this->VALID_POSTINGTITLE);
 	//format the date too seconds since the beginning of time to avoid round off error
 	$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
-}}
+}
+
+/**
+ *test inserting a Posting, editing it, and then update it
+ */
+public function testUpdateValidPosting () : void {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("posting");
+
+	//create a new Posting and insert to into mySQL
+	$postingId = generateUuidV4();
+	$postingRoleId = generateUuidV4();
+	$postingProfileId = generateUuidV4();
+	$posting = new Posting($postingId, $this->role->getRoleId(), $this->profile->profileId(), $this->VALID_POSTINGCOMPANY, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
+	$posting->insert($this->getPDO());
+
+	// edit the Posting and update it in mySQL
+	$posting->setPostingContent($this->VALID_POSTINGCONTENT);
+	$tweet->update($this->getPDO());
+
+	// grab the data from mySQL and enforce the fields match our expectations
+	$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
+	$this->assertEquals($pdoPosting->getPostingId(), $postingId);
+	$this->assertEquals($pdoPosting->getPostingRoleId(), $postingId);
+	$this->assertEquals($pdoPosting->getPostingProfileId(), $postingId);
+	$this->assertEquals($pdoPosting->getPostingCompany(), $this->VALID_POSTINGCOMPANY);
+	$this->assertEquals($pdoPosting->getPostingContent(), $this->VALID_POSTINGCONTENT);
+	$this->assertEquals($pdoPosting->getPostingEmail(), $this->VALID_POSTINGEMAIL);
+	$this->assertEquals($pdoPosting->getPostingLocation(), $this->VALID_POSTINGLOCATION);
+	$this->assertEquals($pdoPosting->getPostingPay(), $this->VALID_POSTINGPAY);
+	$this->assertEquals($pdoPosting->getPostingTitle(), $this->VALID_POSTINGTITLE);
+	//format the date too seconds since the beginning of time to avoid round off error
+	$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
+}
