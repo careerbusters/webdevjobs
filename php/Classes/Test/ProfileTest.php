@@ -107,4 +107,52 @@ class ProfileTest extends DataDesignTest {
 		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_LOCATION);
 		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_USERNAME);
 	}
+
+
+	/**
+	 * test inserting a Profile, editing it, and then updating it
+	 **/
+	public function testUpdateValidProfile() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		// create a new Profile and insert to into mySQL
+		$profileId = generateUuidV4();
+		$profileRoleId = generateUuidV4();
+		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+		// edit the Profile and update it in mySQL
+		$profile->setProfileUsername($this->VALID_USERNAME2);
+		$profile->update($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASH);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_IMAGE);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_LOCATION);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_USERNAME2);
+	}
+
+	/**
+	 * test creating a Profile and then deleting it
+	 **/
+	public function testDeleteValidProfile() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		$profileRoleId = generateUuidV4();
+		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+		// delete the Profile from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$profile->delete($this->getPDO());
+		// grab the data from mySQL and enforce the Profile does not exist
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertNull($pdoProfile);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
+	}
 }
