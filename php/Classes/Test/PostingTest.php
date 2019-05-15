@@ -164,3 +164,24 @@ public function testUpdateValidPosting () : void {
 	//format the date too seconds since the beginning of time to avoid round off error
 	$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
 }
+/**
+test inserting a Posting, editing it, and then update it
+*/
+public function testUpdateValidPosting () : void {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("posting");
+
+	//create a new Posting and insert to into mySQL
+	$postingId = generateUuidV4();
+	$postingRoleId = generateUuidV4();
+	$postingProfileId = generateUuidV4();
+	$posting = new Posting($postingId, $this->role->getRoleId(), $this->profile->profileId(), $this->VALID_POSTINGCOMPANY, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
+	$posting->insert($this->getPDO());
+
+	// delete the Posting from mySQL
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
+	$posting->delete($this->getPDO());
+
+	// grab the data from mySQL and enforce the Posting does not exist
+	$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
+}}
