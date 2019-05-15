@@ -132,7 +132,7 @@ class Role implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getroleByRoleId(\PDO $pdo, $roleId): Role {
+	public static function getRoleByRoleId(\PDO $pdo, $roleId): Role {
 		// sanitize the roleId before searching
 		try {
 			$roleId = self::validateUuid($roleId);
@@ -170,23 +170,14 @@ class Role implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 
-	public static function getAllRolesByRoleId(\PDO $pdo, string $roles): \SplFixedArray {
-		// sanitize the description before searching
-		$roles = trim($roles);
-		$roles = filter_var($roles, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($roles) === true) {
-			throw(new \PDOException("role is invalid"));
-		}
+	public static function getAllRoles(\PDO $pdo): \SplFixedArray {
 
 		// create query template
-		$query = "SELECT roleId, roleName FROM roles WHERE roleName LIKE :roleName";
+		$query = "SELECT roleId, roleName FROM role";
 		$statement = $pdo->prepare($query);
-		// bind the role id to the place holder in the template
-		$roleName = "%roleName%";
-		$parameters = ["roleName" => $roleName];
-		$statement->execute($parameters);
-		// build an array of authors
-		$roless = new \SplFixedArray($statement->rowCount());
+		$statement->execute();
+		// build an array of roles
+		$roles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
