@@ -208,6 +208,30 @@ class ProfileTest extends DataDesignTest {
 	/**
 	 * test inserting a Profile and grabbing it from mySQL
 	 **/
+	public function testGetValidProfileByProfileActivationToken() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		$profileRoleId = generateUuidV4();
+		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileActivationToken($this->getPDO(), $profile->getProfileActivationToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASH);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_IMAGE);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_LOCATION);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_USERNAME);
+	}
+
+	/**
+	 * test inserting a Profile and grabbing it from mySQL
+	 **/
 	public function testGetValidProfileByProfileEmail() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
@@ -228,4 +252,6 @@ class ProfileTest extends DataDesignTest {
 		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_LOCATION);
 		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_USERNAME);
 	}
+
+
 }
