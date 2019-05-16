@@ -127,8 +127,8 @@ class PostingTest extends WebDevjobsTest {
 		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$this->assertEquals($pdoPosting->getPostingId(), $postingId);
-		$this->assertEquals($pdoPosting->getPostingRoleId(), $postingId);
-		$this->assertEquals($pdoPosting->getPostingProfileId(), $postingId);
+		$this->assertEquals($pdoPosting->getPostingRoleId(), $postingRoleId);
+		$this->assertEquals($pdoPosting->getPostingProfileId(), $postingProfileId);
 		$this->assertEquals($pdoPosting->getPostingCompany(), $this->VALID_POSTINGCOMPANYNAME);
 		$this->assertEquals($pdoPosting->getPostingContent(), $this->VALID_POSTINGCONTENT);
 		$this->assertEquals($pdoPosting->getPostingEmail(), $this->VALID_POSTINGEMAIL);
@@ -161,8 +161,8 @@ class PostingTest extends WebDevjobsTest {
 		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$this->assertEquals($pdoPosting->getPostingId(), $postingId);
-		$this->assertEquals($pdoPosting->getPostingRoleId(), $postingId);
-		$this->assertEquals($pdoPosting->getPostingProfileId(), $postingId);
+		$this->assertEquals($pdoPosting->getPostingRoleId(), $postingRoleId);
+		$this->assertEquals($pdoPosting->getPostingProfileId(), $postingProfileId);
 		$this->assertEquals($pdoPosting->getPostingCompany(), $this->VALID_POSTINGCOMPANYNAME);
 		$this->assertEquals($pdoPosting->getPostingContent(), $this->VALID_POSTINGCONTENT);
 		$this->assertEquals($pdoPosting->getPostingEmail(), $this->VALID_POSTINGEMAIL);
@@ -198,9 +198,9 @@ class PostingTest extends WebDevjobsTest {
 	}
 
 	/**
-	 *test grabbing a Posting by posting company name
+	 *test grabbing all Postings
 	 */
-	public function testGetValidPostingByPostingCompanyName(): void {
+	public function testGetALLValidPostings(): void {
 
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
@@ -213,11 +213,9 @@ class PostingTest extends WebDevjobsTest {
 		$posting->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Posting::getPostingByPostingCompanyName($this->getPDO(), $posting->getPostingContent());
+		$results = Posting::getAllPostings($this->getPDO(), $posting->getPostingContent());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$this->assertCount(1, $results);
-
-		//enforce no other objects are bleeding into the test
 		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJobs\\Test", $results);
 
 		// grad the results from a array and validate it
