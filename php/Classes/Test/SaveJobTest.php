@@ -2,7 +2,7 @@
 
 namespace CareerBuster\WebDevJobs\Test;
 
-use CareerBuster\WebDevJobs\Role;
+use CareerBusters\WebDevJobs\SavedJob;
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -67,3 +67,53 @@ class SavedJobTest extends WebDevJobsTest {
 		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
 		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
 	}
+
+	/**
+	 * test inserting a Saved Job, editing it, and then updating it
+	 **/
+	public function testUpdateValidSavedJob(): void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("savedJob");
+
+		// create a new Saved Job and insert to into mySQL
+		$savedJobPostingId = generateUuidV4();
+		$savedJob = new SavedJob($savedJobPostingId, $this->VALID_SAVEDJOBNAME);
+		$savedJob->insert($this->getPDO());
+
+		// edit the Saved Job and update it in mySQL
+		$savedJob->setSavedJobName($this->VALID_SAVEDJOBNAME2);
+		$savedJob->update($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId()Id($this->getPDO(), $savedJob->getSavedJobPostingId()Id());
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId()Id(), $savedJobPostingId);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId()Id(), $this->savedJob->getSavedJobPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME2);
+	}
+
+	/**
+	 * test grabbing all Saved Jobs
+	 **/
+	public function testGetAllValidSavedJobs(): void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("savedJob");
+
+		// create a new Saved Job and insert to into mySQL
+		$savedJobPostingId = generateUuidV4();
+		$savedJob = new SavedJob($savedJobPostingId, $this->savedJob->getSavedJobPostingId(), $this->VALID_SAVEDJOBNAME);
+		$savedJob->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = SavedJob::getAllSavedJobs($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJob\\SavedJob", $results);
+
+		// grab the result from the array and validate it
+		$pdoSavedJob = $results[0];
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
+	}
+}
