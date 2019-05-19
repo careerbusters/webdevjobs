@@ -47,3 +47,23 @@ class SavedJobTest extends WebDevJobsTest {
 		// run the default setUp() method first
 		parent::setUp();
 	}
+
+/**
+* test inserting a valid Saved Job and verify that the actual mySQL data matches
+**/
+	public function testInsertValidSavedJob(): void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("savedJob");
+
+		// create a new Saved Job and insert to into mySQL
+		$savedJobPostingId = generateUuidV4();
+		$savedJob = new SavedJob($savedJobPostingId, $this->VALID_SAVEDJOBNAME);
+		$savedJob->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId($this->getPDO(), $savedJob->getSavedJobPostingId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
+	}
