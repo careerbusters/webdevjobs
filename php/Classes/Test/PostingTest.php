@@ -213,7 +213,7 @@ class PostingTest extends WebDevJobsTest {
 		$posting = posting::getPostingByPostingId($this->getPDO(), generateUuidV4());
 		$this->assertCount(0, $posting);
 		}
-	
+
 	/**
 	 *test grabbing all Postings
 	 */
