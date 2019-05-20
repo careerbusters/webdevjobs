@@ -1,7 +1,8 @@
 <?php
 
 namespace CareerBusters\WebDevJobs;
-require_once(dirname(__DIR__) . "/classes/autoload.php");
+require_once(dirname(__DIR__) . "/vendor/autoload.php");
+require_once("autoload.php");
 
 use Ramsey\Uuid\Uuid;
 
@@ -81,7 +82,7 @@ class Role implements \JsonSerializable {
 	 * Accessor method for roleName
 	 * @return string|Uuid for roleName (or null if new Role Name)
 	 **/
-	public function getRoleName(): Uuid {
+	public function getRoleName(): string {
 		return ($this->roleName);
 	}
 
@@ -93,16 +94,15 @@ class Role implements \JsonSerializable {
 	 * @throws \TypeError if the role name is not positive
 	 **/
 	public function setRoleName($newRoleName): Void {
-		try {
-			$uuid = self::validateUuid($newRoleName);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exception = get_class($exception);
-			throw(new $exception($exception->getMessage(), 0, $exception));
+		// verify the Role content is secure
+		$newRoleName = trim($newRoleName);
+		$newRoleName = filter_var($newRoleName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(strlen($newRoleName) > 32) {
+			throw(new \RangeException("role name content too large"));
 		}
 		//convert and store role name
-		$this->roleName = $uuid;
+		$this->roleName = $newRoleName;
 	}
-
 
 
 	/**
