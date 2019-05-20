@@ -19,15 +19,15 @@ class PostingTest extends WebDevjobsTest {
 	 **/
 	protected $posting;
 	/**
-	 * Role of Posting; this is for foreign key relations
-	 * @var  $postingroleId
-	 **/
-	protected $role;
-	/**
 	 * Profile of the Posting; this is for foreign key relations
 	 * @var  $postingProfileId
 	 **/
 	protected $profile;
+	/**
+	 * Role of Posting; this is for foreign key relations
+	 * @var  $postingroleId
+	 **/
+	protected $role;
 	/** Posting company name that created the Posting
 	 * @var $VALID_PostingCompanyName
 	 */
@@ -120,15 +120,15 @@ class PostingTest extends WebDevjobsTest {
 		$postingId = generateUuidV4();
 		$postingRoleId = generateUuidV4();
 		$postingProfileId = generateUuidV4();
-		$posting = new Posting($postingId, $postingRoleId, $postingProfileId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
+		$posting = new Posting($postingId, $postingProfileId, $postingRoleId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$this->assertEquals($pdoPosting->getPostingId(), $postingId);
-		$this->assertEquals($pdoPosting->getPostingRoleId(), $postingRoleId);
 		$this->assertEquals($pdoPosting->getPostingProfileId(), $postingProfileId);
+		$this->assertEquals($pdoPosting->getPostingRoleId(), $postingRoleId);
 		$this->assertEquals($pdoPosting->getPostingCompany(), $this->VALID_POSTINGCOMPANYNAME);
 		$this->assertEquals($pdoPosting->getPostingContent(), $this->VALID_POSTINGCONTENT);
 		$this->assertEquals($pdoPosting->getPostingEmail(), $this->VALID_POSTINGEMAIL);
