@@ -452,41 +452,6 @@ $statement = $pdo->prepare($query);
 		return($posting);}
 
 	/**
-	 * gets the posting by postingId
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $postingId posting id to search for
-	 * @return posting|null posting found or null if not found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when a variable are not the correct data type
-	 **/
-	public static function getPostingByPostingId(\PDO $pdo, $postingId) : ?posting {
-		// sanitize the tweetId before searching
-		try {
-			$postingId = self::validateUuid($postingId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-
-		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
-		$statement = $pdo->prepare($query);
-		// build an array of posting
-		$posting = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				$postingId[$postingId->key()] = $posting;
-				$postingId->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}}
-		return($posting);
-	}
-
-	/**
 	 * gets the posting by postingProfileId
 	 *
 	 * 	@param \PDO $pdo PDO connection object
@@ -533,11 +498,9 @@ $statement = $pdo->prepare($query);
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
 	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId) : ?posting {
-<<<<<<< HEAD
+
 		// sanitize the todoId before searching
-=======
 		// sanitize the postingId before searching
->>>>>>> postingtest.php
 		try {
 			$postingRoleId = self::validateUuid($postingRoleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
