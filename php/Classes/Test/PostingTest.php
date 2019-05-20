@@ -1,31 +1,31 @@
 <?php
-
 namespace CareerBusters\WebDevJobs\Test;
-
 use CareerBusters\WebDevJobs\Posting;
+use CareerBusters\WebDevJobs\Profile;
+use CareerBusters\WebDevJobs\Role;
+use CareerBusters\WebDevJobs\WebDevJobsTest;
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 // grab the uuid generator
 require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
-
 /**
  *Full PHPUnit test for the Posting class
  */
-class PostingTest extends WebDevjobsTest {
+class PostingTest extends WebDevJobsTest {
 	/**
 	 * the posting
-	 * @var Posting
+	 * @var Posting $posting
 	 **/
 	protected $posting;
 	/**
 	 * Profile of the Posting; this is for foreign key relations
-	 * @var  $postingProfileId
+	 * @var  Profile $ProfileId
 	 **/
 	protected $profile;
 	/**
 	 * Role of Posting; this is for foreign key relations
-	 * @var  $postingroleId
+	 * @var  Role $roleId
 	 **/
 	protected $role;
 	/** Posting company name that created the Posting
@@ -67,62 +67,49 @@ class PostingTest extends WebDevjobsTest {
 	 * @var $VALID_PostingTitle
 	 */
 	protected $VALID_POSTINGTITLE;
-
-
 	/**
 	 * create dependent objects before running each test
 	 */
 	public final function setUp(): void {
 // run the default setUp() method first
 		parent::setUp();
-
 		// create and insert a postingCompanyName to the test Posting
 		$this->postingCompanyName = new postingCompanyName;
 		$this->VALID_POSTINGCOMPANYNAME->insert($this->getPDO());
-
 		// create and insert a postingContent to the test Posting
 		$this->postingContent = new postingContent;
 		$this->VALID_POSTINGCONTENT->insert($this->getPDO());
-
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTINGDATE->new \DateTime();
 		$this->VALID_POSTINGDATE->sub(new \DateInterval("P10D"));
-
 	// create and insert a postingEmail to the test Posting
 	$this->postingEmail = new postingEmail;
 	$this->VALID_POSTINGEMAIL->insert($this->getPDO());
-
 	// calculate the date (just use the time the unit test is finished...)
 	$this->VALID_POSTINGENDDATE->new \DateTime();
 	$this->VALID_POSTINGENDDATE->sub(new \DateInterval("P10D"));
-
 	// create and insert a postingLocation to the test Posting
 	$this->postingLocation = new postingLocation;
 	$this->VALID_POSTINGLOCATION->insert($this->getPDO());
-
 		// create and insert a postingPay to the test Posting
 	$this->postingPay = new postingPay;
 	$this->VALID_POSTINGPAY->insert($this->getPDO());
-
 		// create and insert a postingTitle to the test Posting
 	$this->postingTitle = new postingTitle;
 	$this->VALID_POSTINGTITLE->insert($this->getPDO());
 }
-
 	/**
 	 * test inserting a valid Posting and verify that the actual mySQL data matches
 	 **/
 	public function testInsertValidPosting(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
-
 		// create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
 		$postingRoleId = generateUuidV4();
 		$postingProfileId = generateUuidV4();
 		$posting = new Posting($postingId, $postingProfileId, $postingRoleId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
-
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
@@ -138,25 +125,21 @@ class PostingTest extends WebDevjobsTest {
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
 	}
-
 	/**
 	 *test inserting a Posting, editing it, and then update it
 	 */
 	public function testUpdateValidPosting(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
-
 		//create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
 		$postingProfileId = generateUuidV4();
 		$postingRoleId = generateUuidV4();
 		$posting = new Posting($postingId, $postingProfileId, $postingRoleId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
-
 		// edit the Posting and update it in mySQL
 		$posting->setPostingContent($this->VALID_POSTINGCONTENT);
 		$posting->update($this->getPDO());
-
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
@@ -178,14 +161,12 @@ class PostingTest extends WebDevjobsTest {
 	public function testValidPostingProfileId(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
-
 		//create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
 		$postingProfileId = generateUuidV4();
 		$postingRoleId = generateUuidV4();
 		$posting = new Posting($postingId, $postingProfileId, $postingRoleId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
-
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPosting = Posting::getPostingByPostingProfileId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
@@ -201,21 +182,18 @@ class PostingTest extends WebDevjobsTest {
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
 	}
-
 	/**
 	 *test postingRoleId from posting
 	 */
 	public function testValidPostingRoleId(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
-
 		//create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
 		$postingProfileId = generateUuidV4();
 		$postingRoleId = generateUuidV4();
 		$posting = new Posting($postingId, $postingProfileId, $postingRoleId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
-
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPosting = Posting::getPostingByPostingRoleId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
@@ -237,45 +215,37 @@ class PostingTest extends WebDevjobsTest {
 	public function testDeleteValidPosting(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
-
 		//create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
 		$postingProfileId = generateUuidV4();
 		$postingRoleId = generateUuidV4();
 		$posting = new Posting($postingId, $postingProfileId, $postingRoleId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
-
 		// delete the Posting from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$posting->delete($this->getPDO());
-
 		// grab the data from mySQL and enforce the Posting does not exist
 		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertNull($pdoPosting);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("posting"));
 	}
-
 	/**
 	 *test grabbing all Postings
 	 */
 	public function testGetALLValidPostings(): void {
-
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
-
 		//create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
 		$postingProfileId = generateUuidV4();
 		$postingRoleId = generateUuidV4();
 		$posting = new Posting($postingId, $postingProfileId, $postingRoleId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
-
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Posting::getAllPostings($this->getPDO(), $posting->getPostingContent());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJobs\\Test", $results);
-
 		// grad the results from a array and validate it
 		$pdoPosting = $results[0];
 		$this->assertEquals($pdoPosting->getPostingId(), $postingId);
@@ -287,8 +257,7 @@ class PostingTest extends WebDevjobsTest {
 		$this->assertEquals($pdoPosting->getPostingLocation(), $this->VALID_POSTINGLOCATION);
 		$this->assertEquals($pdoPosting->getPostingPay(), $this->VALID_POSTINGPAY);
 		$this->assertEquals($pdoPosting->getPostingTitle(), $this->VALID_POSTINGTITLE);
-
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
 	}
-	}
+}
