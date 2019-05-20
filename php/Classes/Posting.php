@@ -428,7 +428,7 @@ $statement = $pdo->prepare($query);
 	 * 	@throws \TypeError when variables are not the correct data type
 	 **/
 
-	public function getPostingByPostingId(\PDO $pdo, $postingId) : ?posting {
+	public static function getPostingByPostingId(\PDO $pdo, $postingId) : ?posting {
 		try {
 			$postingProfileId = self::validateUuid($postingId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -465,7 +465,7 @@ $statement = $pdo->prepare($query);
 	// TODO write getPostingByPostingId "return to single object"
 	// TODO write postingByRole
 	// TODO write get all current postings "like getAllTweets"
-	public function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId) : ?posting {
+	public static function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId) : ?posting {
 
 		try {
 			$postingProfileId = self::validateUuid($postingProfileId);
