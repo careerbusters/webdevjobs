@@ -65,10 +65,13 @@ class SavedJobTest extends WebDevJobsTest {
 		// run the default setUp() method first
 		parent::setUp();
 
+		// create and insert a Profile to own the test saved job
+		$this->profile = new profile(generateUuidV4(), null, "@handle", "https://webdev.cb.com. test@phpunit.com", $this->VALID_SAVEDJOBPROFILENAME,);
+		$this->profile->insert($this->getPDO());
 	}
 
 	/**
-	 * test inserting a valid Saved Job Posting Id and verify that the actual mySQL data matches
+	 * test inserting a valid Saved Job and verify that the actual mySQL data matches
 	 **/
 	public function testInsertValidSavedJob(): void {
 		// count the number of rows and save it for later
@@ -76,7 +79,7 @@ class SavedJobTest extends WebDevJobsTest {
 
 		// create a new Saved Job and insert to into mySQL
 		$savedJobPostingId = generateUuidV4();
-		$savedJob = new SavedJob($savedJobPostingId, $this->savedJobProfileId->getSavedJobProfileId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
+		$savedJob = new SavedJob($savedJobPostingId, $this->profile->getSavedJobProfileId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
 
 		$savedJob->insert($this->getPDO());
 
@@ -84,11 +87,9 @@ class SavedJobTest extends WebDevJobsTest {
 		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId($this->getPDO(), $savedJob->getSavedJobPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
 		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getSavedJobProfileId());
 		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
-		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->savedJob->getSavedJobProfileId());
-		$this->assertEquals($pdoSavedJob->getSavedJobProfileName(), $this->VALID_SAVEDJOBPROFILENAME);
-		}
+	}
 
 	/**
 	 * test inserting a Saved Job, editing it, and then updating it
@@ -99,7 +100,7 @@ class SavedJobTest extends WebDevJobsTest {
 
 		// create a new Saved Job and insert to into mySQL
 		$savedJobPostingId = generateUuidV4();
-		$savedJob = new SavedJob($savedJobPostingId, $this->VALID_SAVEDJOBNAME);
+		$savedJob = new SavedJob($savedJobPostingId, $this->profile->getProfileId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
 		$savedJob->insert($this->getPDO());
 
 		// edit the Saved Job and update it in mySQL
@@ -110,9 +111,10 @@ class SavedJobTest extends WebDevJobsTest {
 		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId($this->getPDO(), $savedJob->getSavedJobPostingId());
 		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getSavedJobProfileId());
 		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME2);
 	}
+
 
 	/**
 	 * test grabbing all Saved Jobs
