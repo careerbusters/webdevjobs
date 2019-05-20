@@ -156,7 +156,7 @@ class ProfileTest extends WebDevJobsTest {
 		$this->assertNull($pdoProfile);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
 	}
-	
+
 	/**
 	 * test inserting a Profile and grabbing it from mySQL
 	 **/
@@ -227,9 +227,9 @@ class ProfileTest extends WebDevJobsTest {
 	}
 
 	/**
-	 * test inserting a Profile and grabbing it from mySQL
+	 * test inserting a Profile and grabbing it from mySQL  FOR ARRAY
 	 **/
-	public function testGetValidProfileByProfileUsername() {
+	public function testGetValidProfilesByProfileUsername() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
@@ -254,4 +254,26 @@ class ProfileTest extends WebDevJobsTest {
 		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_USERNAME);
 	}
 
+	/**
+	 * test inserting a Profile and grabbing it from mySQL SINGLE OBJECT
+	 **/
+	public function testGetValidProfileByProfileUsername() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile->insert($this->getPDO());
+		//grab the data from MySQL
+		$pdoProfile = Profile::getProfileByProfileUsername($this->getPDO(), $profile->getProfileUsername());
+		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASH);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_IMAGE);
+		$this->assertEquals($pdoProfile->getProfileLocation(), $this->VALID_LOCATION);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_USERNAME);
+	}
 }
