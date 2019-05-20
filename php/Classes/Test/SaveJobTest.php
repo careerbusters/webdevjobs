@@ -46,4 +46,4 @@ class SavedJobTest extends WebDevJobsTest {
 	public final function setUp(): void {
 		// run the default setUp() method first
 		parent::setUp();
-	}
+	};
