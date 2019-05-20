@@ -82,6 +82,9 @@ class ProfileTest extends WebDevJobsTest {
 		$password = "password1";
 		$this->VALID_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
+		// creating role content
+		$this->role = new Role(generateUuidv4(), "Role Name");
+		$this->role->insert($this->getPDO);
 	}
 
 	/**
@@ -91,14 +94,13 @@ class ProfileTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
-		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
-		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
@@ -117,8 +119,7 @@ class ProfileTest extends WebDevJobsTest {
 		$numRows = $this->getConnection()->getRowCount("profile");
 		// create a new Profile and insert to into mySQL
 		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
-		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		// edit the Profile and update it in mySQL
 		$profile->setProfileUsername($this->VALID_USERNAME2);
@@ -128,7 +129,7 @@ class ProfileTest extends WebDevJobsTest {
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
-		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
@@ -145,8 +146,7 @@ class ProfileTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
-		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		// delete the Profile from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
@@ -164,14 +164,13 @@ class ProfileTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
-		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
-		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
@@ -188,14 +187,13 @@ class ProfileTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
-		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileRoleId($this->getPDO(), $profile->getProfileRoleId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
-		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
@@ -212,14 +210,13 @@ class ProfileTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
-		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileActivationToken($this->getPDO(), $profile->getProfileActivationToken());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
-		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
@@ -236,14 +233,13 @@ class ProfileTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
-		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileEmail());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
-		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
@@ -260,8 +256,7 @@ class ProfileTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
-		$profile = new Profile($profileId, $profileRoleId, $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
+		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		//grab the data from MySQL
 		$results = Profile::getProfileByProfileUsername($this->getPDO(), $this->VALID_USERNAME);
@@ -272,7 +267,7 @@ class ProfileTest extends WebDevJobsTest {
 		$pdoProfile = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
-		$this->assertEquals($pdoProfile->getProfileRoleId(), $profileRoleId);
+		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_BIO );
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
