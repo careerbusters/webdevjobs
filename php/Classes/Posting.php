@@ -134,6 +134,13 @@ class Posting implements \JsonSerializable {
 		}
 	}
 	/**
+	 * accessor method for posting profile id
+	 * @return Uuid value of posting profile id
+	 **/
+	public function getPostingProfileId(): Uuid {
+		return ($this->postingProfileId);
+	}
+	/**
 	 * mutator method for posting profile id
 	 *
 	 * @param Uuid|string $newPostingProfileId new value of posting profile id
@@ -147,6 +154,13 @@ class Posting implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+	}
+	/**
+	 * accessor method for posting role id
+	 * @return Uuid value of posting role id
+	 **/
+	public function getPostingRoleId(): Uuid {
+		return ($this->postingRoleId);
 	}
 	/**
 	 * mutator method for posting role id
