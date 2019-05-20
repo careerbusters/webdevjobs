@@ -1,10 +1,11 @@
 <?php
 namespace CareerBusters\WebDevJobs\Test;
 use CareerBusters\WebDevJobs\Profile;
+use CareerBusters\WebDevJobs\WebDevJobsTest;
 
 // require once statements
 require_once(dirname(__DIR__) . "/autoload.php");
-require_once(dirname(__DIR__) . "/lib/uuid.php");
+require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
 /**
  * Full PHPUnit test for Profile class
@@ -166,8 +167,14 @@ class ProfileTest extends WebDevJobsTest {
 		$profileId = generateUuidV4();
 		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
+		//grab the data from MySQL
+		$results = Profile::getProfileByProfileRoleId($this->getPDO(), $profile->getProfileRoleId());
+		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("profile"));
+		//enforce no other objects are bleeding into profile
+		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJobs\\Profile", $results);
+		//enforce the results meet expectations
+		$pdoProfile = $results[0];
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProfile = Profile::getProfileByProfileRoleId($this->getPDO(), $profile->getProfileRoleId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
 		$this->assertEquals($pdoProfile->getProfileRoleId(), $this->role->getRoleId());
@@ -228,6 +235,7 @@ class ProfileTest extends WebDevJobsTest {
 
 	/**
 	 * test inserting a Profile and grabbing it from mySQL  FOR ARRAY
+	 * !!!!!!!! SHOULD IT BE PROFILES OR PROFILE???
 	 **/
 	public function testGetValidProfilesByProfileUsername() {
 		// count the number of rows and save it for later
@@ -236,7 +244,7 @@ class ProfileTest extends WebDevJobsTest {
 		$profile = new Profile($profileId, $this->role->getRoleId(), $this->VALID_ACTIVATION, $this->VALID_BIO, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_IMAGE, $this->VALID_LOCATION, $this->VALID_USERNAME);
 		$profile->insert($this->getPDO());
 		//grab the data from MySQL
-		$results = Profile::getProfileByProfileUsername($this->getPDO(), $this->VALID_USERNAME);
+		$results = Profile::getProfilesByProfileUsername($this->getPDO(), $this->VALID_USERNAME);
 		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("profile"));
 		//enforce no other objects are bleeding into profile
 		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJobs\\Profile", $results);
