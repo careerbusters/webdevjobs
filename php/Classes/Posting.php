@@ -90,7 +90,7 @@ class Posting implements \JsonSerializable {
 	 * @throws   /Exception if some other exception occurs
 	 *
 	 */
-	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle = null) {
+	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle) {
 		try {
 			$this->setPostingId($newPostingId);
 			$this->setPostingProfileId($newPostingProfileId);
@@ -134,6 +134,13 @@ class Posting implements \JsonSerializable {
 		}
 	}
 	/**
+	 * accessor method for posting profile id
+	 * @return Uuid value of posting profile id
+	 **/
+	public function getPostingProfileId(): Uuid {
+		return ($this->postingProfileId);
+	}
+	/**
 	 * mutator method for posting profile id
 	 *
 	 * @param Uuid|string $newPostingProfileId new value of posting profile id
@@ -147,6 +154,13 @@ class Posting implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+	}
+	/**
+	 * accessor method for posting role id
+	 * @return Uuid value of posting role id
+	 **/
+	public function getPostingRoleId(): Uuid {
+		return ($this->postingRoleId);
 	}
 	/**
 	 * mutator method for posting role id
@@ -405,6 +419,38 @@ $statement = $pdo->prepare($query);
 		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent, "postingDate" => $formattedDate];
 		$statement->execute($parameters);
 	}
+	/**
+	 * gets the posting by postingId
+	 *
+	 * 	@param \PDO $pdo PDO connection object
+	 *	 	@param Uuid|string $postingId posting id to search by
+	 * 	 @return posting|null posting found or null if not found
+	 * 	@throws \PDOException when mySQL related errors occur
+	 * 	@throws \TypeError when variables are not the correct data type
+	 **/
+
+	public function getPostingByPostingId(\PDO $pdo, $postingId) : ?posting {
+		try {
+			$postingProfileId = self::validateUuid($postingId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		// create query template
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
+		$statement = $pdo->prepare($query);
+		// build an array of posting
+		$posting = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$postingId[$postingProfileId->key()] = $posting;
+				$postingId->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}}
+		return($posting);}
 
 	/**
 	 * gets the posting by postingId
@@ -462,7 +508,7 @@ $statement = $pdo->prepare($query);
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingProfileId = :postingProfileId";
 		$statement = $pdo->prepare($query);
 		// build an array of posting
 		$posting = new \SplFixedArray($statement->rowCount());
@@ -488,7 +534,11 @@ $statement = $pdo->prepare($query);
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
 	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId) : ?posting {
+<<<<<<< HEAD
 		// sanitize the todoId before searching
+=======
+		// sanitize the postingId before searching
+>>>>>>> postingtest.php
 		try {
 			$postingRoleId = self::validateUuid($postingRoleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -496,7 +546,7 @@ $statement = $pdo->prepare($query);
 		}
 
 		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingRoleId = :postingRoleId";
 		$statement = $pdo->prepare($query);
 		// build an array of posting
 		$posting = new \SplFixedArray($statement->rowCount());
