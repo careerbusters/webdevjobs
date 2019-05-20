@@ -94,6 +94,29 @@ class RoleTest extends WebDevJobsTest {
 	}
 
 	/**
+	 * test creating a Role and the deleting it
+	 **/
+	public function testDeleteValidRole(): void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("role");
+
+		// create a new Role and insert to into mySQL
+		$roleId = generateUuidV4();
+		$role = new Role($roleId, $this->roleId->getRoleId(), $this->VALID_ROLENAME, $this->VALID_ROLENAME2);
+		$role->insert($this->getPDO());
+		// delete the Role from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("role"));
+		$role->delete($this->getPDO());
+
+		// grab the data from mySQL and enforce the Role does not exist
+		$pdoRole = Role::getRolebyRoleId($this->getPDO(), $role->getRoleId()
+	);
+$this->assertNull($pdoRole);
+$this->assertEquals($numRows, $this->getConnection()->getRowCount("role")
+);
+}
+
+	/**
 	 * test grabbing all Roles
 	 **/
 	public function testGetAllValidRoles(): void {
