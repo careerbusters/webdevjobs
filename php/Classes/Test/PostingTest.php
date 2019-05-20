@@ -82,8 +82,8 @@ class PostingTest extends WebDevJobsTest {
 		$password = "abc123";
 		$this->VALID_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
-			// create the and insert the mocked profile
 
+			// create the and insert the mocked profile
 		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(), "null", "freelancer", "test@phpunit.ey",$this->VALID_HASH, "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Albuquerque", "freelancer");
 		$this->profile->insert($this->getPDO());
 
@@ -107,8 +107,6 @@ class PostingTest extends WebDevJobsTest {
 
 		// create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
-		$postingRoleId = generateUuidV4();
-		$postingProfileId = generateUuidV4();
 		$posting = new Posting($postingId, $this->profile->getProfileId(), $this->role->getRoleId(), $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
 
@@ -116,7 +114,7 @@ class PostingTest extends WebDevJobsTest {
 		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$this->assertEquals($pdoPosting->getPostingId()->toString(), $postingId->toString());
-		$this->assertEquals($pdoPosting->getPostingProfileId(), $posting->getPostingId()->toString()
+		$this->assertEquals($pdoPosting->getPostingProfileId(), $posting->getPostingId()->toString());
 		$this->assertEquals($pdoPosting->getPostingRoleId(), $posting->getPostingId()->toString());
 		$this->assertEquals($pdoPosting->getPostingCompanyName(), $this->VALID_POSTINGCOMPANYNAME);
 		$this->assertEquals($pdoPosting->getPostingContent(), $this->VALID_POSTINGCONTENT);
@@ -208,12 +206,14 @@ class PostingTest extends WebDevJobsTest {
 		// delete the Posting from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$posting->delete($this->getPDO());
-
-		// grab the data from mySQL and enforce the Posting does not exist
-		$pdoPosting = Posting::getPostingByPostingId($this->getPDO);
-		$this->assertNull($pdoPosting);
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("posting"));
 	}
+		// grab the data from mySQL and enforce the Posting does not exist
+		public function testGetInvalidPostingByPostingId() : void {
+		//grab a posting id that exceeds the maximum allowable profile id
+		$posting = posting::getPostingByPostingId($this->getPDO(), generateUuidV4());
+		$this->assertCount(0, $posting);
+		}
+
 	/**
 	 *test grabbing all Postings
 	 */
