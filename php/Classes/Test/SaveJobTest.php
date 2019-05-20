@@ -138,27 +138,29 @@ class SavedJobTest extends WebDevJobsTest {
 	}
 
 	/**
-	 * test grabbing all Saved Jobs
+	 * test grabbing a Saved Job by saved job content
 	 **/
-	public function testGetAllValidSavedJobs(): void {
+	public function testGetValidSavedJobBySavedJobName(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("savedJob");
 
 		// create a new Saved Job and insert to into mySQL
 		$savedJobPostingId = generateUuidV4();
-		$savedJob = new SavedJob($savedJobPostingId, $this->savedJob->getSavedJobPostingId(), $this->VALID_SAVEDJOBNAME);
+		$savedJob = new SavedJob($savedJobPostingId, $this->profile->getSavedJobPostingId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
 		$savedJob->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = SavedJob::getAllSavedJobs($this->getPDO());
+		$results = SavedJob::getSavedJobsBySavedJobPostingId($this->getPDO(), $savedJob->getSavedJobPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
 		$this->assertCount(1, $results);
+
+		// enforce no other objects are bleeding into the test
 		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJob\\SavedJob", $results);
 
 		// grab the result from the array and validate it
 		$pdoSavedJob = $results[0];
 		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getSavedJobProfileId());
 		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
 	}
 }
