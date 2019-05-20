@@ -217,7 +217,7 @@ class PostingTest extends WebDevJobsTest {
 	/**
 	 *test grabbing all Postings
 	 */
-	public function testGetALLValidPostings(): void {
+	public function testGetAllValidPostings(): void {
 
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
