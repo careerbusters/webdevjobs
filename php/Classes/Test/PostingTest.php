@@ -73,16 +73,20 @@ class PostingTest extends WebDevJobsTest {
 	public final function setUp(): void {
 // run the default setUp() method first
 		parent::setUp();
-		// create and insert a mocked Posting
-		$this->posting = new Posting(generateUuidV4(), "Haven Tech", "PHPUnit test passing", "null", "bob@yahoo.com", "null", "Albuquerque", "50,000", "recruiter");
-			$this->posting->insert($this->getPDO());
 
+		// create and insert a mocked Posting
+		$this->posting = new Posting(generateUuidV4(), "Haven Tech", "PHPUnit test passing", "null", "test@phpuit.ey", "null", "Albuquerque", "50,000", "recruiter");
+			$this->posting->insert($this->getPDO());
+// create a salt and hash for the mocked profile
+		$password = "abc123";
+		$this->VALID_PROFILEHASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 			// create the and insert the mocked profile
-		$this->profile = new Profile(generateUuidV4(), $this->posting->getPostingId(),  "", "PHPUnit test passing", "null", "ted@yahoo.com", "null", "Albuquerque", "55,000", "hiring manager");
+		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(), "null", "freelancer", "test@phpunit.ey",$this->VALID_PROFILEHASH, "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Albuquerque", "freelancer");
 		$this->profile->insert($this->getPDO());
 
 		// create the and insert the mocked role
-		$this->role = new Role(generateUuidV4(), ");
+		$this->role = new Role(generateUuidV4(), "developer");
 		$this->role->insert($this->getPDO());
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTINGDATE = new \DateTime();
@@ -102,7 +106,7 @@ class PostingTest extends WebDevJobsTest {
 		$posting = new Posting($postingId, $postingProfileId, $postingRoleId, $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoPosting = Posting::getPostingByPostingRoleId($this->getPDO(), $posting->getPostingId());
+		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
 		$this->assertEquals($pdoPosting->getPostingId(), $postingId);
 		$this->assertEquals($pdoPosting->getPostingProfileId(), $postingProfileId);
