@@ -29,42 +29,42 @@ class PostingTest extends WebDevJobsTest {
 	 **/
 	protected $role;
 	/** Posting company name that created the Posting
-	 * @var $VALID_PostingCompanyName
+	 * @var $VALID_POSTINGCOMPANYNAME
 	 */
 	protected $VALID_POSTINGCOMPANYNAME;
 	/**
 	 *posting content that created the Posting
-	 * @var $VALID_PostingContent
+	 * @var $VALID_POSTINGCONTENT
 	 */
 	protected $VALID_POSTINGCONTENT = "PHPUnit test passing";
 	/**
 	 * timestamp of the posting
-	 * @var \DateTime $VALID_PostingDate
+	 * @var \DateTime $VALID_POSTINGDATE
 	 */
 	protected $VALID_POSTINGDATE = null;
 	/**
 	 * posting email address of the posting
-	 * @var $VALID_PostingEmail
+	 * @var $VALID_POSTINGEMAIL
 	 */
 	protected $VALID_POSTINGEMAIL;
 	/**
 	 * timestamp of the posting
-	 * @var \DateTime $VALID_PostingEndDate
+	 * @var \DateTime $VALID_POSTINGENDDATE
 	 */
 	protected $VALID_POSTINGENDDATE = null;
 	/**
 	 * posting location of the posting
-	 * @var $VALID_PostingLocation
+	 * @var $VALID_POSTINGLOCATION
 	 */
 	protected $VALID_POSTINGLOCATION;
 	/**
 	 * posting pay for the posting
-	 * @var $VALID_PostingPay
+	 * @var $VALID_POSTINGPAY
 	 */
 	protected $VALID_POSTINGPAY;
 	/**
 	 * posting title of the posting
-	 * @var $VALID_PostingTitle
+	 * @var $VALID_POSTINGTITLE
 	 */
 	protected $VALID_POSTINGTITLE;
 	/**
@@ -74,10 +74,21 @@ class PostingTest extends WebDevJobsTest {
 // run the default setUp() method first
 		parent::setUp();
 		// create and insert a mocked Posting
-		$this->posting = new Posting(generateUuidV4(), )
+		$this->posting = new Posting(generateUuidV4(), "Haven Tech", "PHPUnit test passing", "null", "bob@yahoo.com", "null", "Albuquerque", "50,000", "recruiter");
 			$this->posting->insert($this->getPDO());
 
-}
+			// create the and insert the mocked profile
+		$this->profile = new Profile(generateUuidV4(), $this->posting->getPostingId(),  "", "PHPUnit test passing", "null", "ted@yahoo.com", "null", "Albuquerque", "55,000", "hiring manager");
+		$this->profile->insert($this->getPDO());
+
+		// create the and insert the mocked role
+		$this->role = new Role(generateUuidV4(), ");
+		$this->role->insert($this->getPDO());
+		// calculate the date (just use the time the unit test was setup...)
+		$this->VALID_POSTINGDATE = new \DateTime();
+		// calculate the date (just use the time the unit test was setup...)
+		$this->VALID_POSTINGENDDATE = new \DateTime();
+	}
 	/**
 	 * test inserting a valid Posting and verify that the actual mySQL data matches
 	 **/
