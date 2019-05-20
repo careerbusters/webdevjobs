@@ -22,8 +22,7 @@ class Posting implements \JsonSerializable {
 	private $postingId;
 	/**
 	 * id of the profile that posting the job; this is a foreign key
-	 * @var Uuid $postingRoleId
-	 **/
+	 * @var Uuid $postingProfileId **/
 	private $postingProfileId;
 	/**
 	 * id of the role that posting the job; this is a foreign key
@@ -379,7 +378,7 @@ $statement = $pdo->prepare($query);
 
 	// bind the member variable to the place holders in the template
 	$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
-		$parameters = ["postingId" => $this->postingId->getBytes(), "postProfileId" => $this->postingProfileId->getBytes(), "postRoleId" => $this->postingRoleId->getBytes(), "postingCompanyName" => $this->postingCompanyName, "postingContent" => $this->postingContent, "postingEmail" => $this->postingEmail, "postingLocation" => $this->postingLocation, "postingTitle" => $this->postingTitle, "postingPay" => $this->postingPay, "postingDate" => $formattedDate, "postingEndDate" => $formattedDate];
+		$parameters = ["postingId" => $this->postingId->getBytes(), "postingProfileId" => $this->postingProfileId->getBytes(), "postingRoleId" => $this->postingRoleId->getBytes(), "postingCompanyName" => $this->postingCompanyName, "postingContent" => $this->postingContent, "postingEmail" => $this->postingEmail, "postingLocation" => $this->postingLocation, "postingTitle" => $this->postingTitle, "postingPay" => $this->postingPay, "postingDate" => $formattedDate, "postingEndDate" => $formattedDate];
 		$statement->execute($parameters);
 }
 
