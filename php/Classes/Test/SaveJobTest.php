@@ -39,6 +39,24 @@ class SavedJobTest extends WebDevJobsTest {
 	 **/
 	protected $VALID_SAVEDJOBNAME2 = "PHPUnit test passing";
 
+	/**
+	 * Saved job profile id that created the Saved Job; this is for foreign key relations
+	 * @var SavedJob savedJob
+	 **/
+	protected $savedJobProfileId = null;
+
+	/**
+	 * content of the Saved Profile Name
+	 * @var string $VALID_SAVEDJOBPROFILENAME
+	 **/
+	protected $VALID_SAVEDJOBPROFILENAME = "PHPUnit test passing";
+
+	/**
+	 * content of the Saved Job Profile Name
+	 * var string $VALID_SAVEDJOBPROFILENAME2 = "PHPUnit test still passing";
+	 **/
+	protected $VALID_SAVEDJOBPROFILENAME2 = "PHPUnit test passing";
+
 
 	/**
 	 * create dependent objects before running each test
@@ -46,18 +64,20 @@ class SavedJobTest extends WebDevJobsTest {
 	public final function setUp(): void {
 		// run the default setUp() method first
 		parent::setUp();
+
 	}
 
-/**
-* test inserting a valid Saved Job and verify that the actual mySQL data matches
-**/
+	/**
+	 * test inserting a valid Saved Job Posting Id and verify that the actual mySQL data matches
+	 **/
 	public function testInsertValidSavedJob(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("savedJob");
 
 		// create a new Saved Job and insert to into mySQL
 		$savedJobPostingId = generateUuidV4();
-		$savedJob = new SavedJob($savedJobPostingId, $this->VALID_SAVEDJOBNAME);
+		$savedJob = new SavedJob($savedJobPostingId, $this->savedJobProfileId->getSavedJobProfileId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
+
 		$savedJob->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -66,7 +86,8 @@ class SavedJobTest extends WebDevJobsTest {
 		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
 		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
 		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
-	}
+		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->savedJob->getSavedJobProfileId());
+		}
 
 	/**
 	 * test inserting a Saved Job, editing it, and then updating it
