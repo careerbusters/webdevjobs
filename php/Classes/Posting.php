@@ -90,7 +90,7 @@ class Posting implements \JsonSerializable {
 	 * @throws   /Exception if some other exception occurs
 	 *
 	 */
-	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle = null) {
+	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle) {
 		try {
 			$this->setPostingId($newPostingId);
 			$this->setPostingProfileId($newPostingProfileId);
