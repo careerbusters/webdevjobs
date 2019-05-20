@@ -85,10 +85,10 @@ class SavedJobTest extends WebDevJobsTest {
 		$savedJob->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId()Id($this->getPDO(), $savedJob->getSavedJobPostingId()Id());
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId()Id(), $savedJobPostingId);
+		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId($this->getPDO(), $savedJob->getSavedJobPostingId()Id());
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId()Id(), $this->savedJob->getSavedJobPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
 		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME2);
 	}
 
