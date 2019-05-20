@@ -115,6 +115,27 @@ class SavedJobTest extends WebDevJobsTest {
 		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME2);
 	}
 
+	/**
+	 *  test creating a Saved Job and then deleting it
+	 **/
+	public function testDeleteValidSavedJob() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConncection()->getRowCount("savedJob");
+
+		// create a new Saved Job and insert to into mySQL
+		$savedJobPostingId = generateUuidV4();
+		$savedJob = new SavedJob($savedJobPostingId, $this->profile->getSavedJobProfileId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
+		$savedJob->insert($this->getPDO());
+
+		// delete the Saved Job from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
+		$savedJob->delete(($this->getPDO()));
+
+		// grab the data from mySQL and enforce the Saved Job does not exist
+		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId($this->getConnection()->getRowCount('savedJob'));
+		$this->assertNull($pdoSavedJob);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("savedJob"));
+	}
 
 	/**
 	 * test grabbing all Saved Jobs
