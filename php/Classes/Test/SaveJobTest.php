@@ -87,6 +87,7 @@ class SavedJobTest extends WebDevJobsTest {
 		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
 		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
 		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->savedJob->getSavedJobProfileId());
+		$this->assertEquals($pdoSavedJob->getSavedJobProfileName(), $this->VALID_SAVEDJOBPROFILENAME);
 		}
 
 	/**
