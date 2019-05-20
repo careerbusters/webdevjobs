@@ -488,7 +488,7 @@ $statement = $pdo->prepare($query);
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
 	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId) : ?posting {
-		// sanitize the tweetId before searching
+		// sanitize the todoId before searching
 		try {
 			$postingRoleId = self::validateUuid($postingRoleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
