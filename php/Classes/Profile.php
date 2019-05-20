@@ -673,4 +673,43 @@ profileLocation, profileUsername FROM profile WHERE profileRoleId = :profileRole
 			}
 		}
 		return($profiles);
+	}
+
+	/**
+	 * gets the Profiles by profileUsername
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $profileUsername profileUsername to search by
+	 * @return \SplFixedArray SplFixedArray of profile found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getProfileByProfileUsername(\PDO $pdo, $profileUsername) : \SplFixedArray {
+		// sanitize the profile username before searching
+		$profileUsername = trim($profileUsername);
+		$profileUsername = filter_var($profileUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($profileUsername) === true) {
+			throw(new \InvalidArgumentException("Profile username is empty or insecure"));
+		}
+// create query template
+		$query = "SELECT profileId, profileRoleId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, 
+profileLocation, profileUsername FROM profile WHERE profileUsername = :profileUsername";
+		$statement = $pdo->prepare($query);
+		// bind the profile username to the place holder in the template
+		$parameters = ["profileUsername" => $profileUsername->getBytes()];
+		$statement->execute($parameters);
+		// build an array
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new profile($row["profileId"], $row["profileRoleId"], $row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileHash"], $row["profileImage"], $row["profileLocation"], $row["profileUsername"]);
+				$profiles[$profiles->key()] = $profile;
+				$profiles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($profiles);
 	}}
