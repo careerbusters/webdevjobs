@@ -448,7 +448,7 @@ VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileBio, :profil
 		$query = "UPDATE profile SET profileRoleId = :profileRoleId, profileActivationToken = :profileActivationToken, profileBio = :profileBio, profileEmail = :profileEmail,
  profileHash = :profileHash, profileImage = :profileImage, profileLocation = :profileLocation, profileUsername = :profileUsername WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
-		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId->getBytes(),
 			"profileActivationToken" => $this->profileActivationToken, "profileBio" => $this->profileBio, "profileEmail" => $this->profileEmail,
 			"profileHash" => $this->profileHash, "profileImage" => $this->profileImage, "profileLocation" => $this->profileLocation,  "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
@@ -540,8 +540,7 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : ?Profile {
  profileLocation, profileUsername FROM profile WHERE profileActivationToken = :profileActivationToken";
 		$statement = $pdo->prepare($query);
 		// bind the profile AT to the place holder in the template
-		$profileActivationToken = "%$profileActivationToken%";
-		$parameters = ["profileActivationToken" => $profileActivationToken->getBytes()];
+		$parameters = ["profileActivationToken" => $profileActivationToken];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
 		try {
@@ -579,8 +578,7 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : ?Profile {
 profileLocation, profileUsername FROM profile WHERE profileEmail = :profileEmail";
 		$statement = $pdo->prepare($query);
 		// bind the profile email to the place holder in the template
-		$profileEmail = "%$profileEmail%";
-		$parameters = ["profileEmail" => $profileEmail->getBytes()];
+		$parameters = ["profileEmail" => $profileEmail];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
 		try {
@@ -618,8 +616,7 @@ profileLocation, profileUsername FROM profile WHERE profileEmail = :profileEmail
 profileLocation, profileUsername FROM profile WHERE profileUsername = :profileUsername";
 		$statement = $pdo->prepare($query);
 		// bind the profile username to the place holder in the template
-		$profileUsername = "%$profileUsername%";
-		$parameters = ["profileUsername" => $profileUsername->getBytes()];
+		$parameters = ["profileUsername" => $profileUsername];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
 		try {
@@ -694,10 +691,11 @@ profileLocation, profileUsername FROM profile WHERE profileRoleId = :profileRole
 		}
 // create query template
 		$query = "SELECT profileId, profileRoleId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, 
-profileLocation, profileUsername FROM profile WHERE profileUsername = :profileUsername";
+profileLocation, profileUsername FROM profile WHERE profileUsername like :profileUsername";
 		$statement = $pdo->prepare($query);
 		// bind the profile username to the place holder in the template
-		$parameters = ["profileUsername" => $profileUsername->getBytes()];
+		$profileUsername = "%$profileUsername%";
+		$parameters = ["profileUsername" => $profileUsername];
 		$statement->execute($parameters);
 		// build an array
 		$profiles = new \SplFixedArray($statement->rowCount());
