@@ -37,7 +37,7 @@ abstract class WebDevJobsTest extends TestCase {
 
 	/**
 	 * templates for running before each test
-	 * @return Composite array containing delete and insert commnds
+	 * @return Composite array containing delete and insert commands
 	 **/
 	public final function getSetupOperation() : Composite {
 		return new Composite([

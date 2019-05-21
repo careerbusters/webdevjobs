@@ -20,7 +20,7 @@ class Posting implements \JsonSerializable {
 	private $postingId;
 	/**
 	 * id of the profile that posting the job; this is a foreign key
-	 * @var Uuid $postingProfileId *
+	 * @var Uuid $postingProfileId
 	 */
 	private $postingProfileId;
 	/**
@@ -298,7 +298,10 @@ class Posting implements \JsonSerializable {
 	 **/
 	public function setPostingEndDate($newPostingEndDate): void {
 		// base case: if the date is null, use the current date and time
-
+		if($newPostingEndDate === null) {
+			$this->postingDate = new \DateTime();
+			return;
+		}
 		// store the like date using the validateDateTime trait
 		try {
 			$newPostingEndDate = self::validateDateTime($newPostingEndDate);
@@ -454,7 +457,7 @@ class Posting implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				$postingId[$postingProfileId->key()] = $posting;
+				$postingId[$postingId->key()] = $posting;
 				$postingId->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it

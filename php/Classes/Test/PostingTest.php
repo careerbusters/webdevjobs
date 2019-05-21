@@ -15,20 +15,15 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
  */
 class PostingTest extends WebDevJobsTest {
 	/**
-	 * the posting
-	 * @var Posting $postingId
-	 **/
-	protected $postingId;
-	/**
 	 * Profile of the Posting; this is for foreign key relations
 	 * @var  Profile $ProfileId
 	 **/
-	protected $profileId;
+	protected $profile;
 	/**
 	 * Role of Posting; this is for foreign key relations
 	 * @var  Role $roleId
 	 **/
-	protected $roleId;
+	protected $role;
 	/** Posting company name that created the Posting
 	 * @var $VALID_POSTINGCOMPANYNAME
 	 */
@@ -73,11 +68,15 @@ class PostingTest extends WebDevJobsTest {
 	 */
 	public final function setUp(): void {
 // run the default setUp() method first
-		parent::getSetupOperation();
+		parent::setup();
 
-		// create and insert a mocked Posting
-		$this->posting = new Posting(generateUuidV4(), generateUuidV4(), generateUuidV4(), "Haven Tech", "PHPUnit test passing", "null", "test@phpuit.ey", "null", "Albuquerque", "50,000", "recruiter");
-			$this->postingId->insert($this->getPDO());
+		// create and insert a mocked Profile
+		$this->role = new Role(generateUuidV4(),"recruiter");
+		$this->role->insert($this->getPDO());
+		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(),"Haven Tech", "PHPUnit test passing", "null", "test@phpuit.ey", "null", "Albuquerque", "50,000", "recruiter");
+			$this->profile->insert($this->getPDO());
+
+
 
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTINGDATE = new \DateTime();
@@ -97,7 +96,7 @@ class PostingTest extends WebDevJobsTest {
 		$postingId = generateUuidV4();
 		$profileId = generateUuidV4();
 		$roleId = generateUuidV4();
-				$posting = new Posting($postingId, $this->profileId->getProfileId(), $this->roleId->getRoleId(), $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
+				$posting = new Posting($postingId, $this->profile->getProfileId(), $this->role->getRoleId(), $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -115,7 +114,7 @@ class PostingTest extends WebDevJobsTest {
 
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
-		$this->assertEquals($pdoPosting->getPostingEndDate()->getTimestamp(), $this->VALID_POSTINGENDDATE->getTimestamp());
+
 	}
 
 	/**
@@ -148,7 +147,7 @@ class PostingTest extends WebDevJobsTest {
 
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
-		$this->assertEquals($pdoPosting->getPostingEndDate()->getTimestamp(), $this->VALID_POSTINGENDDATE->getTimestamp());
+
 	}
 	/**
 	 *test postingRoleId from posting
@@ -179,7 +178,7 @@ class PostingTest extends WebDevJobsTest {
 
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
-		$this->assertEquals($pdoPosting->getPostingEndDate()->getTimestamp(), $this->VALID_POSTINGENDDATE->getTimestamp());
+
 	}
 	/**
 	 * test creating a Posting and then deleting it
@@ -200,7 +199,7 @@ class PostingTest extends WebDevJobsTest {
 		$posting->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the Posting does not exist
-$pdoPosting = Posting::getPostingByPostingId(($this->getPDO(), $posting->getPostingId());
+$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 $this->assertNull($pdoPosting);
 $this->assertEquals($numRows, $this->getConnection()->getRowCount("posting"));
 		}
@@ -240,6 +239,6 @@ $this->assertEquals($numRows, $this->getConnection()->getRowCount("posting"));
 
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
-		$this->assertEquals($pdoPosting->getPostingEndDate()->getTimestamp(), $this->VALID_POSTINGENDDATE->getTimestamp());
+
 	}
 }
