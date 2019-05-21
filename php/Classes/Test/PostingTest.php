@@ -70,10 +70,11 @@ class PostingTest extends WebDevJobsTest {
 // run the default setUp() method first
 		parent::setup();
 
+
 		// create and insert a mocked Profile
 		$this->role = new Role(generateUuidV4(),"recruiter");
 		$this->role->insert($this->getPDO());
-		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(),"Haven Tech", "PHPUnit test passing", "null", "test@phpuit.ey", "null", "Albuquerque", "50,000", "recruiter");
+		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(),"null", "i code stuff", "test@phpuit.ey", "hash", "http://placemorty.us/300/200", "Albuquerque", "bobbyjohn");
 			$this->profile->insert($this->getPDO());
 
 
