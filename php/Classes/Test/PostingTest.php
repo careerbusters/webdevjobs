@@ -18,17 +18,17 @@ class PostingTest extends WebDevJobsTest {
 	 * the posting
 	 * @var Posting $posting
 	 **/
-	protected $posting;
+	protected $postingId;
 	/**
 	 * Profile of the Posting; this is for foreign key relations
 	 * @var  Profile $ProfileId
 	 **/
-	protected $profile;
+	protected $profileId;
 	/**
 	 * Role of Posting; this is for foreign key relations
 	 * @var  Role $roleId
 	 **/
-	protected $role;
+	protected $roleId;
 	/** Posting company name that created the Posting
 	 * @var $VALID_POSTINGCOMPANYNAME
 	 */
@@ -76,7 +76,7 @@ class PostingTest extends WebDevJobsTest {
 		parent::getSetupOperation();
 
 		// create and insert a mocked Posting
-		$this->posting = new Posting(generateUuidV4(), "Haven Tech", "PHPUnit test passing", "null", "test@phpuit.ey", "null", "Albuquerque", "50,000", "recruiter");
+		$this->posting = new Posting(generateUuidV4(), generateUuidV4(), generateUuidV4(), "Haven Tech", "PHPUnit test passing", "null", "test@phpuit.ey", "null", "Albuquerque", "50,000", "recruiter");
 			$this->posting->insert($this->getPDO());
 
 		// calculate the date (just use the time the unit test was setup...)

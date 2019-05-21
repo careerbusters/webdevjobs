@@ -254,7 +254,7 @@ class Posting implements \JsonSerializable {
 
 		// store the like date using the ValidateDate trait
 		try {
-			$newPostingDate = self::validateDateTime($newPostingDate);
+			$newPostingDate = self::validateDate($newPostingDate);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -303,7 +303,7 @@ class Posting implements \JsonSerializable {
 
 		// store the like date using the validateDate trait
 		try {
-			$newPostingEndDate = self::validateDateTime($newPostingEndDate);
+			$newPostingEndDate = self::validateDate($newPostingEndDate);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
