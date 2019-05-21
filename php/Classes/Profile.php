@@ -540,7 +540,6 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : ?Profile {
  profileLocation, profileUsername FROM profile WHERE profileActivationToken = :profileActivationToken";
 		$statement = $pdo->prepare($query);
 		// bind the profile AT to the place holder in the template
-		$profileActivationToken = "%$profileActivationToken%";
 		$parameters = ["profileActivationToken" => $profileActivationToken];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
@@ -579,7 +578,6 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : ?Profile {
 profileLocation, profileUsername FROM profile WHERE profileEmail = :profileEmail";
 		$statement = $pdo->prepare($query);
 		// bind the profile email to the place holder in the template
-		$profileEmail = "%$profileEmail%";
 		$parameters = ["profileEmail" => $profileEmail];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
@@ -618,7 +616,6 @@ profileLocation, profileUsername FROM profile WHERE profileEmail = :profileEmail
 profileLocation, profileUsername FROM profile WHERE profileUsername = :profileUsername";
 		$statement = $pdo->prepare($query);
 		// bind the profile username to the place holder in the template
-		$profileUsername = "%$profileUsername%";
 		$parameters = ["profileUsername" => $profileUsername];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
@@ -694,9 +691,10 @@ profileLocation, profileUsername FROM profile WHERE profileRoleId = :profileRole
 		}
 // create query template
 		$query = "SELECT profileId, profileRoleId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, 
-profileLocation, profileUsername FROM profile WHERE profileUsername = :profileUsername";
+profileLocation, profileUsername FROM profile WHERE profileUsername like :profileUsername";
 		$statement = $pdo->prepare($query);
 		// bind the profile username to the place holder in the template
+		$profileUsername = "%$profileUsername%";
 		$parameters = ["profileUsername" => $profileUsername];
 		$statement->execute($parameters);
 		// build an array
