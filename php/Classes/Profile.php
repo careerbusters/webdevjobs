@@ -6,6 +6,7 @@ require_once(dirname(__DIR__) . "/vendor/autoload.php");
 require_once("autoload.php");
 
 use Ramsey\Uuid\Uuid;
+use CareerBusters\WebDevJobs\Role;
 
 /**
  * Building the Profile class and what is stored.
@@ -186,7 +187,7 @@ class Profile implements \JsonSerializable {
 
 	public function setProfileActivationToken(string $newProfileActivationToken): void {
 		if($newProfileActivationToken === null) {
-			$this->profileActivationToken = $newProfileActivationToken;
+			$this->profileActivationToken = null;
 			return;
 		}
 		$newProfileActivationToken = strtolower(trim($newProfileActivationToken));
@@ -194,7 +195,7 @@ class Profile implements \JsonSerializable {
 			throw(new\TypeError("profile activation is not valid"));
 		}
 		//make sure profile activation token is 32 characters
-		if(strlen($newProfileActivationToken) === 32) {
+		if(strlen($newProfileActivationToken) !== 32) {
 			throw(new\RangeException("profile activation token has to be 32 characters"));
 		}
 		// convert and store the activation token
@@ -426,10 +427,10 @@ class Profile implements \JsonSerializable {
 	public function insert(\PDO $pdo): void {
 		// create query template
 		$query = "INSERT INTO profile(profileId, profileRoleId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, profileLocation, profileUsername) 
-VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileBio, :profileEmail :profileHash, :profileImage, :profileLocation, :profileUsername)";
+VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileBio, :profileEmail, :profileHash, :profileImage, :profileLocation, :profileUsername)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId->getBytes(),
 			"profileActivationToken" => $this->profileActivationToken, "profileBio" => $this->profileBio, "profileEmail" => $this->profileEmail,
 		"profileHash" => $this->profileHash, "profileImage" => $this->profileImage, "profileLocation" => $this->profileLocation,  "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
