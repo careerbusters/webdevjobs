@@ -103,7 +103,21 @@ class Role implements \JsonSerializable {
 		$this->roleName = $uuid;
 	}
 
+	/**
+	 * updates this Role in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
 
+		// create query template
+		$query = "UPDATE role SET roleId = :roleId, roleName = :roleName WHERE roleId = :roleId";
+		$statement = $pdo->prepare($query);
+
+		$statement->execute($query);
+	}
 
 	/**
 	 * inserts into roles mySQL
