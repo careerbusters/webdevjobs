@@ -10,7 +10,7 @@ use PHPUnit\DbUnit\Operation\{Composite, Factory, Operation};
 // grab the encrypted properties file
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-require_once (dirname(__DIR__, 2) . "/vendor/autoload.php");
+require_once (dirname(__DIR__, 2) . "/autoload.php");
 
 /** create abstract class to test */
 abstract class WebDevJobsTest extends TestCase {

@@ -1,10 +1,10 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="WebDevJobs Test">
-			<file>ProfileTest.php</file>
-			<file>RoleTest.php</file>
+			<!--<file>ProfileTest.php</file>
+			<file>RoleTest.php</file> -->
 			<file>PostingTest.php</file>
-			<file>SaveJobTest.php</file>
+			<!--<file>SaveJobTest.php</file> -->
 		</testsuite>
 	</testsuites>
 	<filter>
