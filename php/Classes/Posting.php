@@ -441,7 +441,7 @@ class Posting implements \JsonSerializable {
 
 	public static function getPostingByPostingId(\PDO $pdo, $postingId): ?posting {
 		try {
-			$postingProfileId = self::validateUuid($postingId);
+			$postingId = self::validateUuid($postingId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
