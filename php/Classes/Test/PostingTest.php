@@ -3,7 +3,7 @@ namespace CareerBusters\WebDevJobs\Test;
 use CareerBusters\WebDevJobs\Posting;
 use CareerBusters\WebDevJobs\Profile;
 use CareerBusters\WebDevJobs\Role;
-use CareerBusters\WebDevJobs\Test\WebDevJobsTest;
+
 
 
 // grab the class under scrutiny
@@ -16,7 +16,7 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 class PostingTest extends WebDevJobsTest {
 	/**
 	 * the posting
-	 * @var Posting $posting
+	 * @var Posting $postingId
 	 **/
 	protected $postingId;
 	/**
@@ -77,7 +77,7 @@ class PostingTest extends WebDevJobsTest {
 
 		// create and insert a mocked Posting
 		$this->posting = new Posting(generateUuidV4(), generateUuidV4(), generateUuidV4(), "Haven Tech", "PHPUnit test passing", "null", "test@phpuit.ey", "null", "Albuquerque", "50,000", "recruiter");
-			$this->posting->insert($this->getPDO());
+			$this->postingId->insert($this->getPDO());
 
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTINGDATE = new \DateTime();
@@ -95,15 +95,13 @@ class PostingTest extends WebDevJobsTest {
 
 		// create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
-		$profileId = generateUuidV4();
-
-		$posting = new Posting($postingId, $this->profile->getProfileId(), $this->role->getRoleId(), $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
+				$posting = new Posting($postingId, $this->profileId->getProfileId(), $this->roleId->getRoleId(), $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPosting = Posting::getPostingByPostingId($this->getPDO(), $posting->getPostingId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("posting"));
-		$this->assertEquals($pdoPosting->getPostingId()->toString(), $postingId->toString());
+		$this->assertEquals($pdoPosting->getPostingId(), $postingId);
 		$this->assertEquals($pdoPosting->getPostingProfileId(), $posting->getPostingId()->toString());
 		$this->assertEquals($pdoPosting->getPostingRoleId(), $posting->getPostingId()->toString());
 		$this->assertEquals($pdoPosting->getPostingCompanyName(), $this->VALID_POSTINGCOMPANYNAME);

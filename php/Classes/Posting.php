@@ -4,9 +4,7 @@ namespace CareerBusters\WebDevJobs;
 require_once(dirname(__DIR__) . "/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 
-// TODO expand on open comment
-//TODO refactor insert update and constructor for postingProfileId
-//TODO write postingProfileId accessor and mutator
+
 /** create class for table Posting */
 
 
@@ -19,17 +17,17 @@ class Posting implements \JsonSerializable {
 	 * id for this posting; this is the primary key
 	 * @var Uuid $postingId
 	 **/
-	private $posting;
+	private $postingId;
 	/**
 	 * id of the profile that posting the job; this is a foreign key
 	 * @var Uuid $postingProfileId *
 	 */
-	private $postingProfile;
+	private $postingProfileId;
 	/**
 	 * id of the role that posting the job; this is a foreign key
 	 * @var Uuid $postingRoleId
 	 **/
-	private $postingRole;
+	private $postingRoleId;
 	/**
 	 * actual company name of the posting
 	 * @var string $postingCompanyName
@@ -139,7 +137,7 @@ class Posting implements \JsonSerializable {
 	 * @return Uuid value of posting profile id
 	 **/
 	public function getPostingProfileId(): Uuid {
-		return ($this->postingProfileId);
+		return ($this->getPostingProfileId());
 	}
 
 	/**
@@ -163,7 +161,7 @@ class Posting implements \JsonSerializable {
 	 * @return Uuid value of posting role id
 	 **/
 	public function getPostingRoleId(): Uuid {
-		return ($this->postingRoleId);
+		return ($this->getPostingRoleId());
 	}
 
 	/**
@@ -252,10 +250,10 @@ class Posting implements \JsonSerializable {
 			return;
 		}
 
-		// store the like date using the ValidateDate trait
+		// store the date using the ValidateDateTime trait
 		try {
-			$newPostingDate = self::validateDate($newPostingDate);
-		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$newPostingDate = self::validateDateTime($newPostingDate);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
@@ -301,10 +299,10 @@ class Posting implements \JsonSerializable {
 	public function setPostingEndDate($newPostingEndDate): void {
 		// base case: if the date is null, use the current date and time
 
-		// store the like date using the validateDate trait
+		// store the like date using the validateDateTime trait
 		try {
-			$newPostingEndDate = self::validateDate($newPostingEndDate);
-		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$newPostingEndDate = self::validateDateTime($newPostingEndDate);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
@@ -476,9 +474,6 @@ class Posting implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 
-	// TODO write getPostingByPostingId "return to single object"
-	// TODO write postingByRole
-	// TODO write get all current postings "like getAllTweets"
 	public static function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId): ?posting {
 
 		try {
