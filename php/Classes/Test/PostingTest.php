@@ -78,19 +78,6 @@ class PostingTest extends WebDevJobsTest {
 		$this->posting = new Posting(generateUuidV4(), "Haven Tech", "PHPUnit test passing", "null", "test@phpuit.ey", "null", "Albuquerque", "50,000", "recruiter");
 			$this->posting->insert($this->getPDO());
 
-// create a hash for the mocked profile
-		$password = "abc123";
-		$this->VALID_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
-		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
-
-			// create the and insert the mocked profile
-		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(), "null", "freelancer", "test@phpunit.ey",$this->VALID_HASH, "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Albuquerque", "freelancer");
-		$this->profile->insert($this->getPDO());
-
-		// create the and insert the mocked role
-		$this->role = new Role(generateUuidV4(), "developer");
-		$this->role->insert($this->getPDO());
-
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_POSTINGDATE = new \DateTime();
 
