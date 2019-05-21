@@ -10,8 +10,8 @@ use Ramsey\Uuid\Uuid;
 
 
 class Posting implements \JsonSerializable {
-	use validateDate;
-	use validateUuid;
+	use ValidateDate;
+	use ValidateUuid;
 
 	/**
 	 * id for this posting; this is the primary key
