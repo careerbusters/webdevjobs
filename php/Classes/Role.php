@@ -1,7 +1,7 @@
 <?php
 
 namespace CareerBusters\WebDevJobs;
-require_once(dirname(__DIR__) . "/vendor/autoload.php");
+require_once(dirname(__DIR__, 1) . "/vendor/autoload.php");
 require_once("autoload.php");
 
 use Ramsey\Uuid\Uuid;
@@ -140,6 +140,21 @@ class Role implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * updates this Role in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
+
+		// create query template
+		$query = "UPDATE role SET roleId = :roleId, roleName = :roleName WHERE roleId = :roleId";
+		$statement = $pdo->prepare($query);
+
+		$statement->execute($query);
+	}
 
 	/**
 	 * gets the Role by roleId
