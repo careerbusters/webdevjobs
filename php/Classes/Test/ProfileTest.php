@@ -1,7 +1,8 @@
 <?php
 namespace CareerBusters\WebDevJobs\Test;
 use CareerBusters\WebDevJobs\Profile;
-use CareerBusters\WebDevJobs\WebDevJobsTest;
+use CareerBusters\WebDevJobs\Role;
+
 
 // require once statements
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -85,7 +86,7 @@ class ProfileTest extends WebDevJobsTest {
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 		// creating role content
 		$this->role = new Role(generateUuidv4(), "Role Name");
-		$this->role->insert($this->getPDO);
+		$this->role->insert($this->getPDO());
 	}
 
 	/**
