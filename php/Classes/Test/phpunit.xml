@@ -1,6 +1,6 @@
 <phpunit>
 	<testsuites>
-		<testsuite name="WebDevJobs Test">
+		<testsuite name="WebDevJobsTest">
 			<!--<file>ProfileTest.php</file>-->
 			<file>RoleTest.php</file>
 			<!--<file>PostingTest.php</file>

@@ -4,7 +4,6 @@ namespace CareerBusters\WebDevJobs\Test;
 
 use CareerBusters\WebDevJobs\Role;
 
-
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 
