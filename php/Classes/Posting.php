@@ -19,17 +19,17 @@ class Posting implements \JsonSerializable {
 	 * id for this posting; this is the primary key
 	 * @var Uuid $postingId
 	 **/
-	private $postingId;
+	private $posting;
 	/**
 	 * id of the profile that posting the job; this is a foreign key
 	 * @var Uuid $postingProfileId *
 	 */
-	private $postingProfileId;
+	private $postingProfile;
 	/**
 	 * id of the role that posting the job; this is a foreign key
 	 * @var Uuid $postingRoleId
 	 **/
-	private $postingRoleId;
+	private $postingRole;
 	/**
 	 * actual company name of the posting
 	 * @var string $postingCompanyName

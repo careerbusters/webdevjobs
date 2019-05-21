@@ -95,6 +95,8 @@ class PostingTest extends WebDevJobsTest {
 
 		// create a new Posting and insert to into mySQL
 		$postingId = generateUuidV4();
+		$profileId = generateUuidV4();
+
 		$posting = new Posting($postingId, $this->profile->getProfileId(), $this->role->getRoleId(), $this->VALID_POSTINGCOMPANYNAME, $this->VALID_POSTINGCONTENT, $this->VALID_POSTINGDATE, $this->VALID_POSTINGEMAIL, $this->VALID_POSTINGENDDATE, $this->VALID_POSTINGLOCATION, $this->VALID_POSTINGPAY, $this->VALID_POSTINGTITLE);
 		$posting->insert($this->getPDO());
 
