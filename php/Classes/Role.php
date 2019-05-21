@@ -122,6 +122,24 @@ class Role implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * deletes this Role from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+
+		// create query template
+		$query = "DELETE FROM role WHERE roleId = :roleId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["roleId" => $this->roleId->getBytes()];
+		$statement->execute($parameters);
+	}
+
 
 	/**
 	 * gets the Role by roleId

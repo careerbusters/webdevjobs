@@ -103,7 +103,7 @@ class RoleTest extends WebDevJobsTest {
 
 		// create a new Role and insert to into mySQL
 		$roleId = generateUuidV4();
-		$role = new Role($roleId, $this->roleId->getRoleId(), $this->VALID_ROLENAME, $this->VALID_ROLENAME2);
+		$role = new Role($roleId, $this->VALID_ROLENAME, $this->VALID_ROLENAME2);
 		$role->insert($this->getPDO());
 		// delete the Role from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("role"));
