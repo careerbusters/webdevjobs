@@ -83,7 +83,7 @@ class ProfileTest extends WebDevJobsTest {
 		//
 		$password = "password1";
 		$this->VALID_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
-		$this->VALID_ACTIVATION = bin2hex(random_bytes(32));
+		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 		// creating role content
 		$this->role = new Role(generateUuidv4(), "Role Name");
 		$this->role->insert($this->getPDO());

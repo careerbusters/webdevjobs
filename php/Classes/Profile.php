@@ -260,7 +260,7 @@ class Profile implements \JsonSerializable {
 	public function setProfileEmail(string $newProfileEmail): void {
 // verify the email content is secure
 		$newProfileEmail = trim($newProfileEmail);
-		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_EMAIL);
 		if(empty($newProfileEmail) === true) {
 			throw(new \InvalidArgumentException("Email is empty or insecure"));
 		}
@@ -269,7 +269,7 @@ class Profile implements \JsonSerializable {
 			throw(new \RangeException("email content too large"));
 		}
 		// store the email content
-		$this->$newProfileEmail = $newProfileEmail;
+		$this->profileEmail = $newProfileEmail;
 	}
 
 	/**
@@ -343,7 +343,7 @@ class Profile implements \JsonSerializable {
 			throw(new \RangeException("image content too large"));
 		}
 		// store the image content
-		$this->$newProfileImage = $newProfileImage;
+		$this->profileImage = $newProfileImage;
 	}
 
 	/**
