@@ -70,13 +70,15 @@ class PostingTest extends WebDevJobsTest {
 // run the default setUp() method first
 		parent::setup();
 
+		$password = "abc123";
+		$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$activation = bin2hex(random_bytes(16));
 
 		// create and insert a mocked Profile
 		$this->role = new Role(generateUuidV4(),"recruiter");
 		$this->role->insert($this->getPDO());
-		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(),"null", "i code stuff", "test@phpuit.ey", "hash", "http://placemorty.us/300/200", "Albuquerque", "bobbyjohn");
+		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(), $activation, "i code stuff", "test@phpuit.ey", $hash, "http://placemorty.us/300/200", "Albuquerque", "bobbyjohn");
 			$this->profile->insert($this->getPDO());
-
 
 
 		// calculate the date (just use the time the unit test was setup...)
