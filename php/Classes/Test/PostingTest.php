@@ -153,7 +153,7 @@ class PostingTest extends WebDevJobsTest {
 	/**
 	 *test postingRoleId from posting
 	 */
-	public function testValidPostingRoleId(): void {
+	public function testValidPostingByPostingRoleId(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("posting");
 
@@ -178,7 +178,7 @@ class PostingTest extends WebDevJobsTest {
 		$this->assertEquals($pdoPosting->getPostingTitle(), $this->VALID_POSTINGTITLE);
 
 		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());
+		$this->assertEquals($pdoPosting->getPostingDate()->getTimestamp(), $this->VALID_POSTINGDATE->getTimestamp());;
 
 	}
 	/**

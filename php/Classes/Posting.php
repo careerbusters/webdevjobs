@@ -534,11 +534,11 @@ class Posting implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $postingRoleId posting id to search for
-	 * @return \SplFixedArray SplFixedArray of profile found
+	 *  @return posting|null posting found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId): \SplFixedArray  {
+	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId): ?posting  {
 
 		// sanitize the todoId before searching
 		// sanitize the postingId before searching
