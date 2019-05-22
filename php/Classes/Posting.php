@@ -1,19 +1,20 @@
 <?php
 
 namespace CareerBusters\WebDevJobs;
-require_once(dirname(__DIR__) . "/Classes/autoload.php");
+require_once(dirname(__DIR__) . "/vendor/autoload.php");
+require_once("autoload.php");
 use Ramsey\Uuid\Uuid;
 
-// TODO expand on open comment
-//TODO refactor insert update and constructor for postingProfileId
-//TODO write postingProfileId accessor and mutator
+use CareerBusters\WebDevJobs\Role;
+use CareerBusters\WebDevJobs\profile;
+
 /** create class for table Posting */
 
 
 
 class Posting implements \JsonSerializable {
-	use validateDate;
-	use validateUuid;
+	use ValidateDate;
+	use ValidateUuid;
 
 	/**
 	 * id for this posting; this is the primary key
@@ -22,8 +23,8 @@ class Posting implements \JsonSerializable {
 	private $postingId;
 	/**
 	 * id of the profile that posting the job; this is a foreign key
-	 * @var Uuid $postingRoleId
-	 **/
+	 * @var Uuid $postingProfileId
+	 */
 	private $postingProfileId;
 	/**
 	 * id of the role that posting the job; this is a foreign key
@@ -85,12 +86,12 @@ class Posting implements \JsonSerializable {
 	 * @param string $newPostingLocation based on city and state of posting
 	 * @param string $newPostingPay pay will be based on content or null if content was resubmitted
 	 * @param string $newPostingTitle will be associated to postingId
-	 	 * @throws /RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws /RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws /TypeError if data types violate type hints
 	 * @throws   /Exception if some other exception occurs
 	 *
 	 */
-	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle = null) {
+	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle) {
 		try {
 			$this->setPostingId($newPostingId);
 			$this->setPostingProfileId($newPostingProfileId);
@@ -111,8 +112,8 @@ class Posting implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for posting id
-	 * @return Uuid value of posting id
+	 * accessor method for postingId
+	 * @return Uuid value of postingId
 	 **/
 	public function getPostingId(): Uuid {
 		return ($this->postingId);
@@ -121,9 +122,9 @@ class Posting implements \JsonSerializable {
 	/**
 	 * mutator method for posting id
 	 *
-	 * @param Uuid|string $newPostingId new value of posting id
+	 * @param string $newPostingId value of new posting id
 	 * @throws \RangeException if $newPostingId is not positive
-	 * @throws \TypeError if $newPostingId is not a uuid or string
+	 * @throws \TypeError if PostingId is not positive
 	 **/
 	public function setPostingId($newPostingId): void {
 		try {
@@ -132,13 +133,24 @@ class Posting implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+		// convert and store the profile id
+		$this->postingId = $uuid;
 	}
+
+	/**
+	 * accessor method for postingProfileId
+	 *  @return string|Uuid for postingProfileId (or null if new Posting)
+	 **/
+	public function getPostingProfileId(): Uuid {
+	return ($this->postingProfileId);
+	}
+
 	/**
 	 * mutator method for posting profile id
 	 *
-	 * @param Uuid|string $newPostingProfileId new value of posting profile id
+	 * @param Uuid|string $newPostingProfileId value of new postingProfile id
 	 * @throws \RangeException if $newPostingProfileId is not positive
-	 * @throws \TypeError if $newPostingProfileId is not a uuid or string
+	 * @throws \TypeError if PostingProfileId is not positive
 	 **/
 	public function setPostingProfileId($newPostingProfileId): void {
 		try {
@@ -147,13 +159,24 @@ class Posting implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+		// convert and store the postingProfile id
+		$this->postingProfileId = $uuid;
 	}
+
 	/**
-	 * mutator method for posting role id
+	 * accessor method for postingRoleId
+	 *  @return string|Uuid for postingRoleId (or null if new Posting)
+	 **/
+	public function getPostingRoleId(): Uuid {
+		return ($this->PostingRoleId);
+	}
+
+	/**
+	 * mutator method for postingRole id
 	 *
-	 * @param Uuid|string $newPostingRoleId new value of posting role id
+	 * @param string $newPostingRoleId value of new PostingRole id
 	 * @throws \RangeException if $newPostingRoleId is not positive
-	 * @throws \TypeError if $newPostingRoleId is not a uuid or string
+	 * @throws \TypeError if PostingRoleId is not positive
 	 **/
 	public function setPostingRoleId($newPostingRoleId): void {
 		try {
@@ -162,10 +185,13 @@ class Posting implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+		// convert and store the postingRole id
+		$this->postingRoleId = $uuid;
 	}
+
 	/**
-	 * accessor method for posting company name
-	 * @return string value of posting company name
+	 * accessor method for postingCompanyName
+	 * @return string value of postingCompanyName
 	 **/
 	public function getPostingCompanyName(): string {
 		return ($this->postingCompanyName);
@@ -175,26 +201,28 @@ class Posting implements \JsonSerializable {
 	 * mutator method for posting company name
 	 * @param string $newPostingCompanyName new value of posting company name
 	 * @throws \typeError if $newPostingCompanyName is not a string
-
 	 **/
 	public function setPostingCompanyName($newPostingCompanyName): void {
 		$newPostingCompanyName = trim($newPostingCompanyName);
 		$newPostingCompanyName = filter_var($newPostingCompanyName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostingCompanyName) === true) {
 			throw(new \InvalidArgumentException("company name is empty"));
-		}}
+		}
+	}
+
 	/**
-	 * accessor method for posting content
-	 * @return string value of posting content
+	 * accessor method for postingContent
+	 * @return string value of postingContent
 	 **/
 	public function getPostingContent(): string {
 		return ($this->postingContent);
 	}
 
 	/**
-	 * mutator method for posting content
+	 * mutator method for postingContent
 	 * @param string $newPostingContent new value of posting content
 	 * @throws \TypeError if $newPostingContent is not a string
+	 * @throws \RangeException if $newProfileBio is over charset
 	 **/
 	public function setPostingContent($newPostingContent): void {
 		$newPostingContent = trim($newPostingContent);
@@ -208,13 +236,16 @@ class Posting implements \JsonSerializable {
 		if(strlen($newPostingContent) > 30000) {
 			throw(new \RangeException("posting content too large"));
 		}
+		// store the content
+		$this->postingContent = $newPostingContent;
 	}
+
 	/**
 	 * accessor method for posting date
 	 * @return \DateTime value of posting date
 	 **/
-	public function getPostingDate() : \DateTime {
-		return($this->postingDate);
+	public function getPostingDate(): \DateTime {
+		return ($this->postingDate);
 	}
 
 	/**
@@ -224,22 +255,23 @@ class Posting implements \JsonSerializable {
 	 * @throws \RangeException if $newPostingDate is a date that does not exist
 	 * @throws  \typeError if $eventStartTime is no a /Datetime
 	 **/
-	public function setPostingDate($newPostingDate = null) : void {
+	public function setPostingDate($newPostingDate = null): void {
 		// base case: if the date is null, use the current date and time
 		if($newPostingDate === null) {
 			$this->postingDate = new \DateTime();
 			return;
 		}
 
-		// store the like date using the ValidateDate trait
+		// store the date using the ValidateDateTime trait
 		try {
 			$newPostingDate = self::validateDateTime($newPostingDate);
-		} catch(\InvalidArgumentException | \RangeException $exception) {
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		$this->postingDate = $newPostingDate;
 	}
+
 	/**
 	 * accessor method for posting email
 	 * @return string value of posting email
@@ -252,7 +284,6 @@ class Posting implements \JsonSerializable {
 	 * mutator method for posting email
 	 * @param string $newPostingEmail new value of posting email
 	 * @throws \typeError if $newPostingEmail is not a string
-
 	 **/
 	public function setPostingEmail($newPostingEmail): void {
 		$newPostingEmail = trim($newPostingEmail);
@@ -260,14 +291,18 @@ class Posting implements \JsonSerializable {
 		if(empty($newPostingEmail) === true) {
 			throw(new \InvalidArgumentException("posting email is empty"));
 		}
+		// store the email content
+		$this->postingEmail = $newPostingEmail;
 	}
+
 	/**
 	 * accessor method for posting end date
 	 * @return \DateTime value of posting end date
 	 **/
-	public function getPostingEndDate() : \DateTime {
-		return($this->postingEndDate);
+	public function getPostingEndDate(): \DateTime {
+		return ($this->postingEndDate);
 	}
+
 	/**
 	 * mutator method for posting end date
 	 * @param \DateTime|string|null $newPostingEndDate date as a DateTime object or string (or null to load the current time)
@@ -275,21 +310,25 @@ class Posting implements \JsonSerializable {
 	 * @throws \RangeException if $newPostingEndDate is a date that does not exist
 	 *  * @throws  \typeError if $eventStartTime is no a /Datetime
 	 **/
-	public function setPostingEndDate($newPostingEndDate) : void {
+	public function setPostingEndDate($newPostingEndDate): void {
 		// base case: if the date is null, use the current date and time
-
-		// store the like date using the validateDate trait
+		if($newPostingEndDate === null) {
+			$this->postingDate = new \DateTime();
+			return;
+		}
+		// store the like date using the validateDateTime trait
 		try {
 			$newPostingEndDate = self::validateDateTime($newPostingEndDate);
-		} catch(\InvalidArgumentException | \RangeException $exception) {
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		$this->postingEndDate = $newPostingEndDate;
 	}
+
 	/**
-	 * accessor method for posting location
-	 * @return string value of posting location
+	 * accessor method for postingLocation
+	 * @return string value of postingLocation
 	 **/
 	public function getPostingLocation(): string {
 		return ($this->postingLocation);
@@ -299,7 +338,6 @@ class Posting implements \JsonSerializable {
 	 * mutator method for posting location
 	 * @param string $newPostingLocation new value of posting location
 	 * @throws \typeError if $newPostingLocation is not a string
-
 	 **/
 	public function setPostingLocation($newPostingLocation): void {
 		$newPostingLocation = trim($newPostingLocation);
@@ -307,11 +345,14 @@ class Posting implements \JsonSerializable {
 		if(empty($newPostingLocation) === true) {
 			throw(new \InvalidArgumentException("posting location isn't in Albuquerque"));
 		}
+		// store the location
+		$this->postingLocation = $newPostingLocation;
 	}
-/**
-* accessor method for posting pay
-* @return string value of posting title
-**/
+
+	/**
+	 * accessor method for postingPay
+	 * @return string value of postingPay
+	 **/
 	public function getPostingPay(): string {
 		return ($this->postingPay);
 	}
@@ -320,19 +361,21 @@ class Posting implements \JsonSerializable {
 	 * mutator method for posting pay
 	 * @param string $newPostingPay new value of posting pay
 	 * @throws \typeError if $newPostingPay is not a string
-
 	 **/
 	public function setPostingPay($newPostingPay): void {
 		$newPostingPay = trim($newPostingPay);
 		$newPostingPay = filter_var($newPostingPay, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostingPay) === true) {
 			throw(new \InvalidArgumentException("how much the job pays is missing"));
-		}}
+		}
+		// store the pay
+		$this->postingPay = $newPostingPay;
+	}
 
 	/**
-	/**
-	 * accessor method for posting title
-	 * @return string value of posting title
+	 * /**
+	 * accessor method for postingTitle
+	 * @return string value of postingTitle
 	 **/
 	public function getPostingTitle(): string {
 		return ($this->postingTitle);
@@ -342,48 +385,31 @@ class Posting implements \JsonSerializable {
 	 * mutator method for posting title
 	 * @param string $newPostingTitle new value of posting title
 	 * @throws \typeError if $newPostingTitle is not a string
-
 	 **/
 	public function setPostingTitle($newPostingTitle): void {
 		$newPostingTitle = trim($newPostingTitle);
 		$newPostingTitle = filter_var($newPostingTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostingTitle) === true) {
 			throw(new \InvalidArgumentException("job title is missing"));
-		}}
-/**
- *inserts this posting into mySQL
- *
- *@param \PDO $pdo PDO connection object
- *@throws \PDOException when mySQL related errors occur
- *@throws |\TypeError if $pdo is not a PDO connection object
- */
-public function insert(\PDO $pdo) : void {
-
-	// create query template
-	$query = "INSERT INTO posting(postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle) VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :postingContent, :postingDate, :postingEmail, :postingEndDate, :postingLocation, :postingPay, :postingTitle )";
-$statement = $pdo->prepare($query);
-
-	// bind the member variable to the place holders in the template
-	$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
-		$parameters = ["postingId" => $this->postingId->getBytes(), "postProfileId" => $this->postingProfileId->getBytes(), "postRoleId" => $this->postingRoleId->getBytes(), "postingCompanyName" => $this->postingCompanyName, "postingContent" => $this->postingContent, "postingEmail" => $this->postingEmail, "postingLocation" => $this->postingLocation, "postingTitle" => $this->postingTitle, "postingPay" => $this->postingPay, "postingDate" => $formattedDate, "postingEndDate" => $formattedDate];
-		$statement->execute($parameters);
-}
+		}
+		// store the title
+		$this->postingTitle = $newPostingTitle;
+	}
 
 	/**
-	 * deletes this posting from mySQL
+	 *inserts this posting into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function delete(\PDO $pdo) : void {
-
+	 * @throws |\TypeError if $pdo is not a PDO connection object
+	 */
+	public function insert(\PDO $pdo): void {
 		// create query template
-		$query = "DELETE FROM posting WHERE postingId = :postingId";
+		$query = "INSERT INTO posting(postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle) VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :postingContent, :postingDate, :postingEmail, :postingEndDate, :postingLocation, :postingPay, :postingTitle )";
 		$statement = $pdo->prepare($query);
-
-		// bind the member variables to the place holder in the template
-		$parameters = ["postingId" => $this->postingId->getBytes()];
+		// bind the member variable to the place holders in the template
+		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
+		$parameters = ["postingId" => $this->postingId->getBytes(), "postingProfileId" => $this->postingProfileId->getBytes(), "postingRoleId" => $this->postingRoleId->getBytes(), "postingCompanyName" => $this->postingCompanyName, "postingContent" => $this->postingContent, "postingEmail" => $this->postingEmail, "postingLocation" => $this->postingLocation, "postingTitle" => $this->postingTitle, "postingPay" => $this->postingPay, "postingDate" => $formattedDate, "postingEndDate" => $formattedDate];
 		$statement->execute($parameters);
 	}
 
@@ -394,33 +420,90 @@ $statement = $pdo->prepare($query);
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function update(\PDO $pdo) : void {
+	public function update(\PDO $pdo): void {
 
 		// create query template
-		$query = "UPDATE posting SET postingId = :postingId, postingProfileId = :postingProfileId, postingRoleId = postingRoleId, postingCompanyName = :postingCompanyName, postingContent = :postingContent, postingDate = :postingDate, postingEmail = :postingEmail, postingEndDate = :postingEndDate, postingLocation = :postingLocation, postingPay = :postingPay, postingTitle = :postingTitle";
+		$query = "UPDATE posting SET postingProfileId = :postingProfileId, postingRoleId = :postingRoleId, postingCompanyName = :postingCompanyName, postingContent = :postingContent, postingDate = :postingDate, postingEmail = :postingEmail, postingEndDate = :postingEndDate, postingLocation = :postingLocation, postingPay = :postingPay, postingTitle = :postingTitle  WHERE postingId = :postingId";
 		$statement = $pdo->prepare($query);
-
 
 		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
 		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent, "postingDate" => $formattedDate];
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * deletes this posting from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo): void {
+		// create query template
+		$query = "DELETE FROM posting WHERE postingId = :postingId";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holder in the template
+		$parameters = ["postingId" => $this->postingId->getBytes()];
+		$statement->execute($parameters);
+	}
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+		$fields["postingId"] = $this->postingId->toString();
+		$fields["postingProfileId"] = $this->postingProfileId->toString();
+		$fields["postingRoleId"] = $this->postingRoleId->toString();
+		return ($fields);
+	}
+	/**
+	 * gets the posting by postingId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $postingId posting id to search by
+	 * @return posting|null posting found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+
+	public static function getPostingByPostingId(\PDO $pdo, $postingId): ?posting {
+		try {
+			$postingId = self::validateUuid($postingId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		// create query template
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
+		$statement = $pdo->prepare($query);
+		// build an array of posting
+		$posting = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$postingId[$postingId->key()] = $posting;
+				$postingId->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($posting);
+	}
 
 	/**
 	 * gets the posting by postingProfileId
 	 *
-	 * 	@param \PDO $pdo PDO connection object
-	 *	 	@param Uuid|string $postingProfileId posting id to search by
-	 * 	 @return posting|null posting found or null if not found
-	 * 	@throws \PDOException when mySQL related errors occur
-	 * 	@throws \TypeError when variables are not the correct data type
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $postingProfileId posting id to search by
+	 * @return posting|null posting found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
 	 **/
 
-	// TODO write getPostingByPostingId "return to single object"
-	// TODO write postingByRole
-	// TODO write get all current postings "like getAllTweets"
-	public function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId) : ?posting {
+	public static function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId): ?posting {
 
 		try {
 			$postingProfileId = self::validateUuid($postingProfileId);
@@ -428,7 +511,7 @@ $statement = $pdo->prepare($query);
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingProfileId = :postingProfileId";
 		$statement = $pdo->prepare($query);
 		// build an array of posting
 		$posting = new \SplFixedArray($statement->rowCount());
@@ -441,20 +524,24 @@ $statement = $pdo->prepare($query);
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}}
-		return($posting);}
+			}
+		}
+		return ($posting);
+	}
 
 	/**
 	 * gets the posting by postingRoleId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $postingRoleId posting id to search for
-	 * @return posting|null posting found or null if not found
+	 *  @return posting|null posting found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId) : ?posting {
-		// sanitize the tweetId before searching
+	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId): ?posting  {
+
+		// sanitize the todoId before searching
+		// sanitize the postingId before searching
 		try {
 			$postingRoleId = self::validateUuid($postingRoleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -462,22 +549,27 @@ $statement = $pdo->prepare($query);
 		}
 
 		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingRoleId = :postingRoleId";
 		$statement = $pdo->prepare($query);
+		// bind the posting role id to the place holder in the template
+		$parameters = ["postingRoleId" => $postingRoleId->getBytes()];
+		$statement->execute($parameters);
 		// build an array of posting
 		$posting = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				$postingRoleId[$postingRoleId->key()] = $posting;
-				$postingRoleId->next();
+				$postings[$postings->key()] = $posting;
+				$postings->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}}
-		return($posting);
+			}
+		}
+		return ($postings);
 	}
+
 	/**
 	 * gets all postings
 	 *
@@ -486,9 +578,9 @@ $statement = $pdo->prepare($query);
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getAllPostings(\PDO $pdo) : \SPLFixedArray {
+	public static function getAllPostings(\PDO $pdo): \SPLFixedArray {
 		// create query template
-		$query = "postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle FROM posting";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle FROM posting";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -506,16 +598,4 @@ $statement = $pdo->prepare($query);
 			}
 		}
 		return ($postings);
-	}
-
-
-/**
- * formats the state variables for JSON serialization
- *
- * @return array resulting state variables to serialize
- **/
-public function jsonSerialize() : array {
-	$fields = get_object_vars($this);
-
-	$fields["postingId"] = $this->postingId->toString();
-}}
+	}}

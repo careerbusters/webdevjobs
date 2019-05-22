@@ -1,7 +1,8 @@
 <?php
 
 namespace CareerBusters\WebDevJobs;
-require_once(dirname(__DIR__) . "/classes/autoload.php");
+require_once(dirname(__DIR__, 1) . "/vendor/autoload.php");
+require_once("autoload.php");
 
 use Ramsey\Uuid\Uuid;
 
@@ -16,7 +17,7 @@ use Ramsey\Uuid\Uuid;
  * @version 1.0.0
  **/
 class Role implements \JsonSerializable {
-	use ValidateDate;
+	use validateDate;
 	use ValidateUuid;
 	/**
 	 *id and Role (primary key)
@@ -40,7 +41,7 @@ class Role implements \JsonSerializable {
 	 * @throws \Exception if some other excepting occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newRoleId, $newRoleName = null) {
+	public function __construct($newRoleId, $newRoleName) {
 		try {
 			$this->setRoleId($newRoleId);
 			$this->setRoleName($newRoleName);
@@ -81,7 +82,7 @@ class Role implements \JsonSerializable {
 	 * Accessor method for roleName
 	 * @return string|Uuid for roleName (or null if new Role Name)
 	 **/
-	public function getRoleName(): Uuid {
+	public function getRoleName(): string {
 		return ($this->roleName);
 	}
 
@@ -93,17 +94,15 @@ class Role implements \JsonSerializable {
 	 * @throws \TypeError if the role name is not positive
 	 **/
 	public function setRoleName($newRoleName): Void {
-		try {
-			$uuid = self::validateUuid($newRoleName);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exception = get_class($exception);
-			throw(new $exception($exception->getMessage(), 0, $exception));
+		// verify the Role content is secure
+		$newRoleName = trim($newRoleName);
+		$newRoleName = filter_var($newRoleName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(strlen($newRoleName) > 32) {
+			throw(new \RangeException("role name content too large"));
 		}
 		//convert and store role name
-		$this->roleName = $uuid;
+		$this->roleName = $newRoleName;
 	}
-
-
 
 	/**
 	 * inserts into roles mySQL
@@ -122,18 +121,56 @@ class Role implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
-
 	/**
-	 * gets the Role by roleId
+	 * deletes this Role from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $roleId role id to search for
-	 * @return Role|null Role found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+
+		// create query template
+		$query = "DELETE FROM role WHERE roleId = :roleId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["roleId" => $this->roleId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this Role in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
+
+		// create query template
+		$query = "UPDATE role SET roleId = :roleId, roleName = :roleName WHERE roleId = :roleId";
+		$statement = $pdo->prepare($query);
+
+		$statement->execute($query);
+	}
+
+	/**
+	 * gets the Role by role id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $roleId role id to search for
+	 * @return \SplFixedArray SplFixedArray of Roles found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
+<<<<<<< HEAD
 	public static function getRoleByRoleId(\PDO $pdo, $roleId): Role {
 		// sanitize the roleId before searching
+=======
+	public static function getRoleByRoleId(\PDO $pdo, $roleId): ?Role {
+		// sanitize the role id before searching
+>>>>>>> develop
 		try {
 			$roleId = self::validateUuid($roleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -145,26 +182,26 @@ class Role implements \JsonSerializable {
 		// bind the role id to the place holder in the template
 		$parameters = ["roleId" => $roleId->getBytes()];
 		$statement->execute($parameters);
-		// grab the tweet from mySQL
+		// grab the Profile from my SQL
 		try {
-			$roleId = null;
+			$role = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$roleId = new Role($row["roleId"], $row["roleName"]);
+				$role = new Role($row["roleId"], $row["roleName"]);
 			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-		return ($roleId);
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		return ($role);
+
 	}
 
 	/**
-	 * gets the Role by role id
+	 * gets All Roles by role id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $roleId role id to search by
 	 * @return \SplFixedArray SplFixedArray of roles found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type

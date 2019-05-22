@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
  * @version 1.0.0
  **/
 class SavedJob implements \JsonSerializable {
-	use ValidateDate;
+	use validateDate;
 	use ValidateUuid;
 	/**
 	 * id and savedJob (foreign key)

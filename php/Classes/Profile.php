@@ -6,6 +6,7 @@ require_once(dirname(__DIR__) . "/vendor/autoload.php");
 require_once("autoload.php");
 
 use Ramsey\Uuid\Uuid;
+use CareerBusters\WebDevJobs\Role;
 
 /**
  * Building the Profile class and what is stored.
@@ -16,7 +17,7 @@ use Ramsey\Uuid\Uuid;
 
 class Profile implements \JsonSerializable {
 	use ValidateUuid;
-	use ValidateDate;
+	use validateDate;
 
 	/**
 	 * id and P.K. for Profile
@@ -186,7 +187,7 @@ class Profile implements \JsonSerializable {
 
 	public function setProfileActivationToken(string $newProfileActivationToken): void {
 		if($newProfileActivationToken === null) {
-			$this->profileActivationToken = $newProfileActivationToken;
+			$this->profileActivationToken = null;
 			return;
 		}
 		$newProfileActivationToken = strtolower(trim($newProfileActivationToken));
@@ -194,7 +195,7 @@ class Profile implements \JsonSerializable {
 			throw(new\TypeError("profile activation is not valid"));
 		}
 		//make sure profile activation token is 32 characters
-		if(strlen($newProfileActivationToken) === 32) {
+		if(strlen($newProfileActivationToken) !== 32) {
 			throw(new\RangeException("profile activation token has to be 32 characters"));
 		}
 		// convert and store the activation token
@@ -259,7 +260,7 @@ class Profile implements \JsonSerializable {
 	public function setProfileEmail(string $newProfileEmail): void {
 // verify the email content is secure
 		$newProfileEmail = trim($newProfileEmail);
-		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_EMAIL);
 		if(empty($newProfileEmail) === true) {
 			throw(new \InvalidArgumentException("Email is empty or insecure"));
 		}
@@ -268,7 +269,7 @@ class Profile implements \JsonSerializable {
 			throw(new \RangeException("email content too large"));
 		}
 		// store the email content
-		$this->$newProfileEmail = $newProfileEmail;
+		$this->profileEmail = $newProfileEmail;
 	}
 
 	/**
@@ -342,7 +343,7 @@ class Profile implements \JsonSerializable {
 			throw(new \RangeException("image content too large"));
 		}
 		// store the image content
-		$this->$newProfileImage = $newProfileImage;
+		$this->profileImage = $newProfileImage;
 	}
 
 	/**
@@ -426,10 +427,10 @@ class Profile implements \JsonSerializable {
 	public function insert(\PDO $pdo): void {
 		// create query template
 		$query = "INSERT INTO profile(profileId, profileRoleId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, profileLocation, profileUsername) 
-VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileBio, :profileEmail :profileHash, :profileImage, :profileLocation, :profileUsername)";
+VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileBio, :profileEmail, :profileHash, :profileImage, :profileLocation, :profileUsername)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId->getBytes(),
 			"profileActivationToken" => $this->profileActivationToken, "profileBio" => $this->profileBio, "profileEmail" => $this->profileEmail,
 		"profileHash" => $this->profileHash, "profileImage" => $this->profileImage, "profileLocation" => $this->profileLocation,  "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
@@ -447,7 +448,7 @@ VALUES(:profileId, :profileRoleId, :profileActivationToken, :profileBio, :profil
 		$query = "UPDATE profile SET profileRoleId = :profileRoleId, profileActivationToken = :profileActivationToken, profileBio = :profileBio, profileEmail = :profileEmail,
  profileHash = :profileHash, profileImage = :profileImage, profileLocation = :profileLocation, profileUsername = :profileUsername WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
-		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId,
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileRoleId" => $this->profileRoleId->getBytes(),
 			"profileActivationToken" => $this->profileActivationToken, "profileBio" => $this->profileBio, "profileEmail" => $this->profileEmail,
 			"profileHash" => $this->profileHash, "profileImage" => $this->profileImage, "profileLocation" => $this->profileLocation,  "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
@@ -539,8 +540,7 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : ?Profile {
  profileLocation, profileUsername FROM profile WHERE profileActivationToken = :profileActivationToken";
 		$statement = $pdo->prepare($query);
 		// bind the profile AT to the place holder in the template
-		$profileActivationToken = "%$profileActivationToken%";
-		$parameters = ["profileActivationToken" => $profileActivationToken->getBytes()];
+		$parameters = ["profileActivationToken" => $profileActivationToken];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
 		try {
@@ -578,8 +578,7 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : ?Profile {
 profileLocation, profileUsername FROM profile WHERE profileEmail = :profileEmail";
 		$statement = $pdo->prepare($query);
 		// bind the profile email to the place holder in the template
-		$profileEmail = "%$profileEmail%";
-		$parameters = ["profileEmail" => $profileEmail->getBytes()];
+		$parameters = ["profileEmail" => $profileEmail];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
 		try {
@@ -617,8 +616,7 @@ profileLocation, profileUsername FROM profile WHERE profileEmail = :profileEmail
 profileLocation, profileUsername FROM profile WHERE profileUsername = :profileUsername";
 		$statement = $pdo->prepare($query);
 		// bind the profile username to the place holder in the template
-		$profileUsername = "%$profileUsername%";
-		$parameters = ["profileUsername" => $profileUsername->getBytes()];
+		$parameters = ["profileUsername" => $profileUsername];
 		$statement->execute($parameters);
 		// grab the profile from mySQL
 		try {
@@ -658,6 +656,46 @@ profileLocation, profileUsername FROM profile WHERE profileRoleId = :profileRole
 		$statement = $pdo->prepare($query);
 		// bind the profile role id to the place holder in the template
 		$parameters = ["profileRoleId" => $profileRoleId->getBytes()];
+		$statement->execute($parameters);
+		// build an array
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new profile($row["profileId"], $row["profileRoleId"], $row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileHash"], $row["profileImage"], $row["profileLocation"], $row["profileUsername"]);
+				$profiles[$profiles->key()] = $profile;
+				$profiles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($profiles);
+	}
+
+	/**
+	 * gets the Profiles by profileUsername
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $profileUsername profileUsername to search by
+	 * @return \SplFixedArray SplFixedArray of profile found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getProfilesByProfileUsername(\PDO $pdo, $profileUsername) : \SplFixedArray {
+		// sanitize the profile username before searching
+		$profileUsername = trim($profileUsername);
+		$profileUsername = filter_var($profileUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($profileUsername) === true) {
+			throw(new \InvalidArgumentException("Profile username is empty or insecure"));
+		}
+// create query template
+		$query = "SELECT profileId, profileRoleId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, 
+profileLocation, profileUsername FROM profile WHERE profileUsername like :profileUsername";
+		$statement = $pdo->prepare($query);
+		// bind the profile username to the place holder in the template
+		$profileUsername = "%$profileUsername%";
+		$parameters = ["profileUsername" => $profileUsername];
 		$statement->execute($parameters);
 		// build an array
 		$profiles = new \SplFixedArray($statement->rowCount());
