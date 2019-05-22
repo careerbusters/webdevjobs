@@ -451,18 +451,6 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		$statement->execute($parameters);
 	}
 	/**
-	 * formats the state variables for JSON serialization
-	 *
-	 * @return array resulting state variables to serialize
-	 **/
-	public function jsonSerialize() : array {
-		$fields = get_object_vars($this);
-		$fields["postingId"] = $this->postingId->toString();
-		$fields["postingProfileId"] = $this->postingProfileId->toString();
-		$fields["postingRoleId"] = $this->postingRoleId->toString();
-		return ($fields);
-	}
-	/**
 	 * gets the posting by postingId
 	 *
 	 * @param \PDO $pdo PDO connection object
@@ -607,4 +595,16 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 			}
 		}
 		return ($postings);
-	}}
+	}
+/**
+ * formats the state variables for JSON serialization
+ *
+ * @return array resulting state variables to serialize
+ **/
+public function jsonSerialize() : array {
+	$fields = get_object_vars($this);
+	$fields["postingId"] = $this->postingId->toString();
+	$fields["postingProfileId"] = $this->postingProfileId->toString();
+	$fields["postingRoleId"] = $this->postingRoleId->toString();
+	return ($fields);
+}}
