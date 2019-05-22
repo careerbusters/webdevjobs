@@ -3,6 +3,7 @@
 namespace CareerBuster\WebDevJobs\Test;
 
 use CareerBusters\WebDevJobs\SavedJob;
+use CareerBusters\WebDevJobs\Test\WebDevJobsTest;
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
