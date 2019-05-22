@@ -534,11 +534,11 @@ class Posting implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $postingRoleId posting id to search for
-	 * @return posting|null posting found or null if not found
+	 * @return \SplFixedArray SplFixedArray of profile found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId): ?posting {
+	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId): \SplFixedArray  {
 
 		// sanitize the todoId before searching
 		// sanitize the postingId before searching
@@ -551,20 +551,23 @@ class Posting implements \JsonSerializable {
 		// create query template
 		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingRoleId = :postingRoleId";
 		$statement = $pdo->prepare($query);
+		// bind the posting role id to the place holder in the template
+		$parameters = ["postingRoleId" => $postingRoleId->getBytes()];
+		$statement->execute($parameters);
 		// build an array of posting
 		$posting = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				$postingRoleId[$postingRoleId->key()] = $posting;
-				$postingRoleId->next();
+				$postings[$postings->key()] = $posting;
+				$postings->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($posting);
+		return ($postings);
 	}
 
 	/**
@@ -577,7 +580,7 @@ class Posting implements \JsonSerializable {
 	 **/
 	public static function getAllPostings(\PDO $pdo): \SPLFixedArray {
 		// create query template
-		$query = "postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle FROM posting";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle FROM posting";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -595,4 +598,4 @@ class Posting implements \JsonSerializable {
 			}
 		}
 		return ($postings);
-	}
+	}}
