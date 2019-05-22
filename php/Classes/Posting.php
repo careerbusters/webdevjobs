@@ -1,6 +1,7 @@
 <?php
 
 namespace CareerBusters\WebDevJobs;
+
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
 require_once("autoload.php");
 use Ramsey\Uuid\Uuid;
@@ -168,7 +169,7 @@ class Posting implements \JsonSerializable {
 	 *  @return string|Uuid for postingRoleId (or null if new Posting)
 	 **/
 	public function getPostingRoleId(): Uuid {
-		return ($this->PostingRoleId);
+		return ($this->postingRoleId);
 	}
 
 	/**
@@ -208,6 +209,8 @@ class Posting implements \JsonSerializable {
 		if(empty($newPostingCompanyName) === true) {
 			throw(new \InvalidArgumentException("company name is empty"));
 		}
+		// store the content
+		$this->postingCompanyName = $newPostingCompanyName;
 	}
 
 	/**
@@ -405,7 +408,8 @@ class Posting implements \JsonSerializable {
 	 */
 	public function insert(\PDO $pdo): void {
 		// create query template
-		$query = "INSERT INTO posting(postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle) VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :postingContent, :postingDate, :postingEmail, :postingEndDate, :postingLocation, :postingPay, :postingTitle )";
+		$query = "INSERT INTO posting(postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle) 
+VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :postingContent, :postingDate, :postingEmail, :postingEndDate, :postingLocation, :postingPay, :postingTitle )";
 		$statement = $pdo->prepare($query);
 		// bind the member variable to the place holders in the template
 		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
@@ -477,19 +481,22 @@ class Posting implements \JsonSerializable {
 		// create query template
 		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
 		$statement = $pdo->prepare($query);
-		// build an array of posting
-		$posting = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
+		// bind the profile id to the place holder in the template
+		$parameters = ["postingId" => $postingId->getBytes()];
+		$statement->execute($parameters);
+
+		// grad the posting from mySQL
 			try {
-				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				$postingId[$postingId->key()] = $posting;
-				$postingId->next();
-			} catch(\Exception $exception) {
+				$posting = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$posting = new Posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				}
+				} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		}
 		return ($posting);
 	}
 
@@ -503,7 +510,7 @@ class Posting implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 
-	public static function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId): ?posting {
+	public static function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId): \SplFixedArray {
 
 		try {
 			$postingProfileId = self::validateUuid($postingProfileId);
@@ -513,20 +520,22 @@ class Posting implements \JsonSerializable {
 		// create query template
 		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingProfileId = :postingProfileId";
 		$statement = $pdo->prepare($query);
+		$parameters = ["postingProfileId" => $postingProfileId->getBytes()];
+		$statement->execute($parameters);
 		// build an array of posting
-		$posting = new \SplFixedArray($statement->rowCount());
+		$postings = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				$postingProfileId[$postingProfileId->key()] = $posting;
-				$postingProfileId->next();
+				$postings[$postings->key()] = $posting;
+				$postings->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($posting);
+		return ($postings);
 	}
 
 	/**
@@ -538,7 +547,7 @@ class Posting implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId): ?posting  {
+	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId): \SplFixedArray {
 
 		// sanitize the todoId before searching
 		// sanitize the postingId before searching
@@ -555,7 +564,7 @@ class Posting implements \JsonSerializable {
 		$parameters = ["postingRoleId" => $postingRoleId->getBytes()];
 		$statement->execute($parameters);
 		// build an array of posting
-		$posting = new \SplFixedArray($statement->rowCount());
+		$postings = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
