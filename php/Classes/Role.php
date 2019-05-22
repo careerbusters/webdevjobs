@@ -17,7 +17,7 @@ use Ramsey\Uuid\Uuid;
  * @version 1.0.0
  **/
 class Role implements \JsonSerializable {
-	use ValidateDate;
+	use validateDate;
 	use ValidateUuid;
 	/**
 	 *id and Role (primary key)
@@ -41,7 +41,7 @@ class Role implements \JsonSerializable {
 	 * @throws \Exception if some other excepting occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newRoleId, $newRoleName = null) {
+	public function __construct($newRoleId, $newRoleName) {
 		try {
 			$this->setRoleId($newRoleId);
 			$this->setRoleName($newRoleName);
@@ -104,7 +104,6 @@ class Role implements \JsonSerializable {
 		$this->roleName = $newRoleName;
 	}
 
-
 	/**
 	 * inserts into roles mySQL
 	 *
@@ -157,16 +156,16 @@ class Role implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Role by roleId
+	 * gets the Role by role id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $roleId role id to search for
-	 * @return Role|null Role found or null if not found
+	 * @param string $roleId role id to search for
+	 * @return \SplFixedArray SplFixedArray of Roles found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getRoleByRoleId(\PDO $pdo, $roleId): Role {
-		// sanitize the roleId before searching
+	public static function getRoleByRoleId(\PDO $pdo, $roleId): ?Role {
+		// sanitize the role id before searching
 		try {
 			$roleId = self::validateUuid($roleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -178,26 +177,26 @@ class Role implements \JsonSerializable {
 		// bind the role id to the place holder in the template
 		$parameters = ["roleId" => $roleId->getBytes()];
 		$statement->execute($parameters);
-		// grab the tweet from mySQL
+		// grab the Profile from my SQL
 		try {
-			$roleId = null;
+			$role = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$roleId = new Role($row["roleId"], $row["roleName"]);
+				$role = new Role($row["roleId"], $row["roleName"]);
 			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-		return ($roleId);
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		return ($role);
+
 	}
 
 	/**
-	 * gets the Role by role id
+	 * gets All Roles by role id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $roleId role id to search by
 	 * @return \SplFixedArray SplFixedArray of roles found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
