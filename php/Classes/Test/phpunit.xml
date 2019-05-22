@@ -2,14 +2,12 @@
 	<testsuites>
 		<testsuite name="WebDevJobs Test">
 			<!--<file>ProfileTest.php</file>-->
-<<<<<<< HEAD
-			<file>RoleTest.php</file>
+
+			<!--<file>RoleTest.php</file>-->
 			<!--<file>PostingTest.php</file>-->
-=======
 			<!--<file>RoleTest.php</file> -->
-			<file>PostingTest.php</file>
->>>>>>> update postingtest
-			<!--<file>SaveJobTest.php</file> -->
+			<!--<file>PostingTest.php</file> -->
+			<file>SaveJobTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>
