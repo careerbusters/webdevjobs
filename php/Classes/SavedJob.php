@@ -1,6 +1,7 @@
 <?php
+
 namespace CareerBusters\WebDevJobs;
-require_once(dirname(__DIR__) . "/Classes/autoload.php");
+require_once(dirname(__DIR__, 1) . "/Classes/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
  * Cross Section of a Saved Job
@@ -34,7 +35,7 @@ class SavedJob implements \JsonSerializable {
 	 * @thorws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newSavedJobPostingId, $newSavedJobProfileId = null) {
+	public function __construct($newSavedJobPostingId, $newSavedJobProfileId) {
 		try {
 			$this->setSavedJobPostingId($newSavedJobPostingId);
 			$this->setSavedJobProfileId($newSavedJobProfileId);

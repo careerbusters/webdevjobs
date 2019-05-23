@@ -2,8 +2,9 @@
 
 namespace CareerBuster\WebDevJobs\Test;
 
-use CareerBusters\WebDevJobs\SavedJob;
-use CareerBusters\WebDevJobs\Test\WebDevJobsTest;
+
+use CareerBusters\WebDevJobs\{Profile, Posting, Role, SavedJob};
+
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -22,11 +23,41 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
  * @author Natasha Lovato <nmarshlovato@cnm.edu>
  **/
 class SavedJobTest extends WebDevJobsTest {
+
+	/**
+	 * Role of Posting; this is for foreign key relations
+	 * @var  Role $roleId
+	 **/
+	protected $role;
 	/**
 	 * Saved job posting id that created the Saved Job; this is for foreign key relations
 	 * @var SavedJob savedJob
 	 **/
-	protected $savedJobPostingId = null;
+	protected $posting;
+
+	/**
+	 * Saved job profile id that created the Saved Job; this is for foreign key relations
+	 * @var SavedJob savedJob
+	 **/
+	protected $profile;
+
+	/**
+	 * Valid hash for the profile
+	 * @var $VALID_PROFILE_HASH
+	 **/
+	protected $VALID_PROFILE_HASH;
+
+	/**
+	 * timestamp of the posting
+	 * @var \DateTime $VALID_POSTINGENDDATE
+	 */
+	protected $VALID_POSTINGDATE;
+
+	/**
+	 * timestamp of the posting end date
+	 * @var \DateTime $VALID_POSTINGENDDATE
+	 */
+	protected $VALID_POSTINGENDDATE = null;
 
 	/**
 	 * content of the Saved Job Name
@@ -34,29 +65,12 @@ class SavedJobTest extends WebDevJobsTest {
 	 **/
 	protected $VALID_SAVEDJOBNAME = "PHPUnit test passing";
 
-	/**
-	 * content of the Saved Job Name
-	 * var string $VALID_SAVEDJOBNAME2 = "PHPUnit test still passing";
-	 **/
-	protected $VALID_SAVEDJOBNAME2 = "PHPUnit test passing";
-
-	/**
-	 * Saved job profile id that created the Saved Job; this is for foreign key relations
-	 * @var SavedJob savedJob
-	 **/
-	protected $savedJobProfileId = null;
 
 	/**
 	 * content of the Saved Profile Name
 	 * @var string $VALID_SAVEDJOBPROFILENAME
 	 **/
 	protected $VALID_SAVEDJOBPROFILENAME = "PHPUnit test passing";
-
-	/**
-	 * content of the Saved Job Profile Name
-	 * var string $VALID_SAVEDJOBPROFILENAME2 = "PHPUnit test still passing";
-	 **/
-	protected $VALID_SAVEDJOBPROFILENAME2 = "PHPUnit test passing";
 
 
 	/**
@@ -65,10 +79,24 @@ class SavedJobTest extends WebDevJobsTest {
 	public final function setUp(): void {
 		// run the default setUp() method first
 		parent::setUp();
+		$password = "abc123";
+		$this->VALID_PROFILE_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$activation = bin2hex(random_bytes(16));
+		// calculate the date (just use the time the unit test was setup...)
+		$this->VALID_POSTINGDATE = new \DateTime();
+		$this->VALID_POSTINGENDDATE = new \DateTime();
 
-		// create and insert a Profile to own the test saved job
-		$this->profile = new profile(generateUuidV4(), null, "@handle", "https://webdev.cb.com. test@phpunit.com", $this->VALID_SAVEDJOBPROFILENAME,);
+		// create and insert a mocked Role
+		$this->role = new Role(generateUuidV4(), "recruiter");
+		$this->role->insert($this->getPDO());
+
+		// create and insert the mocked profile
+		$this->profile = new Profile(generateUuidV4(), $this->role->getRoleId(), $activation, "blahblah", "test@phpunit.com", $this->VALID_PROFILE_HASH, "https://blamedan.us", "Santa Fe", "Dill Pickle");
 		$this->profile->insert($this->getPDO());
+
+		// create and insert the mocked posting
+		$this->posting = new Posting(generateUuidV4(), $this->profile->getProfileId(), $this->role->getRoleId(), "Deep Dive Coding", "Get a job at Deep Dive!", $this->VALID_POSTINGDATE, "natasha@email.com", $this->VALID_POSTINGENDDATE, "Santa Fe", "$50,000.00", "Junior Developer");
+		$this->posting->insert($this->getPDO());
 	}
 
 	/**
@@ -78,43 +106,17 @@ class SavedJobTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("savedJob");
 
-		// create a new Saved Job and insert to into mySQL
-		$savedJobPostingId = generateUuidV4();
-		$savedJob = new SavedJob($savedJobPostingId, $this->profile->getSavedJobProfileId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
-
+		// create a new Job and insert to into mySQL
+		$savedJob = new SavedJob($this->profile->getProfileId(), $this->savedJob->getSavedJobProfileId());
 		$savedJob->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId($this->getPDO(), $savedJob->getSavedJobPostingId());
+		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingAndSavedJobProfile($this->getPDO(), $this->profile->getProfileId(), $this->savedJob->getSavedJobProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
-		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getSavedJobProfileId());
-		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
+		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
 	}
 
-	/**
-	 * test inserting a Saved Job, editing it, and then updating it
-	 **/
-	public function testUpdateValidSavedJob(): void {
-		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("savedJob");
-
-		// create a new Saved Job and insert to into mySQL
-		$savedJobPostingId = generateUuidV4();
-		$savedJob = new SavedJob($savedJobPostingId, $this->profile->getProfileId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
-		$savedJob->insert($this->getPDO());
-
-		// edit the Saved Job and update it in mySQL
-		$savedJob->setSavedJobName($this->VALID_SAVEDJOBNAME2);
-		$savedJob->update($this->getPDO());
-
-		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId($this->getPDO(), $savedJob->getSavedJobPostingId());
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
-		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getSavedJobProfileId());
-		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME2);
-	}
 
 	/**
 	 *  test creating a Saved Job and then deleting it
@@ -123,9 +125,8 @@ class SavedJobTest extends WebDevJobsTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConncection()->getRowCount("savedJob");
 
-		// create a new Saved Job and insert to into mySQL
-		$savedJobPostingId = generateUuidV4();
-		$savedJob = new SavedJob($savedJobPostingId, $this->profile->getSavedJobProfileId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
+		// create a new Job and insert to into mySQL
+		$savedJob = new SavedJob($this->profile->getProfileId(), $this->posting->getPostingId());
 		$savedJob->insert($this->getPDO());
 
 		// delete the Saved Job from mySQL
@@ -133,7 +134,7 @@ class SavedJobTest extends WebDevJobsTest {
 		$savedJob->delete(($this->getPDO()));
 
 		// grab the data from mySQL and enforce the Saved Job does not exist
-		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingId($this->getConnection()->getRowCount('savedJob'));
+		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingIdAndSavedJobProfileId($this->getPDO(), $this->profile->getProfileId(), $this->savedJob->getSavedJobProfileId);
 		$this->assertNull($pdoSavedJob);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("savedJob"));
 	}
@@ -141,27 +142,25 @@ class SavedJobTest extends WebDevJobsTest {
 	/**
 	 * test grabbing a Saved Job by saved job content
 	 **/
-	public function testGetValidSavedJobBySavedJobName(): void {
+	public function testGetValidSavedJobBySavedJobProfileId(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("savedJob");
 
-		// create a new Saved Job and insert to into mySQL
-		$savedJobPostingId = generateUuidV4();
-		$savedJob = new SavedJob($savedJobPostingId, $this->profile->getSavedJobPostingId(), $this->VALID_SAVEDJOBNAME, $this->VALID_SAVEDJOBPROFILENAME);
+		// create a new Job and insert to into mySQL
+		$savedJob = new SavedJob($this->profile->getProfileId(), $this->savedJob->getSavedJobProfileId());
 		$savedJob->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = SavedJob::getSavedJobsBySavedJobPostingId($this->getPDO(), $savedJob->getSavedJobPostingId());
+		$results = SavedJob::getSavedJobsBySavedJobProfileId($this->getPDO(), $this->profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
 		$this->assertCount(1, $results);
 
 		// enforce no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJob\\SavedJob", $results);
+		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJobs\\SavedJob", $results);
 
 		// grab the result from the array and validate it
 		$pdoSavedJob = $results[0];
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $savedJobPostingId);
-		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getSavedJobProfileId());
-		$this->assertEquals($pdoSavedJob->getSavedJobName(), $this->VALID_SAVEDJOBNAME);
+		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getProfileId);
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
 	}
 }
