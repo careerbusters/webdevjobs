@@ -1,6 +1,6 @@
 <?php
 
-namespace CareerBuster\WebDevJobs\Test;
+namespace CareerBusters\WebDevJobs\Test;
 
 
 use CareerBusters\WebDevJobs\{Profile, Posting, Role, SavedJob, Test\WebDevJobsTest};
@@ -107,14 +107,14 @@ class SavedJobTest extends WebDevJobsTest {
 		$numRows = $this->getConnection()->getRowCount("savedJob");
 
 		// create a new Job and insert to into mySQL
-		$savedJob = new SavedJob($this->profile->getProfileId(), $this->savedJob->getSavedJobProfileId());
+		$savedJob = new SavedJob($this->posting->getPostingId(), $this->profile->getProfileId());
 		$savedJob->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingAndSavedJobProfile($this->getPDO(), $this->profile->getProfileId(), $this->savedJob->getSavedJobProfileId());
+		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingIdAndSavedJobProfileId($this->getPDO(), $savedJob->getSavedJobPostingId(), $savedJob->getSavedJobProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->posting->getPostingId());
 		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
 	}
 
 
@@ -123,10 +123,10 @@ class SavedJobTest extends WebDevJobsTest {
 	 **/
 	public function testDeleteValidSavedJob() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConncection()->getRowCount("savedJob");
+		$numRows = $this->getConnection()->getRowCount("savedJob");
 
 		// create a new Job and insert to into mySQL
-		$savedJob = new SavedJob($this->profile->getProfileId(), $this->posting->getPostingId());
+		$savedJob = new SavedJob($this->posting->getPostingId(), $this->profile->getProfileId());
 		$savedJob->insert($this->getPDO());
 
 		// delete the Saved Job from mySQL
@@ -134,7 +134,7 @@ class SavedJobTest extends WebDevJobsTest {
 		$savedJob->delete(($this->getPDO()));
 
 		// grab the data from mySQL and enforce the Saved Job does not exist
-		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingIdAndSavedJobProfileId($this->getPDO(), $this->profile->getProfileId(), $this->savedJob->getSavedJobProfileId);
+		$pdoSavedJob = SavedJob::getSavedJobBySavedJobPostingIdAndSavedJobProfileId($this->getPDO(), $savedJob->getSavedJobPostingId(), $savedJob->getSavedJobProfileId());
 		$this->assertNull($pdoSavedJob);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("savedJob"));
 	}
@@ -147,11 +147,11 @@ class SavedJobTest extends WebDevJobsTest {
 		$numRows = $this->getConnection()->getRowCount("savedJob");
 
 		// create a new Job and insert to into mySQL
-		$savedJob = new SavedJob($this->profile->getProfileId(), $this->savedJob->getSavedJobProfileId());
+		$savedJob = new SavedJob($this->posting->getProfileId(), $this->profile->getProfileId());
 		$savedJob->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = SavedJob::getSavedJobsBySavedJobProfileId($this->getPDO(), $this->profile->getProfileId());
+		$results = SavedJob::getSavedJobBySavedJobProfileId($this->getPDO(), $savedJob->getSavedJobProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
 		$this->assertCount(1, $results);
 
@@ -160,7 +160,7 @@ class SavedJobTest extends WebDevJobsTest {
 
 		// grab the result from the array and validate it
 		$pdoSavedJob = $results[0];
-		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getProfileId);
-		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->savedJob->getSavedJobPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobPostingId(), $this->posting->getPostingId());
+		$this->assertEquals($pdoSavedJob->getSavedJobProfileId(), $this->profile->getProfileId());
 	}
 }
