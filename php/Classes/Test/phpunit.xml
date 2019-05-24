@@ -1,6 +1,7 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="WebDevJobs Test">
+<<<<<<< HEAD
 			<!--<file>ProfileTest.php</file>-->
 			<!--<file>RoleTest.php</file>-->
 			<!--<file>PostingTest.php</file>-->
@@ -14,5 +15,17 @@
 <!--		<whitelist processUncoveredFilesFromWhitelist="true">-->
 <!--			<directory suffix=".php">..</directory>-->
 <!--		</whitelist>-->
+=======
+		<!--	<file>ProfileTest.php</file>
+			<file>RoleTest.php</file>-->
+			<file>PostingTest.php</file>
+			<!--<file>SaveJobTest.php</file>-->
+		</testsuite>
+	</testsuites>
+	<filter>
+<!--		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">..</directory>
+		</whitelist>-->
+>>>>>>> postingtest.php
 	</filter>
 </phpunit>
