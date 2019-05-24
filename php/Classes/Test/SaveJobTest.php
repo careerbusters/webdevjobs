@@ -3,7 +3,7 @@
 namespace CareerBuster\WebDevJobs\Test;
 
 
-use CareerBusters\WebDevJobs\{Profile, Posting, Role, SavedJob};
+use CareerBusters\WebDevJobs\{Profile, Posting, Role, SavedJob, Test\WebDevJobsTest};
 
 
 // grab the class under scrutiny
