@@ -147,7 +147,7 @@ class SavedJobTest extends WebDevJobsTest {
 		$numRows = $this->getConnection()->getRowCount("savedJob");
 
 		// create a new Job and insert to into mySQL
-		$savedJob = new SavedJob($this->posting->getProfileId(), $this->profile->getProfileId());
+		$savedJob = new SavedJob($this->posting->getPostingId(), $this->profile->getProfileId());
 		$savedJob->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
