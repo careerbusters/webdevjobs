@@ -50,17 +50,17 @@ class PostingTest extends WebDevJobsTest {
 	 * posting location of the posting
 	 * @var $VALID_POSTINGLOCATION
 	 */
-	protected $VALID_POSTINGLOCATION = "Ab";
+	protected $VALID_POSTINGLOCATION = "Albuquerque";
 	/**
 	 * posting pay for the posting
 	 * @var $VALID_POSTINGPAY
 	 */
-	protected $VALID_POSTINGPAY;
+	protected $VALID_POSTINGPAY = "$25,000";
 	/**
 	 * posting title of the posting
 	 * @var $VALID_POSTINGTITLE
 	 */
-	protected $VALID_POSTINGTITLE = "recuiter";
+	protected $VALID_POSTINGTITLE = "Freelancer";
 	/**
 	 * create dependent objects before running each test
 	 */
