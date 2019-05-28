@@ -110,7 +110,6 @@ class SavedJob implements \JsonSerializable {
 		$query = "INSERT INTO savedJob(savedJobPostingId, savedJobProfileId)
 		VALUES(:savedJobPostingId, :savedJobProfileId)";
 		$statement = $pdo->prepare($query);
-		var_dump($this);
 		//bind the member variables to the place holders in the template
 		$parameters = ["savedJobPostingId" => $this->savedJobPostingId->getBytes(), "savedJobProfileId" => $this->savedJobProfileId->getBytes()];
 		$statement->execute($parameters);

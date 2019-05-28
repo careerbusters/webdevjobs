@@ -25,7 +25,7 @@ class PostingTest extends WebDevJobsTest {
 	/** Posting company name that created the Posting
 	 * @var $VALID_POSTINGCOMPANYNAME
 	 */
-	protected $VALID_POSTINGCOMPANYNAME;
+	protected $VALID_POSTINGCOMPANYNAME = "Bob tech";
 	/**
 	 *posting content that created the Posting
 	 * @var $VALID_POSTINGCONTENT
@@ -40,7 +40,7 @@ class PostingTest extends WebDevJobsTest {
 	 * posting email address of the posting
 	 * @var $VALID_POSTINGEMAIL
 	 */
-	protected $VALID_POSTINGEMAIL;
+	protected $VALID_POSTINGEMAIL = "test@phpuit.ey";
 	/**
 	 * timestamp of the posting
 	 * @var \DateTime $VALID_POSTINGENDDATE
@@ -50,7 +50,7 @@ class PostingTest extends WebDevJobsTest {
 	 * posting location of the posting
 	 * @var $VALID_POSTINGLOCATION
 	 */
-	protected $VALID_POSTINGLOCATION;
+	protected $VALID_POSTINGLOCATION = "Ab";
 	/**
 	 * posting pay for the posting
 	 * @var $VALID_POSTINGPAY
@@ -60,7 +60,7 @@ class PostingTest extends WebDevJobsTest {
 	 * posting title of the posting
 	 * @var $VALID_POSTINGTITLE
 	 */
-	protected $VALID_POSTINGTITLE;
+	protected $VALID_POSTINGTITLE = "recuiter";
 	/**
 	 * create dependent objects before running each test
 	 */
