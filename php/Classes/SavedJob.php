@@ -188,7 +188,7 @@ class SavedJob implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getSavedJobBySavedJobProfileId(\PDO $pdo, $savedJobProfileId): savedJob {
+	public static function getSavedJobBySavedJobProfileId(\PDO $pdo, $savedJobProfileId): \SplFixedArray {
 		// sanitize the description before searching
 		try {
 			$savedJobProfileId = self::validateUuid($savedJobProfileId);
@@ -201,20 +201,22 @@ class SavedJob implements \JsonSerializable {
 		// bind the savedJobPosting id to the place holder in the template
 		$parameters = ["savedJobProfileId" => $savedJobProfileId->getBytes()];
 		$statement->execute($parameters);
-		// build an array of authors
+		// build an array of savedJob
+		$savedJobs = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
 			try {
-				$savedJobProfileId = null;
-				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				$row = $statement->fetch();
-				if($row !== false) {
-					$savedJobProfileId = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
-				}
+				$savedJob = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
+				$savedJobs[$savedJobs->key()] = $savedJob;
+				$savedJobs->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		return ($savedJobProfileId);
-	}
+		}
+			return ($savedJobs);
+		}
+
 
 
 	/**
