@@ -39,7 +39,7 @@ try{
 		//find profile associated with the activation token
 		$profile = Profile::getProfileByProfileActivationToken($pdo, $activation);
 		//verify the profile is not null
-		if($profile !== null){
+		if($profile !== null) {
 			//make sure the activation token matches
 			if($activation === $profile->getProfileActivationToken()) {
 				//set activation to null
@@ -49,3 +49,27 @@ try{
 				//set the reply for the end user
 				$reply->data = "Thank you for activating your account, you will be auto-redirected to your profile shortly.";
 			}
+		} else {
+			//throw an exception if the activation token does not exist
+			throw(new RuntimeException("Profile with this activation code does not exist", 404));
+		}
+	} else {
+		//throw an exception if the HTTP request is not a GET
+		throw(new InvalidArgumentException("Invalid HTTP method request", 403));
+	}
+
+	//update the reply objects status and message state variables if an exception or type exception was thrown;
+} catch (Exception $exception){
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError){
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+}
+
+//prepare and send the reply
+header("Content-type: application/json");
+if($reply->data === null){
+	unset($reply->data);
+}
+echo json_encode($reply);
