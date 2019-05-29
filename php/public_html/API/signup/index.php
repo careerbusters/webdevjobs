@@ -5,15 +5,7 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-use CareerBusters\WebDevJobs;
-use CareerBusters\WebDevJobs\Profile;
-
-{
-
-	// we only use the profile class for testing purposes
-	Profile;
-};
-
+use CareerBusters\WebDevJobs\{Profile};
 
 /**
  * api for the Profile class
@@ -38,6 +30,7 @@ try {
 
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
+
 	if($method ==="POST"){
 
 		//have to decode json and turn it into a php object
@@ -48,13 +41,12 @@ try {
 	$profileActivationToken = bin2hex(random_bytes(16));
 	//profile Bio is a required field
 	if (empty($requestObject->profileBio) === true) {
-		throw(new \InvalidArgumentException("No profile Bio is present", 405));
+		throw(new \InvalidArgumentException("User profile Bio is empty", 405));
 	}
 	//check profile email is a required field
 	if (empty($requestObject->profileEmail) === true) {
 		throw(new \InvalidArgumentException("No profile email is present", 405));
 	}
-	$newProfileHash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
 
 	//verify that profile password is present
 	if(empty($requestObject->profileImage) === true) {
@@ -67,6 +59,17 @@ try {
 //verify that profile password is present
 	if(empty($requestObject->profileUsername) === true) {
 		throw(new \InvalidArgumentException("Must input valid username", 405));
+
+		//do the values below  get assigned on sign up or after activation?
+		$profileAgent = $_SERVER['HTTP_Profile_AGENT'];
+		$profileIpAddress =  $_SERVER['SERVER_ADDR'];
+		//user blocked? using 0 as default
+		$profileBlocked = 0;
+
+		//do the values below for signup and activate
+		$newProfileHash = password_hash($requestObject->userPassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$userActivationToken = bin2hex(random_bytes(16));
+		$userId = generateUuidV4();
 	}
 	// profile object needs to be created and prepare to insert into the database
 	$profile = new Profile($profileId, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername, $requestObject->profileBio, $newProfileHash);
@@ -83,8 +86,8 @@ try {
 	$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlGlue;
 	//compose message to send with email
 	$message = <<< EOF
-<h2> Welcome to Whats-For-Lunch!</h2>
-<p>Sign in to Save your Favorites and confirm your account</p>
+<h2> Welcome to CareerBusters</h2>
+<p>Sign up to start a profile</p>
 <p><a href="$confirmLink">$confirmLink</a></p>
 EOF;
 	//created a swift email
@@ -135,15 +138,18 @@ EOF;
 		throw(new RuntimeException("Unable to send mail", 400));
 	}
 	// update reply
-	$reply->message = "";
-} else {
+	$reply->message = "profile created";
+
+else {
 	throw(new InvalidArgumentException("invalid http request"));
 }
-} catch (\Exception | \TypeError $exception) {
+}
+catch (\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 	$reply->trace = $exception->getTraceAsString();
 }
+// encode and return reply to front end caller
 header("Content-type: application/json");
 echo json_encode($reply);
 
