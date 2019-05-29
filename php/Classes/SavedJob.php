@@ -18,18 +18,18 @@ class SavedJob implements \JsonSerializable {
 	use ValidateUuid;
 	/**
 	 * id and savedJob (foreign key)
-	 * @var string Uuid $savedJobId
+	 * @var Uuid $savedJobId
 	 **/
 	protected $savedJobPostingId;
 	/**
 	 * profileId and savedJob (foreign key)
-	 * @var $savedJobProfileId
+	 * @var Uuid $savedJobProfileId
 	 **/
 	protected $savedJobProfileId;
 	/**
 	 * Constructor for Saved Job
 	 * @param string|Uuid $newSavedJobPostingId id of Saved Job or null if a new Saved Job.
-	 * @param string $newSavedJobProfileId for profile id.
+	 * @param Uuid $newSavedJobProfileId for profile id.
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data types values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -110,7 +110,6 @@ class SavedJob implements \JsonSerializable {
 		$query = "INSERT INTO savedJob(savedJobPostingId, savedJobProfileId)
 		VALUES(:savedJobPostingId, :savedJobProfileId)";
 		$statement = $pdo->prepare($query);
-		var_dump($this);
 		//bind the member variables to the place holders in the template
 		$parameters = ["savedJobPostingId" => $this->savedJobPostingId->getBytes(), "savedJobProfileId" => $this->savedJobProfileId->getBytes()];
 		$statement->execute($parameters);
@@ -172,7 +171,7 @@ class SavedJob implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$savedJobPostingId = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
+				$savedJobPostingId = new savedJob($row["savedJobPostingId"], $row["savedJobPostingId"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row could't be converted, rethrow it
@@ -189,32 +188,40 @@ class SavedJob implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getSavedJobBySavedJobProfileId(\PDO $pdo, $savedJobProfileId): savedJob {
+	public static function getSavedJobBySavedJobProfileId(\PDO $pdo, $savedJobProfileId): \SplFixedArray {
 		// sanitize the description before searching
 		try {
 			$savedJobProfileId = self::validateUuid($savedJobProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+
+//		$savedJobs = trim($savedJobProfileId);
+//		$savedJobs = filter_var($savedJobs, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+//		if(empty($savedJobs) === true) {
+//			throw(new \PDOException("saved job posting is invalid"));
+//		}
 		// create query template
 		$query = "SELECT savedJobPostingId, savedJobProfileId FROM savedJob WHERE savedJobProfileId LIKE :savedJobProfileId";
 		$statement = $pdo->prepare($query);
 		// bind the savedJobPosting id to the place holder in the template
+
 		$parameters = ["savedJobProfileId" => $savedJobProfileId->getBytes()];
 		$statement->execute($parameters);
 		// build an array of authors
+		$savedJobProfiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
 			try {
-				$savedJobProfileId = null;
-				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				$row = $statement->fetch();
-				if($row !== false) {
-					$savedJobProfileId = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
-				}
+				$savedJobProfile = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
+				$savedJobProfiles[$savedJobProfiles->key()] = $savedJobProfile;
+				$savedJobProfiles->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		return ($savedJobProfileId);
+		}
+		return ($savedJobProfiles);
 	}
 
 
