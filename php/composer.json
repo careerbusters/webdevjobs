@@ -1,5 +1,6 @@
 {
   "require": {
+    "ext-openssl": "*",
     "php": "*",
     "ext-json": "*",
     "ext-pdo": "*",

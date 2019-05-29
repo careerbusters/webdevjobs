@@ -1,8 +1,8 @@
 <?php
 require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
+require_once dirname(__DIR__, 3) . "/Classes/autoload.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
+require_once dirname(__DIR__, 3) . "/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 use CareerBusters\WebDevJobs\{Profile};
@@ -25,7 +25,7 @@ $reply->data = null;
 
 try {
 	//grab the mySQL connection
-	$secrets = new \Secrets("/etc/apache2/capstone-mysql/CareerBusters");
+	$secrets = new \Secrets("/etc/apache2/capstone-mysql/busters.ini");
 	$pdo = $secrets->getPdoObject();
 
 	//determine which HTTP method was used
@@ -37,11 +37,9 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 	}
-	$profileId = generateUuidV4();
-	$profileActivationToken = bin2hex(random_bytes(16));
 	//profile Bio is a required field
 	if (empty($requestObject->profileBio) === true) {
-		throw(new \InvalidArgumentException("User profile Bio is empty", 405));
+		throw(new \InvalidArgumentException("profile Bio is empty", 405));
 	}
 	//check profile email is a required field
 	if (empty($requestObject->profileEmail) === true) {
@@ -60,6 +58,15 @@ try {
 	if(empty($requestObject->profileUsername) === true) {
 		throw(new \InvalidArgumentException("Must input valid username", 405));
 
+		//verify that profile password is present
+		if(empty($requestObject->profilePasswordConfirm) ===true) {
+			throw(new \InvalidArgumentException("Must input valid password", 405));
+		}
+		//verify that profile password is present
+		if(empty($requestObject->profilePasswordConfirm) ===true) {
+			throw(new \InvalidArgumentException("Must input valid password", 405));
+		}
+
 		//do the values below  get assigned on sign up or after activation?
 		$profileAgent = $_SERVER['HTTP_Profile_AGENT'];
 		$profileIpAddress =  $_SERVER['SERVER_ADDR'];
@@ -67,9 +74,9 @@ try {
 		$profileBlocked = 0;
 
 		//do the values below for signup and activate
-		$newProfileHash = password_hash($requestObject->userPassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
-		$userActivationToken = bin2hex(random_bytes(16));
-		$userId = generateUuidV4();
+		$newProfileHash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$profileActivationToken = bin2hex(random_bytes(16));
+		$profileId = generateUuidV4();
 	}
 	// profile object needs to be created and prepare to insert into the database
 	$profile = new Profile($profileId, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername, $requestObject->profileBio, $newProfileHash);
@@ -139,7 +146,6 @@ EOF;
 	}
 	// update reply
 	$reply->message = "profile created";
-
 
 }
 catch (\Exception | \TypeError $exception) {
