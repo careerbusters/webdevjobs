@@ -46,17 +46,17 @@ try {
 		throw(new \InvalidArgumentException("No profile email is present", 405));
 	}
 
-	//verify that profile password is present
+	//verify that profile Image is present
 	if(empty($requestObject->profileImage) === true) {
 		throw(new \InvalidArgumentException("no profile image present", 405));
 	}
-//verify that profile password is present
+//verify that profile location is present
 	if(empty($requestObject->profileLocation) === true) {
 		throw(new \InvalidArgumentException("Location must be Albuquerque", 405));
 	}
-//verify that profile password is present
-	if(empty($requestObject->profileUsername) === true) {
-		throw(new \InvalidArgumentException("Must input valid username", 405));
+//verify that profile username is present
+		if(empty($requestObject->profileUsername) === true) {
+			throw(new \InvalidArgumentException("Must input valid username", 405));
 
 		//verify that profile password is present
 		if(empty($requestObject->profilePasswordConfirm) ===true) {
