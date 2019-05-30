@@ -38,9 +38,9 @@ try {
 		//get a specific tweet based on arguments provided or all the tweets and update reply
 		if(empty($id) === false) {
 			$reply->data = Posting::getPostingByPostingId($pdo, $id);
-		} else if(empty($tweetProfileId) === false) {
+		} else if(empty($postingProfileId) === false) {
 			$reply->data = Posting::getPostingByPostingProfileId($pdo, $postingProfileId)->toArray();
-		} else if(empty($tweetContent) === false) {
+		} else if(empty($postingRoleId) === false) {
 			$reply->data = Posting::getPostingByPostingRoleId($pdo, $postingRoleId)->toArray();
 		} else {
 			$reply->data = Posting::getAllPostings($pdo)->toArray();
@@ -56,9 +56,9 @@ try {
 			throw(new RuntimeException("posting does not exist", 404));
 		}
 
-		//enforce the user is signed in and only trying to edit their own tweet
+		//enforce the user is signed in and only trying to edit their own profile
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $posting->getPostingProfileId()->toString()) {
-			throw(new \InvalidArgumentException("You are not allowed to edit this tweet", 403));
+			throw(new \InvalidArgumentException("You are only allowed to edit your own profile", 403));
 		}
 
 		// update all attributes
@@ -93,7 +93,7 @@ try {
 		}
 		//verify that profile password is present
 		if(empty($requestObject->postingTitle) === true) {
-			throw(new \InvalidArgumentException("Location must be Albuquerque", 405));
+			throw(new \InvalidArgumentException("title is required", 405));
 		}
 //verify that profile password is present
 		if(empty($requestObject->postingPay) === true) {
