@@ -50,7 +50,7 @@ try {
 	//perform the actual put or post
 	if($method === "PUT") {
 
-		// retrieve the tweet to update
+		// retrieve the posting to update
 		$posting = Posting::getPostingByPostingId($pdo, $id);
 		if($posting === null) {
 			throw(new RuntimeException("posting does not exist", 404));
