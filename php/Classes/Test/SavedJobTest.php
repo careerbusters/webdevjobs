@@ -154,8 +154,11 @@ class SavedJobTest extends WebDevJobsTest {
 		$results = SavedJob::getSavedJobBySavedJobProfileId($this->getPDO(), $savedJob->getSavedJobProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("savedJob"));
 		$this->assertCount(1, $results);
+<<<<<<< HEAD:php/Classes/Test/SaveJobTest.php
 
 
+=======
+>>>>>>> develop:php/Classes/Test/SavedJobTest.php
 		// enforce no other objects are bleeding into the test
 		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJobs\\SavedJob", $results);
 

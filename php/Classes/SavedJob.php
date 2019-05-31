@@ -208,21 +208,21 @@ class SavedJob implements \JsonSerializable {
 
 		$parameters = ["savedJobProfileId" => $savedJobProfileId->getBytes()];
 		$statement->execute($parameters);
-		// build an array of authors
-		$savedJobProfiles = new \SplFixedArray($statement->rowCount());
+		// build an array of savedJob
+		$savedJobs = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$savedJobProfile = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
-				$savedJobProfiles[$savedJobProfiles->key()] = $savedJobProfile;
-				$savedJobProfiles->next();
+				$savedJob = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
+				$savedJobs[$savedJobs->key()] = $savedJob;
+				$savedJobs->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($savedJobProfiles);
-	}
+			return ($savedJobs);
+		}
 
 
 	/**
