@@ -35,7 +35,10 @@ try {
 		//have to decode json and turn it into a php object
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
-
+		//verify that profile password is present
+		if(empty($requestObject->profileRoleId) === true) {
+			throw(new \InvalidArgumentException("please enter a role, your role appears empty", 405));
+		}
 	//profile Bio is a required field
 	if(empty($requestObject->profileBio) === true) {
 		throw(new \InvalidArgumentException("profile Bio is empty", 405));
@@ -44,11 +47,12 @@ try {
 	if(empty($requestObject->profileEmail) === true) {
 		throw(new \InvalidArgumentException("No profile email is present", 405));
 	}
-
+/*
 	//verify that profile Image is present
 	if(empty($requestObject->profileImage) === true) {
 		throw(new \InvalidArgumentException("no profile image present", 405));
 	}
+	*/
 //verify that profile location is present
 	if(empty($requestObject->profileLocation) === true) {
 		throw(new \InvalidArgumentException("Location must be Albuquerque", 405));
@@ -75,10 +79,9 @@ try {
 		//do the values below for signup and activate
 		$hash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$profileActivationToken = bin2hex(random_bytes(16));
-		$profileId = generateUuidV4();
-		$profileRoleId = generateUuidV4();
+		$profileId = null;
 	// profile object needs to be created and prepare to insert into the database
-	$profile = new Profile($profileId, $profileRoleId, $profileActivationToken, $requestObject->profileBio, $requestObject->profileEmail, $hash, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername,);
+	$profile = new Profile($profileId, $requestObject->profileRoleId, $profileActivationToken, $requestObject->profileBio, $requestObject->profileEmail, $hash, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername,);
 
 	//insert the profile into the database
 	$profile->insert($pdo);
