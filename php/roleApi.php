@@ -34,14 +34,14 @@ try {
 
 	//saintize the search parameters
 	$roleId =$id = filter_input(INPUT_GET, "roleProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$roleName = $id = filter_input(INPUT_GET, "")
+	$roleName = $id = filter_input(INPUT_GET, "");
 
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 		//gets  a specific like associated based on its composite key
 		if ($roleId !== null && $roleName !== null) {
-			$like = Like::getRoleByRoleIdAndRoleName($pdo, $roleId, $roleName);
+			$role = Role::getRoleByRoleIdAndRoleName($pdo, $roleId, $roleName);
 
 			if($role!== null) {
 				$reply->data = $role;
@@ -55,5 +55,42 @@ try {
 		} else {
 			throw new InvalidArgumentException("incorrect search parameters ", 404);
 		}
+		if($method === "POST") {
+			//enforce that the end user has a XSRF token.
+			verifyXsrf();
+			//enforce the end user has a JWT token
+			validateJwtHeader();
+
+			//grab the like by its composite key
+			$role = Role::getRoleByRoleIdAndRoleName($pdo, $requestObject->roleId, $requestObject->roleName);
+			if($role === null) {
+				throw (new RuntimeException("Role does not exist"));
+			}
+			//enforce the user is signed in and only trying to edit their own like
+			if(empty($_SESSION["role"]) === true || $_SESSION["role"]->getRoleId() !== $role->getRoleId()) {
+				throw(new \InvalidArgumentException("You are not allowed to delete this role", 403));
+			}
+			//validateJwtHeader();
+			//preform the actual delete
+			$role->delete($pdo);
+			//update the message
+			$reply->message = "Role successfully deleted";
+		}
+
+		// if any other HTTP request is sent throw an exception
+	} else {
+		throw new \InvalidArgumentException("invalid http request", 400);
+	}
+	//catch any exceptions that is thrown and update the reply status and message
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+// encode and return reply to front end caller
+echo json_encode($reply);
 
 		}
