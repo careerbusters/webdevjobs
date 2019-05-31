@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-use CareerBusters\WebDevJobs\{Profile};
+use CareerBusters\WebDevJobs\Profile;
 
 /**
  * api for the Profile class
@@ -29,20 +29,19 @@ try {
 	$pdo = $secrets->getPdoObject();
 
 	//determine which HTTP method was used
-	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
-
-	if($method ==="POST"){
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	if($method === "POST") {
 
 		//have to decode json and turn it into a php object
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
-	}
+
 	//profile Bio is a required field
-	if (empty($requestObject->profileBio) === true) {
+	if(empty($requestObject->profileBio) === true) {
 		throw(new \InvalidArgumentException("profile Bio is empty", 405));
 	}
 	//check profile email is a required field
-	if (empty($requestObject->profileEmail) === true) {
+	if(empty($requestObject->profileEmail) === true) {
 		throw(new \InvalidArgumentException("No profile email is present", 405));
 	}
 
@@ -57,29 +56,30 @@ try {
 //verify that profile username is present
 		if(empty($requestObject->profileUsername) === true) {
 			throw(new \InvalidArgumentException("Must input valid username", 405));
-
+		}
 		//verify that profile password is present
-		if(empty($requestObject->profilePasswordConfirm) ===true) {
+		if(empty($requestObject->profilePassword) === true) {
 			throw(new \InvalidArgumentException("Must input valid password", 405));
 		}
 		//verify that profile password is present
-		if(empty($requestObject->profilePasswordConfirm) ===true) {
+		if(empty($requestObject->profilePasswordConfirm) === true) {
 			throw(new \InvalidArgumentException("Must input valid password", 405));
 		}
 
-		//do the values below  get assigned on sign up or after activation?
-		$profileAgent = $_SERVER['HTTP_Profile_AGENT'];
-		$profileIpAddress =  $_SERVER['SERVER_ADDR'];
+		/*do the values below  get assigned on sign up or after activation?
+		$profileUsername = $_SERVER['HTTP_Profile_Username'];
+		$profileIpAddress = $_SERVER['SERVER_ADDR'];
 		//user blocked? using 0 as default
 		$profileBlocked = 0;
-
+*/
 		//do the values below for signup and activate
-		$newProfileHash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$hash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$profileActivationToken = bin2hex(random_bytes(16));
 		$profileId = generateUuidV4();
-	}
+		$profileRoleId = generateUuidV4();
 	// profile object needs to be created and prepare to insert into the database
-	$profile = new Profile($profileId, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername, $requestObject->profileBio, $newProfileHash);
+	$profile = new Profile($profileId, $profileRoleId, $profileActivationToken, $requestObject->profileBio, $requestObject->profileEmail, $hash, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername,);
+
 	//insert the profile into the database
 	$profile->insert($pdo);
 	//compose the email message to send with the activation token
@@ -101,7 +101,7 @@ EOF;
 	$swiftMessage = new Swift_Message();
 	// attach the sender to the message
 	//this takes the form of an associative array where the email is the key to a real name
-	$swiftMessage->setFrom(["youngblkraven@gmail.com" => "Youngblkraven"]);
+	$swiftMessage->setFrom(["romero.cassandra1@gmail.com" => "Cassandra Romero"]);
 	/**
 	 * attach recipients to the message
 	 * notice this is an array that can include or omit the recipient's name
@@ -140,15 +140,17 @@ EOF;
 	 * the send method returns the number of recipients that accepted the Email
 	 * so, if the number attempted is not the number accepted, this is an Exception
 	 */
-	if ($numSent !== count($recipients)) {
+	if($numSent !== count($recipients)) {
 		//the $failedRecipients parameter passed in the send () method now contains an array of the Emails that failed
 		throw(new RuntimeException("Unable to send mail", 400));
 	}
 	// update reply
 	$reply->message = "profile created";
-
 }
-catch (\Exception | \TypeError $exception) {
+else {
+	throw (new InvalidArgumentException("Invalid http request"));
+}
+}catch (\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 	$reply->trace = $exception->getTraceAsString();
