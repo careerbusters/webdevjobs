@@ -104,7 +104,7 @@ EOF;
 	$swiftMessage = new Swift_Message();
 	// attach the sender to the message
 	//this takes the form of an associative array where the email is the key to a real name
-	$swiftMessage->setFrom(["romero.cassandra1@gmail.com" => "Cassandra Romero"]);
+	$swiftMessage->setFrom(["youngblkraven@gmail.com" => "Erik Young"]);
 	/**
 	 * attach recipients to the message
 	 * notice this is an array that can include or omit the recipient's name
