@@ -1,0 +1,1 @@
+insert into role (roleId, roleName) VALUES (unhex('2caa77444861449c859891a9786b91a0'), 'recuiter');
