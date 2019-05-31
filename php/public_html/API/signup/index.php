@@ -81,6 +81,7 @@ try {
 		$profileActivationToken = bin2hex(random_bytes(16));
 		$profileId = null;
 	// profile object needs to be created and prepare to insert into the database
+		var_dump($requestObject->profileRoleId);
 	$profile = new Profile($profileId, $requestObject->profileRoleId, $profileActivationToken, $requestObject->profileBio, $requestObject->profileEmail, $hash, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername,);
 
 	//insert the profile into the database
