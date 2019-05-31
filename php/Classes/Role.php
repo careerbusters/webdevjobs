@@ -17,7 +17,7 @@ use Ramsey\Uuid\Uuid;
  * @version 1.0.0
  **/
 class Role implements \JsonSerializable {
-	use validateDate;
+	use ValidateDate;
 	use ValidateUuid;
 	/**
 	 *id and Role (primary key)
