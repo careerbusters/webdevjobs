@@ -31,11 +31,21 @@ try {
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
+	//sanitize input
+	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
+	$tweetProfileId = filter_input(INPUT_GET, "postingProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$tweetContent = filter_input(INPUT_GET, "postingRoleId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+	//make sure the id is valid for methods that require it
+	if(($method === "DELETE" || $method === "PUT") && empty($id) === true) {
+		throw(new InvalidArgumentException("id cannot be empty", 405));
+	}
+
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get a specific tweet based on arguments provided or all the tweets and update reply
+		//get a specific posting based on arguments provided or all the postings and update reply
 		if(empty($id) === false) {
 			$reply->data = Posting::getPostingByPostingId($pdo, $id);
 		} else if(empty($postingProfileId) === false) {
@@ -45,11 +55,17 @@ try {
 		} else {
 			$reply->data = Posting::getAllPostings($pdo)->toArray();
 		}
-	}
+
 
 	//perform the actual put or post
-	if($method === "PUT") {
-
+} else if($method === "PUT") {
+//enforce that the user has an XSRF token
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
+		$requestObject = json_decode($requestContent);
+		// This Line Then decodes the JSON package and stores that result in $requestObject
+		
 		// retrieve the posting to update
 		$posting = Posting::getPostingByPostingId($pdo, $id);
 		if($posting === null) {
