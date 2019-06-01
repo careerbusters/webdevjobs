@@ -34,7 +34,7 @@ try {
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
 	//sanitize the search parameters
-	$roleId =$id = filter_input(INPUT_GET, "roleProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$roleId = $id = filter_input(INPUT_GET, "roleProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$roleName = $id = filter_input(INPUT_GET, "roleName", FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	if($method === "GET") {
@@ -60,26 +60,28 @@ try {
 
 	} else if($method === "POST" || $method === "PUT") {
 
-			//decode the response from the front end
-			$requestContent = file_get_contents("php://input");
-				$requestObject = json_decode($requestContent);
-			if(empty($requestObject->roleId) === true) {
-				throw (new \InvalidArgumentException("No role linked to the profile", 405));
-			}
+		//decode the response from the front end
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
 
-			if(empty($requestObject->roleName) === true) {
-				throw (new \InvalidArgumentException("No name linked to the role", 405));
-			}
+		if(empty($requestObject->roleId) === true) {
+			throw (new \InvalidArgumentException("No Profile linked to the role", 405));
+		}
 
-			if($method === "POST") {
+		if(empty($requestObject->roleName) === true) {
+			throw (new \InvalidArgumentException("No name linked to the role", 405));
+		}
+
+		if($method === "POST") {
 
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
+
 			//enforce the end user has a JWT token
 			//validateJwtHeader();
 
 			// enforce the user is signed in
-			if(emoty($_SESSION["profile"]) === true) {
+			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("you must be logged in too set role", 403));
 			}
 
@@ -87,7 +89,13 @@ try {
 
 			$role = new Role($_SESSION["profile"]->getProfileId(), $requestObject->roleId);
 			$role->insert($pdo);
-			$role->message = "role set successful";
+			$reply->message = "role set successful";
+
+		} else if($method === "PUT") {
+			//enforce the end user has a XSRF token.
+			verifyXsrf();
+			//enforce the end user has a JWT token
+			validateJwtHeader();
 
 			//grab the role by its composite key
 			$role = Role::getRoleByRoleIdAndRoleName($pdo, $requestObject->roleId, $requestObject->roleName);
