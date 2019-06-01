@@ -30,7 +30,7 @@ try {
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 	// sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileRoleid = filter_input(INPUT_GET, "profileRoleid", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileRoleId = filter_input(INPUT_GET, "profileRoleId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileUsername = filter_input(INPUT_GET, "profileUsername", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	// make sure the id is valid for methods that require it
@@ -43,8 +43,8 @@ try {
 		//gets a profile by content
 		if(empty($id) === false) {
 			$reply->data = Profile::getProfileByProfileId($pdo, $id);
-		} else if(empty($profileRoleid) === false) {
-			$reply->data = Profile::getProfileByProfileRoleId($pdo, $profileRoleid);
+		} else if(empty($profileRoleId) === false) {
+			$reply->data = Profile::getProfileByProfileRoleId($pdo, $profileRoleId);
 		} else if(empty($profileEmail) === false) {
 			$reply->data = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		} else if(empty($profileUsername) === false) {
