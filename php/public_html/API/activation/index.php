@@ -1,9 +1,9 @@
 <?php
-require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/Classes/autoload.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-use CareerBusters\WebDevJobs\DataDesign\Profile;
+use CareerBusters\WebDevJobs\Profile;
 /**
  * API to check profile activation status
  * @author Nlovato
@@ -18,7 +18,7 @@ $reply->status = 200;
 $reply->data = null;
 try{
 	// grab the MySQL connection
-	$secrets = new \Secrets("/etc/apache2/capstone-mysql/ddcactivtion.ini");
+	$secrets = new \Secrets("/etc/apache2/capstone-mysql/busters.ini");
 	$pdo = $secrets->getPdoObject();
 	//check the HTTP method being used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
