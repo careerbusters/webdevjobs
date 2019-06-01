@@ -1,13 +1,7 @@
-alter database tgray19 character set utf8 collate utf8_unicode_ci;
-
 drop table if exists SavedJob;
 drop table if exists Posting;
 drop table if exists Profile;
 drop table if exists Role;
-drop table if exists savedJob;
-drop table if exists posting;
-drop table if exists profile;
-drop table if exists role;
 
 create table role (
 	roleId binary(16) not null,

@@ -92,7 +92,7 @@ class Profile implements \JsonSerializable {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
 
-	public function __construct($newProfileId, $newProfileRoleId, string $newProfileActivationToken,  ?string $newProfileBio,
+	public function __construct($newProfileId, $newProfileRoleId, ?string $newProfileActivationToken,  ?string $newProfileBio,
 										 string $newProfileEmail, string $newProfileHash, ?string $newProfileImage, ?string $newProfileLocation, string $newProfileUsername) {
 		try {
 			$this->setProfileId($newProfileId);
@@ -185,7 +185,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if the profile activation is not a string
 	 **/
 
-	public function setProfileActivationToken(string $newProfileActivationToken): void {
+	public function setProfileActivationToken(?string $newProfileActivationToken): void {
 		if($newProfileActivationToken === null) {
 			$this->profileActivationToken = null;
 			return;
@@ -529,9 +529,9 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : ?Profile {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getProfileByProfileActivationToken(\PDO $pdo, $profileActivationToken) : ?Profile {
+	public static function getProfileByProfileActivationToken(\PDO $pdo, string $profileActivationToken) : ?Profile {
 		// sanitize the profile AT before searching
-		$profileActivationToken = strtolower(trim($profileActivationToken));
+		$profileActivationToken = trim($profileActivationToken);
 		if(ctype_xdigit($profileActivationToken) === false) {
 			throw(new\PDOException("profile activation is not valid"));
 		}

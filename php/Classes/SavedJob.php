@@ -14,22 +14,22 @@ use Ramsey\Uuid\Uuid;
  * @version 1.0.0
  **/
 class SavedJob implements \JsonSerializable {
-	use validateDate;
+	use ValidateDate;
 	use ValidateUuid;
 	/**
 	 * id and savedJob (foreign key)
-	 * @var string Uuid $savedJobId
+	 * @var Uuid $savedJobId
 	 **/
 	protected $savedJobPostingId;
 	/**
 	 * profileId and savedJob (foreign key)
-	 * @var $savedJobProfileId
+	 * @var Uuid $savedJobProfileId
 	 **/
 	protected $savedJobProfileId;
 	/**
 	 * Constructor for Saved Job
 	 * @param string|Uuid $newSavedJobPostingId id of Saved Job or null if a new Saved Job.
-	 * @param string $newSavedJobProfileId for profile id.
+	 * @param Uuid $newSavedJobProfileId for profile id.
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data types values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -171,7 +171,7 @@ class SavedJob implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$savedJobPostingId = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
+				$savedJobPostingId = new savedJob($row["savedJobPostingId"], $row["savedJobPostingId"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row could't be converted, rethrow it
@@ -195,10 +195,17 @@ class SavedJob implements \JsonSerializable {
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+
+//		$savedJobs = trim($savedJobProfileId);
+//		$savedJobs = filter_var($savedJobs, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+//		if(empty($savedJobs) === true) {
+//			throw(new \PDOException("saved job posting is invalid"));
+//		}
 		// create query template
 		$query = "SELECT savedJobPostingId, savedJobProfileId FROM savedJob WHERE savedJobProfileId LIKE :savedJobProfileId";
 		$statement = $pdo->prepare($query);
 		// bind the savedJobPosting id to the place holder in the template
+
 		$parameters = ["savedJobProfileId" => $savedJobProfileId->getBytes()];
 		$statement->execute($parameters);
 		// build an array of savedJob
@@ -216,7 +223,6 @@ class SavedJob implements \JsonSerializable {
 		}
 			return ($savedJobs);
 		}
-
 
 
 	/**
