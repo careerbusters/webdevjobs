@@ -80,12 +80,6 @@ try {
 		//do the values below for signup and activate
 		$hash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$profileActivationToken = bin2hex(random_bytes(16));
-<<<<<<< HEAD
-		$profileId = null;
-	// profile object needs to be created and prepare to insert into the database
-		var_dump($requestObject->profileRoleId);
-	$profile = new Profile($profileId, $requestObject->profileRoleId, $profileActivationToken, $requestObject->profileBio, $requestObject->profileEmail, $hash, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername,);
-=======
 		$roleId = generateUuidV4();
 		$profileId = generateUuidV4();
 		// profile object needs to be created and prepare to insert into the database
@@ -94,8 +88,6 @@ try {
 		//insert the profile into the database
 		$role->insert($pdo);
 		$profile->insert($pdo);
->>>>>>> signup
-
 		//compose the email message to send with the activation token
 		$messageSubject = "One step closer to Account Activation";
 		//building the activation link that can travel to another server and still work. This is the link that will be clicked to confirm to the account.
