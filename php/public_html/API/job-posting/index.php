@@ -46,12 +46,13 @@ try {
 		setXsrfCookie();
 
 		//get a specific posting based on arguments provided or all the postings and update reply
+//gets a post by content
 		if(empty($id) === false) {
 			$reply->data = Posting::getPostingByPostingId($pdo, $id);
 		} else if(empty($postingProfileId) === false) {
-			$reply->data = Posting::getPostingByPostingProfileId($pdo, $postingProfileId)->toArray();
+			$reply->data = Posting::getPostingByPostingProfileId($pdo, $postingProfileId);
 		} else if(empty($postingRoleId) === false) {
-			$reply->data = Posting::getPostingByPostingRoleId($pdo, $postingRoleId)->toArray();
+			$reply->data = Posting::getPostingByPostingRoleId($pdo, $postingRoleId);
 		} else {
 			$reply->data = Posting::getAllPostings($pdo)->toArray();
 		}
