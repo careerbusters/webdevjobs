@@ -130,7 +130,7 @@ class Profile implements \JsonSerializable {
 
 	public function setProfileId($newProfileId): void {
 		try {
-			$uuid = self::ValidateUuid($newProfileId);
+			$uuid = self::validateUuid($newProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -158,7 +158,7 @@ class Profile implements \JsonSerializable {
 
 	public function setProfileRoleId($newProfileRoleId): void {
 		try {
-			$uuid = self::ValidateUuid($newProfileRoleId);
+			$uuid = self::validateUuid($newProfileRoleId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
