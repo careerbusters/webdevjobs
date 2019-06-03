@@ -159,7 +159,7 @@ class Role implements \JsonSerializable {
 	 * gets the Role by role id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $roleId role id to search for
+	 * @param $roleId role id to search for
 	 * @return \SplFixedArray SplFixedArray of Roles found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type

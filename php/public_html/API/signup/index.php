@@ -51,7 +51,7 @@ try {
 				throw(new \InvalidArgumentException("no profile image present", 405));
 			}
 //verify that profile location is present
-		if(empty($requestObject->profileLocation) === true) {
+		if($requestObject->profileLocation !== "Albuquerque") {
 			throw(new \InvalidArgumentException("Location must be Albuquerque", 405));
 		}
 //verify that profile username is present
@@ -66,11 +66,15 @@ try {
 		if(empty($requestObject->profilePasswordConfirm) === true) {
 			throw(new \InvalidArgumentException("Must input valid password", 405));
 		}
-		//verify that profile password is present
-		if(empty($requestObject->roleName) === true) {
-			throw(new \InvalidArgumentException("must input a valid name", 405));
+		//verify that role name is present
+		if(empty($requestObject->roleId) === true) {
+			throw(new \InvalidArgumentException("role Id must be present", 405));
+		}else{
+//			$roleUuid = new uuid
+			if(empty (Role::getRoleByRoleId($pdo, $requestObject->roleId)) === true){
+				throw(new \InvalidArgumentException("must input a valid role", 405));
+			}
 		}
-
 		/*do the values below  get assigned on sign up or after activation?
 		$profileUsername = $_SERVER['HTTP_Profile_Username'];
 		$profileIpAddress = $_SERVER['SERVER_ADDR'];
@@ -80,13 +84,10 @@ try {
 		//do the values below for signup and activate
 		$hash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$profileActivationToken = bin2hex(random_bytes(16));
-		$roleId = generateUuidV4();
 		$profileId = generateUuidV4();
 		// profile object needs to be created and prepare to insert into the database
-		$role = new Role($roleId, $requestObject->roleName);
-		$profile = new Profile($profileId, $roleId, $profileActivationToken, $requestObject->profileBio, $requestObject->profileEmail, $hash, null, $requestObject->profileLocation, $requestObject->profileUsername);
+		$profile = new Profile($profileId, $requestObject->roleId, $profileActivationToken, $requestObject->profileBio, $requestObject->profileEmail, $hash, null, $requestObject->profileLocation, $requestObject->profileUsername);
 		//insert the profile into the database
-		$role->insert($pdo);
 		$profile->insert($pdo);
 		//compose the email message to send with the activation token
 		$messageSubject = "One step closer to Account Activation";
