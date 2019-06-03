@@ -9,7 +9,7 @@ namespace CareerBusters\WebDevJobs;
  * @author Trystan Gray <careerbusters@cnm.edu>
  * @version 1.0.0
  **/
-trait validateDate {
+trait ValidateDate {
 	/**
 	 * custom filter for mySQL date
 	 *
