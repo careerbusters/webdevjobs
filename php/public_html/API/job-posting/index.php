@@ -33,8 +33,8 @@ try {
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
-	$tweetProfileId = filter_input(INPUT_GET, "postingProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$tweetContent = filter_input(INPUT_GET, "postingRoleId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingProfileId = filter_input(INPUT_GET, "postingProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingRoleId = filter_input(INPUT_GET, "postingRoleId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && empty($id) === true) {
@@ -62,6 +62,11 @@ try {
 } else if($method === "PUT") {
 //enforce that the user has an XSRF token
 		verifyXsrf();
+
+		//enforce the user is signed in and only trying to edit their a job posting
+		if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getPostingId()->toString() !== $posting->getPostingId()->toString()) {
+			throw(new \InvalidArgumentException("You are only allowed to edit your own job posting", 403));}
+
 		$requestContent = file_get_contents("php://input");
 		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
@@ -72,12 +77,15 @@ try {
 		if($posting === null) {
 			throw(new RuntimeException("posting does not exist", 404));
 		}
-
-		//enforce the user is signed in and only trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $posting->getPostingProfileId()->toString()) {
-			throw(new \InvalidArgumentException("You are only allowed to edit your own profile", 403));
+		//profile as handle
+		if(empty($requestObject->profileId) === true) {
+			throw(new \InvalidArgumentException ("No profile on file", 405));
+		}
+		if(empty($requestObject->roleId) === true) {
+			throw(new \InvalidArgumentException ("you must enter a role Id", 405));
 		}
 
+		//enforce the user is signed in and only trying to edit their a job posting
 		// update all attributes
 		$posting->setPostingDate($requestObject->postingDate);
 		$posting->setPostingContent($requestObject->postingContent);
@@ -85,6 +93,7 @@ try {
 
 		// update reply
 		$reply->message = "job posting OK";
+
 		if($method === "POST") {
 
 			//have to decode json and turn it into a php object
@@ -218,7 +227,7 @@ else if($method === "DELETE") {
 	}
 
 	//enforce the user is signed in and only trying to edit their own job posting
-	if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $posting->getPostingProfileId()) {
+	if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getpostingId()->toString() !== $posting->getPostingId()->toString()) {
 		throw(new \InvalidArgumentException("You are not allowed to delete this job posting", 403));
 	}
 
