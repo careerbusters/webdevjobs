@@ -7,7 +7,7 @@ require_once dirname(__DIR__, 3) . "/lib/jwt.php";
 require_once dirname(__DIR__, 3) . "/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-use CareerBusters\WebDevJobs\DataDesign\{Role};
+use CareerBusters\WebDevJobs\Role;
 
 /**
  * Api for the Role class
@@ -27,7 +27,7 @@ $reply->data = null;
 
 try {
 
-	$secrets = new \Secrets("/etc/apache2/capstone-mysql/ddcrole.ini");
+	$secrets = new \Secrets("/etc/apache2/capstone-mysql/busters.ini");
 	$pdo = $secrets->getPdoObject();
 
 	//determine which HTTP method was used
@@ -58,7 +58,7 @@ try {
 			throw new InvalidArgumentException("incorrect search parameters ", 404);
 		}
 
-	} else if($method === "POST" || $method === "PUT") {
+	} else if($method === "POST") {
 
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
@@ -91,28 +91,6 @@ try {
 			$role->insert($pdo);
 			$reply->message = "role set successful";
 
-		} else if($method === "PUT") {
-			//enforce the end user has a XSRF token.
-			verifyXsrf();
-			//enforce the end user has a JWT token
-			validateJwtHeader();
-
-			//grab the role by its composite key
-			$role = Role::getRoleByRoleIdAndRoleName($pdo, $requestObject->roleId, $requestObject->roleName);
-			if($role === null) {
-				throw (new RuntimeException("Role does not exist"));
-			}
-			//enforce the user is signed in and only trying to edit their own role
-			if(empty($_SESSION["role"]) === true || $_SESSION["role"]->getRoleId() !== $role->getRoleId()) {
-				throw(new \InvalidArgumentException("You are not allowed to delete this role", 403));
-			}
-			//validateJwtHeader();
-
-			//preform the actual delete
-			$role->delete($pdo);
-
-			//update the message
-			$reply->message = "Role successfully deleted";
 		}
 
 		// if any other HTTP request is sent throw an exception
