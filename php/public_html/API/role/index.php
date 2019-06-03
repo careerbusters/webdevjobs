@@ -49,40 +49,6 @@ try {
 			$reply->data = Role::getAllRoles($pdo)->toArray();
 		}
 
-	} else if($method === "POST") {
-
-		//decode the response from the front end
-		$requestContent = file_get_contents("php://input");
-		$requestObject = json_decode($requestContent);
-
-		if(empty($requestObject->roleId) === true) {
-			throw (new \InvalidArgumentException("No Profile linked to the role", 405));
-		}
-
-		if(empty($requestObject->roleName) === true) {
-			throw (new \InvalidArgumentException("No name linked to the role", 405));
-		}
-
-		if($method === "POST") {
-
-			//enforce that the end user has a XSRF token.
-			verifyXsrf();
-
-			//enforce the end user has a JWT token
-			//validateJwtHeader();
-
-			// enforce the user is signed in
-			if(empty($_SESSION["profile"]) === true) {
-				throw(new \InvalidArgumentException("you must be logged in too set role", 403));
-			}
-
-			validateJwtHeader();
-
-			$role = new Role($_SESSION["profile"]->getProfileId(), $requestObject->roleId);
-			$role->insert($pdo);
-			$reply->message = "role set successful";
-
-		}
 
 		// if any other HTTP request is sent throw an exception
 	} else {
