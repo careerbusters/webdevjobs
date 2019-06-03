@@ -232,7 +232,10 @@ class Role implements \JsonSerializable {
 	public function jsonSerialize(): array {
 		$fields = get_object_vars($this);
 
-		$fields["roleId"] = $this->roleId->toString();
+		$fields["roleId"] = $this->roleId;
+		$fields["roleName"] = $this->roleName;
+
+		return ($fields);
 	}
 }
 
