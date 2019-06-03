@@ -70,7 +70,7 @@ try {
 				throw(new \InvalidArgumentException("you must be logged in too save job", 403));
 			}
 			validateJwtHeader();
-			$savedJob = new SavedJob\($_SESSION["profile"]->getProfileId(), $requestObject->savedJobProfileId);
+			$savedJob = new SavedJob($_SESSION["profile"]->getProfileId(), $requestObject->savedJobProfileId);
 			$savedJob->insert($pdo);
 			$reply->message = "saved job successful";
 

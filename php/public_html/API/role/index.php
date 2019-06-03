@@ -34,28 +34,19 @@ try {
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
 	//sanitize the search parameters
-	$roleId = $id = filter_input(INPUT_GET, "roleProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$roleId = $id = filter_input(INPUT_GET, "roleId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$roleName = $id = filter_input(INPUT_GET, "roleName", FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//gets  a specific like associated based on its composite key
-		if($roleId !== null && $roleName !== null) {
-			$role = Role::getRoleByRoleIdAndRoleName($pdo, $roleId, $roleName);
-
-			if($role !== null) {
-				$reply->data = $role;
-			}
 			//if none of the search parameters are met throw an exception
-		} else if(empty($roleId) === false) {
+		if(empty($roleId) === false) {
 			$reply->data = Role::getRoleByRoleId($pdo, $roleId)->toArray();
 			//get all the roles associated with the roleId
-		} else if(empty($roleName) === false) {
-			$reply->data = Role::getRoleByRoleName($pdo, $roleName)->toArray();
 		} else {
-			throw new InvalidArgumentException("incorrect search parameters ", 404);
+			$reply->data = Role::getAllRoles($pdo)->toArray();
 		}
 
 	} else if($method === "POST") {
