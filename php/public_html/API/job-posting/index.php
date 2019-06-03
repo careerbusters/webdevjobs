@@ -58,8 +58,8 @@ try {
 		}
 
 
-	//perform the actual put or post
-} else if($method === "PUT") {
+		//perform the actual put or post
+	} else if($method === "PUT") {
 //enforce that the user has an XSRF token
 		verifyXsrf();
 
