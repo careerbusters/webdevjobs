@@ -25,24 +25,28 @@ $reply->data = null;
 try {
 	$secrets = new \Secrets("/etc/apache2/capstone-mysql/busters.ini");
 	$pdo = $secrets->getPdoObject();
+
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
+
 	//sanitize the search parameters
 	$savedJobPostingId = $id = filter_input(INPUT_GET, "savedJobPostingId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$savedJobProfileId = $id = filter_input(INPUT_GET, "savedJobProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
-		//gets  a specific saved job associated based on its composite key
+
+		//gets a specific saved job associated based on its composite key
 		if($savedJobPostingId !== null && $savedJobProfileId !== null) {
 			$savedJob = SavedJob::getSavedJobBySavedJobPostingIdAndSavedJobProfileId($pdo, $savedJobPostingId, $savedJobProfileId);
+
 			if($savedJob !== null) {
 				$reply->data = $savedJob;
 			}
 			//if none of the search parameters are met throw an exception
 		} else if(empty($savedJobPostingId) === false) {
-			$reply->data = SavedJob::getSavedJobBySavedPostingId($pdo, $savedJobPostingId)->toArray();
-			//get all the saved jobs associated with the savedJobPrifileId
+			$reply->data = SavedJob::getSavedJobBySavedJobPostingId($pdo, $savedJobPostingId)->toArray();
+			//get all the saved jobs associated with the savedJobProfileId
 		} else if(empty($savedJobProfileId) === false) {
 			$reply->data = SavedJob::getSavedJobBySavedJobProfileId($pdo, $savedJobProfileId)->toArray();
 		} else {
@@ -53,9 +57,11 @@ try {
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
+
 		if(empty($requestObject->savedJobPostingId) === true) {
 			throw (new \InvalidArgumentException("No Posting Id linked to the saved job", 405));
 		}
+
 		if(empty($requestObject->savedJobProfileId) === true) {
 			throw (new \InvalidArgumentException("No Profile linked to the saved job", 405));
 		}
@@ -63,13 +69,16 @@ try {
 		if($method === "POST") {
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
+
 			//enforce the end user has a JWT token
 			//validateJwtHeader();
+
 			// enforce the user is signed in
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("you must be logged in too save job", 403));
 			}
 			validateJwtHeader();
+
 			$savedJob = new SavedJob($_SESSION["profile"]->getProfileId(), $requestObject->savedJobProfileId);
 			$savedJob->insert($pdo);
 			$reply->message = "saved job successful";
@@ -79,8 +88,10 @@ try {
 				throw(new \InvalidArgumentException("You are not allowed to delete this saved job", 403));
 			}
 			//validateJwtHeader();
+
 			//preform the actual delete
 			$savedJob->delete($pdo);
+
 			//update the message
 			$reply->message = "Saved job successfully deleted";
 		}

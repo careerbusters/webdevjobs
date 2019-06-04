@@ -140,7 +140,7 @@ class SavedJob implements \JsonSerializable {
 		//create query template
 		$query = "UPDATE savedJob SET savedJobPostingId = :savedJobPostingId, savedJobProfileId = :savedJobProfileId WHERE savedJobPostingId = savedJobPostingId";
 		$statement = $pdo->prepare($query);
-		$parameters = ["savedJobPostingId" => $this->savedJobPostingId->getBytes(),$this->savedJobProfileId => $this->savedJobProfileId];
+		$parameters = ["savedJobPostingId" => $this->savedJobPostingId->getBytes(), $this->savedJobProfileId => $this->savedJobProfileId];
 		$statement->execute(($parameters));
 	}
 	/**
@@ -152,7 +152,7 @@ class SavedJob implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getSavedJobBySavedJobPostingId(\PDO $pdo, $savedJobPostingId): savedJob {
+	public static function getSavedJobBySavedJobPostingId(\PDO $pdo, $savedJobPostingId): ?savedJob {
 		//sanitize the savedJobPostingId before searching
 		try {
 			$savedJobPostingId = self::validateUuid($savedJobPostingId);
@@ -162,16 +162,18 @@ class SavedJob implements \JsonSerializable {
 		//create query template
 		$query = "SELECT savedJobPostingId, savedJobProfileId FROM savedJob WHERE savedJobPostingId = :savedJobPostingId";
 		$statement = $pdo->prepare($query);
+
 		//bind the saved job posting id to the place holder in the template
 		$parameters = ["savedJobPostingId" => $savedJobPostingId->getBytes()];
 		$statement->execute($parameters);
+
 		//grab the savedJobPosting from mySQL
 		try {
 			$savedJobPostingId = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$savedJobPostingId = new savedJob($row["savedJobPostingId"], $row["savedJobPostingId"]);
+				$savedJobPostingId = new savedJob($row["savedJobPostingId"], $row["savedJobProfileId"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row could't be converted, rethrow it
