@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php require_once ("head-utils.php");?>
 
 	<!--Login Form with image card & Jumbotron-->
 	<body>

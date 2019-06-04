@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php require_once ("head-utils.php");?>
+
 	<head>
 		<!--Required Meta Tags-->
 		<meta charset="UTF-8">
