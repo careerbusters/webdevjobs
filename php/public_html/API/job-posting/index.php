@@ -35,6 +35,13 @@ try {
 	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postingProfileId = filter_input(INPUT_GET, "postingProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postingRoleId = filter_input(INPUT_GET, "postingRoleId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingCompanyName = filter_input(INPUT_GET, "postingCompanyId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingContent = filter_input(INPUT_GET, "postingContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingDate = filter_input(INPUT_GET, "postingDate", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingEndDate = filter_input(INPUT_GET, "postingEndDate", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingLocation = filter_input(INPUT_GET, "postingLocation", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingPay = filter_input(INPUT_GET, "postingPay", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingTitle = filter_input(INPUT_GET, "postingTitle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && empty($id) === true) {
@@ -63,8 +70,8 @@ try {
 //enforce that the user has an XSRF token
 		verifyXsrf();
 
-		//enforce the user is signed in and only trying to edit their a job posting
-		if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getPostingId()->toString() !== $roleId->getRoleId()->toString()) {
+		//enforce the user is signed in and only trying to edit their job posting
+		if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getPostingId()->toString() !==$id) {
 			throw(new \InvalidArgumentException("You are only allowed to edit your own job posting", 403));}
 
 		$requestContent = file_get_contents("php://input");
@@ -129,8 +136,15 @@ try {
 			if(empty($requestObject->postingPassword) === true) {
 				throw(new \InvalidArgumentException("Must input valid password", 405));
 			}
-		
-
+			//verify that role name is present
+			if(empty($requestObject->roleId) === true) {
+				throw(new \InvalidArgumentException("role Id must be present", 405));
+			}else {
+//			$roleUuid = new uuid
+				if(empty (Role::getRoleByRoleId($pdo, $requestObject->roleId)) === true) {
+					throw(new \InvalidArgumentException("must input a valid role", 405));
+				}
+			}
 			//do the values below  get assigned on sign up or after activation?
 			$profileAgent = $_SERVER['HTTP_Profile_AGENT'];
 			$profileIpAddress = $_SERVER['SERVER_ADDR'];
@@ -224,7 +238,7 @@ else if($method === "DELETE") {
 	}
 
 	//enforce the user is signed in and only trying to edit their own job posting
-	if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getpostingId()->toString() !== $posting->getPostingId()->toString()) {
+	if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getpostingId()->toString()) {
 		throw(new \InvalidArgumentException("You are not allowed to delete this job posting", 403));
 	}
 
