@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/lib/jwt.php";
 require_once dirname(__DIR__, 3) . "/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
-use CareerBusters\WebDevJobs\{Profile};
+use CareerBusters\WebDevJobs\Profile;
 /**
  * API for Profile
  *
@@ -15,34 +15,36 @@ use CareerBusters\WebDevJobs\{Profile};
  * @version 1.0
  */
 //verify the session, if it is not active start it
-if(session_status() !== PHP_SESSION_ACTIVE) {
-	session_start();
-}
 //prepare an empty reply
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 try {
+	//verify the session, if it is not active start it
+	if(session_status() !== PHP_SESSION_ACTIVE) {
+		session_start();}
 	//grab the mySQL connection
 	$secrets = new \Secrets("/etc/apache2/capstone-mysql/busters.ini");
 	$pdo = $secrets->getPdoObject();
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 	// sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileId = filter_input(INPUT_GET, "profileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileRoleId = filter_input(INPUT_GET, "profileRoleId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileUsername = filter_input(INPUT_GET, "profileUsername", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	// make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($profileId) === true)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
 		//gets a profile by content
-		if(empty($id) === false) {
-			$reply->data = Profile::getProfileByProfileId($pdo, $id);
+		if(empty($profileId) === false) {
+			$reply->data = Profile::getProfileByProfileId($pdo, $profileId);
 		} else if(empty($profileRoleId) === false) {
 			$reply->data = Profile::getProfileByProfileRoleId($pdo, $profileRoleId);
 		} else if(empty($profileEmail) === false) {
@@ -54,17 +56,17 @@ try {
 		//enforce that the XSRF token is present in the header
 		verifyXsrf();
 		//enforce the end user has a JWT token
-		//validateJwtHeader();
+		validateJwtHeader();
 		//enforce the user is signed in and only trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $id) {
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $profileId) {
 			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
 		}
-		validateJwtHeader();
+//		validateJwtHeader();
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 		//retrieve the profile to be updated
-		$profile = Profile::getProfileByProfileId($pdo, $id);
+		$profile = Profile::getProfileByProfileId($pdo, $profileId);
 		if($profile === null) {
 			throw(new RuntimeException("Profile does not exist", 404));
 		}
@@ -87,25 +89,6 @@ try {
 		$profile->update($pdo);
 		// update reply
 		$reply->message = "Profile information updated";
-	} elseif($method === "DELETE") {
-		//verify the XSRF Token
-		verifyXsrf();
-		//enforce the end user has a JWT token
-		//validateJwtHeader();
-		$profile = Profile::getProfileByProfileId($pdo, $id);
-		if($profile === null) {
-			throw (new RuntimeException("Profile does not exist"));
-		}
-		//enforce the user is signed in and only trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $profile->getProfileId()->toString()) {
-			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
-		}
-		validateJwtHeader();
-		//delete the profile from the database
-		$profile->delete($pdo);
-		$reply->message = "Profile Deleted";
-	} else {
-		throw (new InvalidArgumentException("Invalid HTTP request", 400));
 	}
 	// catch any exceptions that were thrown and update the status and message state variable fields
 } catch

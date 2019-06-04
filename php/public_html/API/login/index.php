@@ -77,7 +77,7 @@ try {
 
 		// create and set th JWT TOKEN
 		setJwtAndAuthHeader("auth",$authObject);
-		$reply->message = "Sign in was successful.";
+		$reply->message = "Sign in was successful." . $profile->getProfileId() . " " . $profile->getProfileRoleId();
 	} else {
 		throw(new \InvalidArgumentException("Invalid HTTP method request", 418));
 	}
