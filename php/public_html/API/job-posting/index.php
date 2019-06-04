@@ -64,7 +64,7 @@ try {
 		verifyXsrf();
 
 		//enforce the user is signed in and only trying to edit their a job posting
-		if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getPostingId()->toString() !== $role->getPostingId()->toString()) {
+		if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getPostingId()->toString() !== $roleId->getRoleId()->toString()) {
 			throw(new \InvalidArgumentException("You are only allowed to edit your own job posting", 403));}
 
 		$requestContent = file_get_contents("php://input");
