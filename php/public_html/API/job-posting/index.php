@@ -126,13 +126,10 @@ try {
 			throw(new \InvalidArgumentException("Must input the amount the job pays", 405));
 
 			//verify that profile password is present
-			if(empty($requestObject->postingPasswordConfirm) === true) {
+			if(empty($requestObject->postingPassword) === true) {
 				throw(new \InvalidArgumentException("Must input valid password", 405));
 			}
-			//verify that profile password is present
-			if(empty($requestObject->postingPasswordConfirm) === true) {
-				throw(new \InvalidArgumentException("Must input valid password", 405));
-			}
+		
 
 			//do the values below  get assigned on sign up or after activation?
 			$profileAgent = $_SERVER['HTTP_Profile_AGENT'];
