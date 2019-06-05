@@ -18,17 +18,17 @@
 		<!--Navbar-->
 		<ul class="nav justify-content-end">
 			<li class="nav-item">
-				<a class="nav-link active" href="#">
+				<a class="nav-link active" href="dev-page.php">
 				<i class="fas fa-home fa-2x text-dark" alt="Home Page Icon"></i>
 			</li>
 			</a>
 			<li class="nav-item">
-				<a class="nav-link active" href="#">
+				<a class="nav-link active" href="job-posting-page.php">
 				<i class="fas fa-users fa-2x text-dark" alt="Recruiter Job Posting Page Icon"></i>
 			</li>
 			</a>
 			<li class="nav-item">
-				<a class="nav-link active" href="#">
+				<a class="nav-link active" href="saved-job-page.php">
 					<i class="fas fa-briefcase fa-2x text-dark" alt="Saved Job Icon"></i>
 			</li>
 			</a>
