@@ -8,6 +8,9 @@
 	</head>
 	<body>
 
+		<!--CSS Animated Border Background-->
+		<div class="block">
+
 		<!--Navbar-->
 		<header>
 			<ul class="nav justify-content-end">
@@ -19,5 +22,6 @@
 				</li>
 		</header>
 
+		</div>
 	</body>
 </html>

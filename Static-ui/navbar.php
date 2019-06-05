@@ -12,20 +12,26 @@
 	<header>
 		<section>
 			<nav class="navbar navbar-light bg-light">
-				<a class="navbar-brand" href="#">
-					<img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+				<a class="navbar-brand"  href="#">
+					<i class="fas fa-user-circle fa-2x" alt="Profile Icon"></i>
 				</a>
 		<!--Navbar-->
 		<ul class="nav justify-content-end">
 			<li class="nav-item">
-				<a class="nav-link active" href="#">Active</a>
+				<a class="nav-link active" href="#">
+				<i class="fas fa-home fa-2x text-dark" alt="Home Page Icon"></i>
 			</li>
+			</a>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Link</a>
+				<a class="nav-link active" href="#">
+				<i class="fas fa-users fa-2x text-dark" alt="Recruiter Job Posting Page Icon"></i>
 			</li>
+			</a>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Link</a>
+				<a class="nav-link active" href="#">
+					<i class="fas fa-briefcase fa-2x text-dark" alt="Saved Job Icon"></i>
 			</li>
+			</a>
 		</ul>
 		</nav>
 		</section>
