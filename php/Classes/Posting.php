@@ -1,22 +1,14 @@
 <?php
-
 namespace CareerBusters\WebDevJobs;
-
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
 require_once("autoload.php");
 use Ramsey\Uuid\Uuid;
-
 use CareerBusters\WebDevJobs\Role;
 use CareerBusters\WebDevJobs\profile;
-
 /** create class for table Posting */
-
-
-
 class Posting implements \JsonSerializable {
 	use ValidateDate;
 	use ValidateUuid;
-
 	/**
 	 * id for this posting; this is the primary key
 	 * @var Uuid $postingId
@@ -72,7 +64,6 @@ class Posting implements \JsonSerializable {
 	 * @var string $postingTitle
 	 **/
 	private $postingTitle;
-
 	/**
 	 * constructor for this posting
 	 *
@@ -111,7 +102,6 @@ class Posting implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
-
 	/**
 	 * accessor method for postingId
 	 * @return Uuid value of postingId
@@ -119,7 +109,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingId(): Uuid {
 		return ($this->postingId);
 	}
-
 	/**
 	 * mutator method for posting id
 	 *
@@ -137,15 +126,13 @@ class Posting implements \JsonSerializable {
 		// convert and store the profile id
 		$this->postingId = $uuid;
 	}
-
 	/**
 	 * accessor method for postingProfileId
 	 *  @return string|Uuid for postingProfileId (or null if new Posting)
 	 **/
 	public function getPostingProfileId(): Uuid {
-	return ($this->postingProfileId);
+		return ($this->postingProfileId);
 	}
-
 	/**
 	 * mutator method for posting profile id
 	 *
@@ -163,7 +150,6 @@ class Posting implements \JsonSerializable {
 		// convert and store the postingProfile id
 		$this->postingProfileId = $uuid;
 	}
-
 	/**
 	 * accessor method for postingRoleId
 	 *  @return string|Uuid for postingRoleId (or null if new Posting)
@@ -171,7 +157,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingRoleId(): Uuid {
 		return ($this->postingRoleId);
 	}
-
 	/**
 	 * mutator method for postingRole id
 	 *
@@ -189,7 +174,6 @@ class Posting implements \JsonSerializable {
 		// convert and store the postingRole id
 		$this->postingRoleId = $uuid;
 	}
-
 	/**
 	 * accessor method for postingCompanyName
 	 * @return string value of postingCompanyName
@@ -197,7 +181,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingCompanyName(): string {
 		return ($this->postingCompanyName);
 	}
-
 	/**
 	 * mutator method for posting company name
 	 * @param string $newPostingCompanyName new value of posting company name
@@ -212,7 +195,6 @@ class Posting implements \JsonSerializable {
 		// store the content
 		$this->postingCompanyName = $newPostingCompanyName;
 	}
-
 	/**
 	 * accessor method for postingContent
 	 * @return string value of postingContent
@@ -220,7 +202,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingContent(): string {
 		return ($this->postingContent);
 	}
-
 	/**
 	 * mutator method for postingContent
 	 * @param string $newPostingContent new value of posting content
@@ -233,8 +214,6 @@ class Posting implements \JsonSerializable {
 		if(empty($newPostingContent) === true) {
 			throw(new \InvalidArgumentException("posting content is empty or insecure"));
 		}
-
-
 		// verify the posting content will fit in the database
 		if(strlen($newPostingContent) > 30000) {
 			throw(new \RangeException("posting content too large"));
@@ -242,7 +221,6 @@ class Posting implements \JsonSerializable {
 		// store the content
 		$this->postingContent = $newPostingContent;
 	}
-
 	/**
 	 * accessor method for posting date
 	 * @return \DateTime value of posting date
@@ -250,7 +228,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingDate(): \DateTime {
 		return ($this->postingDate);
 	}
-
 	/**
 	 * mutator method for posting date
 	 * @param \DateTime|string|null $newPostingDate date as a DateTime object or string (or null to load the current time)
@@ -264,7 +241,6 @@ class Posting implements \JsonSerializable {
 			$this->postingDate = new \DateTime();
 			return;
 		}
-
 		// store the date using the ValidateDateTime trait
 		try {
 			$newPostingDate = self::validateDateTime($newPostingDate);
@@ -274,7 +250,6 @@ class Posting implements \JsonSerializable {
 		}
 		$this->postingDate = $newPostingDate;
 	}
-
 	/**
 	 * accessor method for posting email
 	 * @return string value of posting email
@@ -282,7 +257,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingEmail(): string {
 		return ($this->postingEmail);
 	}
-
 	/**
 	 * mutator method for posting email
 	 * @param string $newPostingEmail new value of posting email
@@ -297,7 +271,6 @@ class Posting implements \JsonSerializable {
 		// store the email content
 		$this->postingEmail = $newPostingEmail;
 	}
-
 	/**
 	 * accessor method for posting end date
 	 * @return \DateTime value of posting end date
@@ -305,7 +278,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingEndDate(): \DateTime {
 		return ($this->postingEndDate);
 	}
-
 	/**
 	 * mutator method for posting end date
 	 * @param \DateTime|string|null $newPostingEndDate date as a DateTime object or string (or null to load the current time)
@@ -328,7 +300,6 @@ class Posting implements \JsonSerializable {
 		}
 		$this->postingEndDate = $newPostingEndDate;
 	}
-
 	/**
 	 * accessor method for postingLocation
 	 * @return string value of postingLocation
@@ -336,7 +307,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingLocation(): string {
 		return ($this->postingLocation);
 	}
-
 	/**
 	 * mutator method for posting location
 	 * @param string $newPostingLocation new value of posting location
@@ -351,7 +321,6 @@ class Posting implements \JsonSerializable {
 		// store the location
 		$this->postingLocation = $newPostingLocation;
 	}
-
 	/**
 	 * accessor method for postingPay
 	 * @return string value of postingPay
@@ -359,7 +328,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingPay(): string {
 		return ($this->postingPay);
 	}
-
 	/**
 	 * mutator method for posting pay
 	 * @param string $newPostingPay new value of posting pay
@@ -374,7 +342,6 @@ class Posting implements \JsonSerializable {
 		// store the pay
 		$this->postingPay = $newPostingPay;
 	}
-
 	/**
 	 * /**
 	 * accessor method for postingTitle
@@ -383,7 +350,6 @@ class Posting implements \JsonSerializable {
 	public function getPostingTitle(): string {
 		return ($this->postingTitle);
 	}
-
 	/**
 	 * mutator method for posting title
 	 * @param string $newPostingTitle new value of posting title
@@ -398,7 +364,6 @@ class Posting implements \JsonSerializable {
 		// store the title
 		$this->postingTitle = $newPostingTitle;
 	}
-
 	/**
 	 *inserts this posting into mySQL
 	 *
@@ -416,7 +381,6 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		$parameters = ["postingId" => $this->postingId->getBytes(), "postingProfileId" => $this->postingProfileId->getBytes(), "postingRoleId" => $this->postingRoleId->getBytes(), "postingCompanyName" => $this->postingCompanyName, "postingContent" => $this->postingContent, "postingEmail" => $this->postingEmail, "postingLocation" => $this->postingLocation, "postingTitle" => $this->postingTitle, "postingPay" => $this->postingPay, "postingDate" => $formattedDate, "postingEndDate" => $formattedDate];
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * updates this posting in mySQL
 	 *
@@ -425,16 +389,13 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function update(\PDO $pdo): void {
-
 		// create query template
 		$query = "UPDATE posting SET postingProfileId = :postingProfileId, postingRoleId = :postingRoleId, postingCompanyName = :postingCompanyName, postingContent = :postingContent, postingDate = :postingDate, postingEmail = :postingEmail, postingEndDate = :postingEndDate, postingLocation = :postingLocation, postingPay = :postingPay, postingTitle = :postingTitle  WHERE postingId = :postingId";
 		$statement = $pdo->prepare($query);
-
 		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
 		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent, "postingDate" => $formattedDate];
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * deletes this posting from mySQL
 	 *
@@ -459,7 +420,6 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-
 	public static function getPostingByPostingId(\PDO $pdo, $postingId): ?posting {
 		try {
 			$postingId = self::validateUuid($postingId);
@@ -472,22 +432,20 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		// bind the profile id to the place holder in the template
 		$parameters = ["postingId" => $postingId->getBytes()];
 		$statement->execute($parameters);
-
 		// grad the posting from mySQL
-			try {
-				$posting = null;
-				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				$row = $statement->fetch();
-				if($row !== false) {
-					$posting = new Posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
-				}
-				} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
+		try {
+			$posting = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$posting = new Posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
 			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
 		return ($posting);
 	}
-
 	/**
 	 * gets the posting by postingProfileId
 	 *
@@ -497,9 +455,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-
 	public static function getPostingByPostingProfileId(\PDO $pdo, $postingProfileId): \SplFixedArray {
-
 		try {
 			$postingProfileId = self::validateUuid($postingProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -525,7 +481,6 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		}
 		return ($postings);
 	}
-
 	/**
 	 * gets the posting by postingRoleId
 	 *
@@ -536,7 +491,6 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
 	public static function getPostingByPostingRoleId(\PDO $pdo, $postingRoleId): \SplFixedArray {
-
 		// sanitize the todoId before searching
 		// sanitize the postingId before searching
 		try {
@@ -544,7 +498,6 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-
 		// create query template
 		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingRoleId = :postingRoleId";
 		$statement = $pdo->prepare($query);
@@ -566,7 +519,6 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		}
 		return ($postings);
 	}
-
 	/**
 	 * gets all postings
 	 *
@@ -580,7 +532,6 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle FROM posting";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
-
 		// build an array of postings
 		$postings = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -596,15 +547,15 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		}
 		return ($postings);
 	}
-/**
- * formats the state variables for JSON serialization
- *
- * @return array resulting state variables to serialize
- **/
-public function jsonSerialize() : array {
-	$fields = get_object_vars($this);
-	$fields["postingId"] = $this->postingId->toString();
-	$fields["postingProfileId"] = $this->postingProfileId->toString();
-	$fields["postingRoleId"] = $this->postingRoleId->toString();
-	return ($fields);
-}}
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+		$fields["postingId"] = $this->postingId->toString();
+		$fields["postingProfileId"] = $this->postingProfileId->toString();
+		$fields["postingRoleId"] = $this->postingRoleId->toString();
+		return ($fields);
+	}}
