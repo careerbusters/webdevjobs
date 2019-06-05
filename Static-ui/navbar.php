@@ -15,8 +15,6 @@
 				<a class="navbar-brand" href="#">
 					<img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
 				</a>
-			</nav>
-		</section>
 		<!--Navbar-->
 		<ul class="nav justify-content-end">
 			<li class="nav-item">
@@ -29,6 +27,8 @@
 				<a class="nav-link" href="#">Link</a>
 			</li>
 		</ul>
+		</nav>
+		</section>
 	</header>
 
 </body>
