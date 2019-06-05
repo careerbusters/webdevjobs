@@ -51,7 +51,7 @@ try {
 		setXsrfCookie();
 
 		//get a specific posting based on arguments provided or all the postings and update reply
-//gets a post by content
+//gets a post by id
 		if(empty($id) === false) {
 			$reply->data = Posting::getPostingByPostingId($pdo, $id);
 		} else if(empty($postingProfileId) === false) {
@@ -64,7 +64,7 @@ try {
 
 
 		//perform the actual put or post
-	} else if($method === "PUT" || $method === "POST") {
+	} else if($method === "PUT") {
 
 		$requestContent = file_get_contents("php://input");
 		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
@@ -102,11 +102,6 @@ try {
 		if(empty($requestObject->postingPay) === true) {
 			throw(new \InvalidArgumentException("Must input the amount the job pays", 405));
 		}
-		//verify that profile password is present
-		if(empty($requestObject->postingPassword) === true) {
-			throw(new \InvalidArgumentException("Must input valid password", 405));
-		}
-
 		// update reply
 		$reply->message = "job posting OK";
 
@@ -127,7 +122,7 @@ try {
 		$profileId = generateUuidV4();
 
 		// profile object needs to be created and prepare to insert into the database
-		$posting = new Posting($profileId, $requestObject->profileEmail, $requestObject->profileImage, $requestObject->profileLocation, $requestObject->profileUsername, $requestObject->profileBio);
+		$posting = new Posting($profileId, $requestObject->postingContent, $requestObject->postingEmail, $requestObject->postingCompanyName, $requestObject->postingLocation, $requestObject->profileTitle, $requestObject->postingPay);
 		//insert the profile into the database
 		$posting->insert($pdo);
 
@@ -139,7 +134,7 @@ try {
 		//enforce that the end user has a XSRF token.
 		verifyXsrf();
 
-		// retrieve the Tweet to be deleted
+		// retrieve the Posting to be deleted
 		$posting = Posting::getPostingByPostingId($pdo, $id);
 		if($posting === null) {
 			throw(new RuntimeException("job posting does not exist", 404));

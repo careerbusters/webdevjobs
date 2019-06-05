@@ -46,7 +46,7 @@ class Posting implements \JsonSerializable {
 	 * start date and time the posting began
 	 * @var /DateTime $postingDate
 	 **/
-	private $postingDate;
+//	private $postingDate;
 	/**
 	 * actual email address of the posting
 	 * @var string postingEmail
@@ -56,7 +56,7 @@ class Posting implements \JsonSerializable {
 	 * date and time this posting will end
 	 * @var /DateTime $postingEndDate
 	 **/
-	private $postingEndDate;
+//	private $postingEndDate;
 	/**
 	 * location based on city of the posting
 	 * @var string $postingLocation
@@ -99,9 +99,9 @@ class Posting implements \JsonSerializable {
 			$this->setPostingRoleId($newPostingRoleId);
 			$this->setPostingCompanyName($newPostingCompanyName);
 			$this->setPostingContent($newPostingContent);
-			$this->setPostingDate($newPostingDate);
+//			$this->setPostingDate($newPostingDate);
 			$this->setPostingEmail($newPostingEmail);
-			$this->setPostingEndDate($newPostingEndDate);
+//			$this->setPostingEndDate($newPostingEndDate);
 			$this->setPostingLocation($newPostingLocation);
 			$this->setPostingPay($newPostingPay);
 			$this->setPostingTitle($newPostingTitle);
@@ -247,9 +247,9 @@ class Posting implements \JsonSerializable {
 	 * accessor method for posting date
 	 * @return \DateTime value of posting date
 	 **/
-	public function getPostingDate(): \DateTime {
-		return ($this->postingDate);
-	}
+//	public function getPostingDate(): \DateTime {
+//		return ($this->postingDate);
+//	}
 
 	/**
 	 * mutator method for posting date
@@ -258,22 +258,22 @@ class Posting implements \JsonSerializable {
 	 * @throws \RangeException if $newPostingDate is a date that does not exist
 	 * @throws  \typeError if $eventStartTime is no a /Datetime
 	 **/
-	public function setPostingDate($newPostingDate = null): void {
-		// base case: if the date is null, use the current date and time
-		if($newPostingDate === null) {
-			$this->postingDate = new \DateTime();
-			return;
-		}
-
-		// store the date using the ValidateDateTime trait
-		try {
-			$newPostingDate = self::validateDateTime($newPostingDate);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-		$this->postingDate = $newPostingDate;
-	}
+//	public function setPostingDate($newPostingDate = null): void {
+//		// base case: if the date is null, use the current date and time
+//		if($newPostingDate === null) {
+//			$this->postingDate = new \DateTime();
+//			return;
+//		}
+//
+//		// store the date using the ValidateDateTime trait
+//		try {
+//			$newPostingDate = self::validateDateTime($newPostingDate);
+//		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+//			$exceptionType = get_class($exception);
+//			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+//		}
+//		$this->postingDate = $newPostingDate;
+//	}
 
 	/**
 	 * accessor method for posting email
@@ -302,32 +302,32 @@ class Posting implements \JsonSerializable {
 	 * accessor method for posting end date
 	 * @return \DateTime value of posting end date
 	 **/
-	public function getPostingEndDate(): \DateTime {
-		return ($this->postingEndDate);
-	}
-
-	/**
-	 * mutator method for posting end date
-	 * @param \DateTime|string|null $newPostingEndDate date as a DateTime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $newPostingEndDate is not a valid object or string
-	 * @throws \RangeException if $newPostingEndDate is a date that does not exist
-	 *  * @throws  \typeError if $eventStartTime is no a /Datetime
-	 **/
-	public function setPostingEndDate($newPostingEndDate): void {
-		// base case: if the date is null, use the current date and time
-		if($newPostingEndDate === null) {
-			$this->postingDate = new \DateTime();
-			return;
-		}
-		// store the like date using the validateDateTime trait
-		try {
-			$newPostingEndDate = self::validateDateTime($newPostingEndDate);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-		$this->postingEndDate = $newPostingEndDate;
-	}
+//	public function getPostingEndDate(): \DateTime {
+//		return ($this->postingEndDate);
+//	}
+//
+//	/**
+//	 * mutator method for posting end date
+//	 * @param \DateTime|string|null $newPostingEndDate date as a DateTime object or string (or null to load the current time)
+//	 * @throws \InvalidArgumentException if $newPostingEndDate is not a valid object or string
+//	 * @throws \RangeException if $newPostingEndDate is a date that does not exist
+//	 *  * @throws  \typeError if $eventStartTime is no a /Datetime
+//	 **/
+//	public function setPostingEndDate($newPostingEndDate): void {
+//		// base case: if the date is null, use the current date and time
+//		if($newPostingEndDate === null) {
+//			$this->postingDate = new \DateTime();
+//			return;
+//		}
+//		// store the like date using the validateDateTime trait
+//		try {
+//			$newPostingEndDate = self::validateDateTime($newPostingEndDate);
+//		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+//			$exceptionType = get_class($exception);
+//			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+//		}
+//		$this->postingEndDate = $newPostingEndDate;
+//	}
 
 	/**
 	 * accessor method for postingLocation
@@ -408,12 +408,12 @@ class Posting implements \JsonSerializable {
 	 */
 	public function insert(\PDO $pdo): void {
 		// create query template
-		$query = "INSERT INTO posting(postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle) 
-VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :postingContent, :postingDate, :postingEmail, :postingEndDate, :postingLocation, :postingPay, :postingTitle )";
+		$query = "INSERT INTO posting(postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingEmail, postingLocation, postingPay, postingTitle) 
+VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :postingContent, :postingEmail, :postingLocation, :postingPay, :postingTitle )";
 		$statement = $pdo->prepare($query);
 		// bind the member variable to the place holders in the template
-		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
-		$parameters = ["postingId" => $this->postingId->getBytes(), "postingProfileId" => $this->postingProfileId->getBytes(), "postingRoleId" => $this->postingRoleId->getBytes(), "postingCompanyName" => $this->postingCompanyName, "postingContent" => $this->postingContent, "postingEmail" => $this->postingEmail, "postingLocation" => $this->postingLocation, "postingTitle" => $this->postingTitle, "postingPay" => $this->postingPay, "postingDate" => $formattedDate, "postingEndDate" => $formattedDate];
+//		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
+		$parameters = ["postingId" => $this->postingId->getBytes(), "postingProfileId" => $this->postingProfileId->getBytes(), "postingRoleId" => $this->postingRoleId->getBytes(), "postingCompanyName" => $this->postingCompanyName, "postingContent" => $this->postingContent, "postingEmail" => $this->postingEmail, "postingLocation" => $this->postingLocation, "postingTitle" => $this->postingTitle, "postingPay" => $this->postingPay];
 		$statement->execute($parameters);
 	}
 
@@ -427,11 +427,11 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 	public function update(\PDO $pdo): void {
 
 		// create query template
-		$query = "UPDATE posting SET postingProfileId = :postingProfileId, postingRoleId = :postingRoleId, postingCompanyName = :postingCompanyName, postingContent = :postingContent, postingDate = :postingDate, postingEmail = :postingEmail, postingEndDate = :postingEndDate, postingLocation = :postingLocation, postingPay = :postingPay, postingTitle = :postingTitle  WHERE postingId = :postingId";
+		$query = "UPDATE posting SET postingProfileId = :postingProfileId, postingRoleId = :postingRoleId, postingCompanyName = :postingCompanyName, postingContent = :postingContent, postingEmail = :postingEmail, postingLocation = :postingLocation, postingPay = :postingPay, postingTitle = :postingTitle  WHERE postingId = :postingId";
 		$statement = $pdo->prepare($query);
 
-		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
-		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent, "postingDate" => $formattedDate];
+//		$formattedDate = $this->postingDate->format("Y-m-d H:i:s.u");
+		$parameters = ["postingId" => $this->postingId->getBytes(), "postingContent" => $this->postingContent];
 		$statement->execute($parameters);
 	}
 
@@ -467,7 +467,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingEmail, postingLocation, postingPay, postingTitle from posting where postingId = :postingId";
 		$statement = $pdo->prepare($query);
 		// bind the profile id to the place holder in the template
 		$parameters = ["postingId" => $postingId->getBytes()];
@@ -479,7 +479,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				$row = $statement->fetch();
 				if($row !== false) {
-					$posting = new Posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+					$posting = new Posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingEmail"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
 				}
 				} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -506,7 +506,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingProfileId = :postingProfileId";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingEmail, postingLocation, postingPay, postingTitle from posting where postingProfileId = :postingProfileId";
 		$statement = $pdo->prepare($query);
 		$parameters = ["postingProfileId" => $postingProfileId->getBytes()];
 		$statement->execute($parameters);
@@ -515,7 +515,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingEmail"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
 				$postings[$postings->key()] = $posting;
 				$postings->next();
 			} catch(\Exception $exception) {
@@ -546,7 +546,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		}
 
 		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle from posting where postingRoleId = :postingRoleId";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingEmail, postingLocation, postingPay, postingTitle from posting where postingRoleId = :postingRoleId";
 		$statement = $pdo->prepare($query);
 		// bind the posting role id to the place holder in the template
 		$parameters = ["postingRoleId" => $postingRoleId->getBytes()];
@@ -556,7 +556,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingEmail"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
 				$postings[$postings->key()] = $posting;
 				$postings->next();
 			} catch(\Exception $exception) {
@@ -577,7 +577,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 	 **/
 	public static function getAllPostings(\PDO $pdo): \SPLFixedArray {
 		// create query template
-		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingDate, postingEmail, postingEndDate, postingLocation, postingPay, postingTitle FROM posting";
+		$query = "SELECT postingId, postingProfileId, postingRoleId, postingCompanyName, postingContent, postingEmail, postingLocation, postingPay, postingTitle FROM posting";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -586,7 +586,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingDate"], $row["postingEmail"], $row["postingEndDate"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
+				$posting = new posting($row["postingId"], $row["postingProfileId"], $row["postingRoleId"], $row["postingCompanyName"], $row["postingContent"], $row["postingEmail"], $row["postingLocation"], $row["postingPay"], $row["postingTitle"]);
 				$postings[$postings->key()] = $posting;
 				$postings->next();
 			} catch(\Exception $exception) {
