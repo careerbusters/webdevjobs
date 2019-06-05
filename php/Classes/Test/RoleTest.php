@@ -1,8 +1,18 @@
 <?php
 
+<<<<<<< HEAD
+namespace CareerBuster\WebDevJobs\Test;
+
+use CareerBuster\WebDevJobs\Role;
+use CareerBusters\WebDevJobs\WebDevJobsTest;
+=======
 namespace CareerBusters\WebDevJobs\Test;
 
 use CareerBusters\WebDevJobs\Role;
+<<<<<<< HEAD
+=======
+>>>>>>> develop
+>>>>>>> staticUI-background
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -46,7 +56,11 @@ class RoleTest extends WebDevJobsTest {
 	/**
 	 * test inserting a valid Role and verify that the actual mySQL data matches
 	 **/
+<<<<<<< HEAD
+	public function testInsertValidRole(): void {
+=======
 	public function testInsertValidRoleTest(): void {
+>>>>>>> develop
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("role");
 
@@ -58,7 +72,16 @@ class RoleTest extends WebDevJobsTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoRole = Role::getRoleByRoleId($this->getPDO(), $role->getRoleId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("role"));
+<<<<<<< HEAD
 		$this->assertEquals($pdoRole->getRoleId(), $roleId->toString());
+=======
+		$this->assertEquals($pdoRole->getRoleId(), $roleId);
+<<<<<<< HEAD
+		$this->assertEquals($pdoRole->getRoleId(), $this->role->getRoleId());
+=======
+		$this->assertEquals($pdoRole->getRoleId(), $role->getRoleId());
+>>>>>>> develop
+>>>>>>> staticUI-background
 		$this->assertEquals($pdoRole->getRoleName(), $this->VALID_ROLENAME);
 	}
 
@@ -86,8 +109,41 @@ class RoleTest extends WebDevJobsTest {
 	 * $this->assertEquals($pdoRole->getRoleName(), $this->VALID_ROLENAME);
 	 * }
 	 **/
+<<<<<<< HEAD
+=======
+	public function testUpdateValidRole(): void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("role");
+
+<<<<<<< HEAD
+		// create a new Role and insert to into mySQL
+=======
+		// create a new Role Test and insert to into mySQL
+>>>>>>> develop
+		$roleId = generateUuidV4();
+		$role = new Role($roleId, $this->VALID_ROLENAME);
+		$role->insert($this->getPDO());
+
+		// edit the Role and update it in mySQL
+		$role->setRoleName($this->VALID_ROLENAME2);
+		$role->update($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+<<<<<<< HEAD
+		$pdoRole = Role::getRoleByRoleId($this->getPDO(), $role->getRoleId());
+=======
+		$pdoRole = RoleTest::getRoleByRoleId($this->getPDO(), $role->getRoleId());
+>>>>>>> develop
+		$this->assertEquals($pdoRole->getRoleId(), $roleId);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("role"));
+		$this->assertEquals($pdoRole->getRoleId(), $this->role->getRoleId());
+		$this->assertEquals($pdoRole->getRoleName(), $this->VALID_ROLENAME2);
+	}
+>>>>>>> staticUI-background
 
 	/**
+<<<<<<< HEAD
+=======
 	 * test creating a Role and the deleting it
 	 **/
 	public function testDeleteValidRole(): void {
@@ -95,7 +151,11 @@ class RoleTest extends WebDevJobsTest {
 		$numRows = $this->getConnection()->getRowCount("role");
 		// create a new Role and insert to into mySQL
 		$roleId = generateUuidV4();
+<<<<<<< HEAD
 		$role = new Role($roleId, $this->VALID_ROLENAME);
+=======
+		$role = new Role($roleId, $this->VALID_ROLENAME, $this->VALID_ROLENAME2);
+>>>>>>> staticUI-background
 		$role->insert($this->getPDO());
 		// delete the Role from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("role"));
@@ -107,6 +167,7 @@ class RoleTest extends WebDevJobsTest {
 	}
 
 	/**
+>>>>>>> develop
 	 * test grabbing all Roles
 	 **/
 	public function testGetAllValidRoles(): void {
@@ -115,14 +176,26 @@ class RoleTest extends WebDevJobsTest {
 
 		// create a new Role and insert to into mySQL
 		$roleId = generateUuidV4();
+<<<<<<< HEAD
+		$role = new Role($roleId, $this->role->getRoleId(), $this->VALID_ROLENAME);
+=======
 		$role = new Role($roleId, $this->VALID_ROLENAME);
+>>>>>>> develop
 		$role->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Role::getAllRoles($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("role"));
 		$this->assertCount(1, $results);
+<<<<<<< HEAD
 		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJobs\\Role", $results);
+=======
+<<<<<<< HEAD
+		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJob\\Role", $results);
+=======
+		$this->assertContainsOnlyInstancesOf("CareerBusters\\WebDevJob\\RoleTest", $results);
+>>>>>>> develop
+>>>>>>> staticUI-background
 
 		// grab the result from the array and validate it
 		$pdoRole = $results[0];

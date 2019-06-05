@@ -11,7 +11,15 @@
     "lcobucci/jwt": "3.2"
   },
   "scripts": {
+<<<<<<< HEAD
     "phpunit": "./vendor/bin/phpunit -c ./Classes/Test --coverage-html coverage"
+=======
+<<<<<<< HEAD
+    "phpunit": "./vendor/bin/phpunit -c ./Classes/Test --coverage-html coverage"
+=======
+    "phpunit": "./vendor/bin/phpunit -c ./Classes/Test/ --coverage-html coverage"
+>>>>>>> develop
+>>>>>>> staticUI-background
   }
 }
 

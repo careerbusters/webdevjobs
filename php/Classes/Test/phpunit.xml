@@ -1,7 +1,12 @@
 <phpunit>
 	<testsuites>
+<<<<<<< HEAD
 		<testsuite name="WebDevJobs Test">
 			<file>ProfileTest.php</file>
+=======
+		<testsuite name="WebDevJobsTest">
+			<!--<file>ProfileTest.php</file>-->
+>>>>>>> staticUI-background
 			<file>RoleTest.php</file>
 			<file>PostingTest.php</file>
 			<file>SavedJobTest.php</file>
