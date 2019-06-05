@@ -2,6 +2,9 @@
 <?php require_once("navbar.php"); ?>
 
 <body>
+	<div class="container text-center">
+		<h3>Job Postings</h3>
+	</div>
 	<section>
 		<div class="container">
 			<div class="row justify-content-center my-5">
