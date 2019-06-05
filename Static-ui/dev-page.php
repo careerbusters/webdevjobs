@@ -4,7 +4,7 @@
 <body>
 	<section>
 		<div class="container">
-			<div class="row justify-content-center my-3">
+			<div class="row justify-content-center my-5">
 				<div class="col-lg-9">
 					<div class="card text-center">
 						<div class="card-header justify-content-left">
@@ -50,7 +50,7 @@
 	</section>
 	<section>
 		<div class="container">
-			<div class="row justify-content-center my-3">
+			<div class="row justify-content-center my-5">
 				<div class="col-lg-9">
 					<div class="card text-center">
 						<div class="card-header justify-content-left">
