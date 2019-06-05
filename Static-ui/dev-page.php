@@ -3,6 +3,9 @@
 
 <body>
 	<section>
+		<div class="container text-center">
+			<h3>Developer Hub</h3>
+		</div>
 		<div class="container">
 			<div class="row justify-content-center my-5">
 				<div class="col-lg-9">
