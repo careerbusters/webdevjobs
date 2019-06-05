@@ -83,7 +83,7 @@ class Posting implements \JsonSerializable {
 	 * @throws   /Exception if some other exception occurs
 	 *
 	 */
-	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle) {
+	public function __construct($newPostingId, $newPostingProfileId, $newPostingRoleId, string $newPostingCompanyName, string $newPostingContent, $newPostingDate = null, string $newPostingEmail, $newPostingEndDate, string $newPostingLocation, string $newPostingPay, string $newPostingTitle) {
 		try {
 			$this->setPostingId($newPostingId);
 			$this->setPostingProfileId($newPostingProfileId);
@@ -225,7 +225,7 @@ class Posting implements \JsonSerializable {
 	 * accessor method for posting date
 	 * @return \DateTime value of posting date
 	 **/
-	public function getPostingDate(): \DateTime {
+	public function getPostingDate(): ?\DateTime {
 		return ($this->postingDate);
 	}
 	/**
