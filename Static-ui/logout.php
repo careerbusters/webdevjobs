@@ -2,6 +2,12 @@
 <?php require_once("navbar.php"); ?>
 <!--
 @author ABQ Street Art
+
+ Button trigger modal
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#logoutModal">
+	Launch demo modal
+</button>
+
 -->
 <section>
 	<!-- Modal: used live demo example from bootstrap, can call this modal using id logoutModal -->
