@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-use CareerBusters\WebDevJobs\Posting;
+use CareerBusters\WebDevJobs\{Profile, Posting};
 
 /**
  * api for the Posting class
@@ -29,14 +29,18 @@ try {
 	$pdo = $secrets->getPdoObject();
 
 	//determine which HTTP method was used
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, "4b9b8731-e401-4057-a73c-5dc4f127c437");
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postingProfileId = filter_input(INPUT_GET, "postingProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postingRoleId = filter_input(INPUT_GET, "postingRoleId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$postingCompanyName = filter_input(INPUT_GET, "postingCompanyId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingCompanyName = filter_input(INPUT_GET, "postingCompanyName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postingContent = filter_input(INPUT_GET, "postingContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingDate = filter_input(INPUT_GET, "postingDate", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingEmail = filter_input(INPUT_GET, "postingEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postingEndDate = filter_input(INPUT_GET, "postingEndDate", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postingLocation = filter_input(INPUT_GET, "postingLocation", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postingPay = filter_input(INPUT_GET, "postingPay", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$postingTitle = filter_input(INPUT_GET, "postingTitle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -78,13 +82,21 @@ try {
 		if(empty($requestObject->roleId) === true) {
 			throw(new \InvalidArgumentException ("you must enter a role Id", 405));
 		}
-		//profile Bio is a required field
+		//profile content is a required field
 		if(empty($requestObject->postingContent) === true) {
 			throw(new \InvalidArgumentException("content is empty", 405));
+		}
+		//job posting date
+		if(empty($requestObject->postingDate) === true) {
+			throw(new \InvalidArgumentException("posting date wasn't current", 405));
 		}
 		//check profile email is a required field
 		if(empty($requestObject->postingEmail) === true) {
 			throw(new \InvalidArgumentException("No email is present", 405));
+		}
+		//job posting end date
+		if(empty($requestObject->postingEndDate) === true) {
+			throw(new \InvalidArgumentException("requires a end date for job posting", 405));
 		}
 		//verify that profile password is present
 		if(empty($requestObject->postingCompanyName) === true) {
@@ -107,22 +119,13 @@ try {
 
 	} else if($method === "POST") {
 
-		//have to decode json and turn it into a php object
 		$requestContent = file_get_contents("php://input");
+		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
-
-
-		//do the values below  get assigned on sign up or after activation?
-		$profileAgent = $_SERVER['HTTP_Profile_AGENT'];
-		$profileIpAddress = $_SERVER['SERVER_ADDR'];
-		//user blocked? using 0 as default
-		$profileBlocked = 0;
-
-		//do the values below for signup and activate
-		$profileId = generateUuidV4();
+		// This Line Then decodes the JSON package and stores that result in $requestObject
 
 		// profile object needs to be created and prepare to insert into the database
-		$posting = new Posting($profileId, $requestObject->postingContent, $requestObject->postingEmail, $requestObject->postingCompanyName, $requestObject->postingLocation, $requestObject->profileTitle, $requestObject->postingPay);
+		$posting = new Posting(generateUuidV4(), $_SESSION["profile"]->getProfileId, $requestObject->roleId, $requestObject->postingContent, $requestObject->postingDate, $requestObject->postingEmail, $requestObject->postingEndDate, $requestObject->postingCompanyName, $requestObject->postingLocation, $requestObject->postingTitle, $requestObject->postingPay);
 		//insert the profile into the database
 		$posting->insert($pdo);
 

@@ -17,7 +17,7 @@ use CareerBusters\WebDevJobs\Role;
 
 class Profile implements \JsonSerializable {
 	use ValidateUuid;
-	use validateDate;
+
 
 	/**
 	 * id and P.K. for Profile
