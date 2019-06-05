@@ -132,27 +132,6 @@ try {
 		// update reply
 		$reply->message = "job posted created";
 
-	} else if($method === "DELETE") {
-
-		//enforce that the end user has a XSRF token.
-		verifyXsrf();
-
-		// retrieve the Posting to be deleted
-		$posting = Posting::getPostingByPostingId($pdo, $id);
-		if($posting === null) {
-			throw(new RuntimeException("job posting does not exist", 404));
-		}
-
-		//enforce the user is signed in and only trying to edit their own job posting
-		if(empty($_SESSION["posting"]) === true || $_SESSION["posting"]->getpostingId()->toString()) {
-			throw(new \InvalidArgumentException("You are not allowed to delete this job posting", 403));
-		}
-
-		// delete job posting
-		$posting->delete($pdo);
-
-		// update reply
-		$reply->message = "job posting deleted";
 	}
 } catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
