@@ -50,7 +50,7 @@ export const getRoleByRoleId = (roleId) => async dispatch => {
 	dispatch({type: "GET_ROLE_BY_ROLE_ID", payload: data})
 };
 
-export const getAllRoles = (profileUsername) => async dispatch => {
-	const {data} = await httpConfig(`/API/role/${profileUsername}`);
+export const getAllRoles = () => async dispatch => {
+	const {data} = await httpConfig(`/API/role/`);
 	dispatch({type: "GET_ALL_ROLES", payload: data})
 };
