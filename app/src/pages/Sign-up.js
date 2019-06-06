@@ -95,7 +95,5 @@ export const Signup = () => (
 	</form>
 </div>
 
-
-</div>
-)
+);
 
