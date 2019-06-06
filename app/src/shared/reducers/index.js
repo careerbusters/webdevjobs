@@ -2,7 +2,7 @@ import {combineReducers} from "redux"
 import profileReducer from "./profileReducer";
 import roleReducer from "./roleReducer";
 import postingReducer from "./postingReducer";
-import savedJobReducer from "./savedJobsReducer";
+import savedJobReducer from "./savedJobReducer";
 
 
 
