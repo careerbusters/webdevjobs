@@ -11,8 +11,6 @@
 		font-family: Open Sans, sans-serif;
 	}
 </style>
-
-	<div class="gradient-border" id="box"</div>
 </head>
 
 <body>
