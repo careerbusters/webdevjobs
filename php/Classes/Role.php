@@ -104,28 +104,6 @@ class Role implements \JsonSerializable {
 		$this->roleName = $newRoleName;
 	}
 
-<<<<<<< HEAD
-=======
-	/**
-	 * updates this Role in mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function update(\PDO $pdo) : void {
-
-<<<<<<< HEAD
-		// create query template
-		$query = "UPDATE role SET roleId = :roleId, roleName = :roleName WHERE roleId = :roleId";
-		$statement = $pdo->prepare($query);
-
-		$statement->execute($query);
-	}
-
-=======
->>>>>>> develop
->>>>>>> staticUI-background
 	/**
 	 * inserts into roles mySQL
 	 *
@@ -161,7 +139,6 @@ class Role implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
-<<<<<<< HEAD
 	/**
 	 * updates this Role in mySQL
 	 *
@@ -177,8 +154,6 @@ class Role implements \JsonSerializable {
 
 		$statement->execute($query);
 	}
-=======
->>>>>>> staticUI-background
 
 	/**
 	 * gets the Role by role id
@@ -210,10 +185,10 @@ class Role implements \JsonSerializable {
 			if($row !== false) {
 				$role = new Role($row["roleId"], $row["roleName"]);
 			}
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
 		return ($role);
 
 	}

@@ -4,9 +4,9 @@ export default (state = [], action) => {
 			return action.payload;
 		case "GET_POSTING_BY_POSTING_ID":
 			return action.payload;
-		case "GET_POSTING_BY_PROFILE_ID":
+		case "GET_POSTING_BY_POSTING_PROFILE_ID":
 			return action.payload;
-		case "GET_POSTING_BY_ROLE_ID":
+		case "GET_POSTING_BY_POSTING_ROLE_ID":
 			return action.payload;
 		default:
 			return state;
