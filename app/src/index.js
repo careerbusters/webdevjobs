@@ -13,6 +13,7 @@ import reducers from "./shared/reducers";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
+import {NavBar} from "./shared/components/NavBar";
 
 library.add(faUser, faSignOutAlt, faPencilAlt);
 
@@ -23,6 +24,7 @@ const Routing = (store) => (
 	<>
 		<Provider store={store}>
 			<BrowserRouter>
+				<NavBar/>
 				<Switch>
 					{/*<Route exact path="/posts" component={Posts}/>*/}
 					<Route exact path="/" component={Home}/>

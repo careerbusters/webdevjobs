@@ -1,32 +1,34 @@
 import React from "react";
+import { FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 export const NavBar = () => (
 <header>
-	<nav className="navbar navbar-expand-lg navbar-dark">
-		<small className="d-none d-md-inline-block text-muted mr-auto"><em>An Angularific Demo.</em></small>
-				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-						  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span className="navbar-toggler-icon"/>
-				</button>
+	<nav className="navbar navbar-light bg-light">
+		<a className="navbar-brand"/a>
+			<button className="fa-user-circle fa-2x" data-target="Profile Icon">
+			</button>
 
-				<div className="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul className="navbar-nav ml-auto">
-						<li className="nav-item dropdown">
-							<a className="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-							</a>
-							<div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a className="dropdown-item" href="#"><i className="fa fa-user"/>&nbsp;&nbsp;My Profile</a>
-								<a className="dropdown-item"><i className="fa fa-pencil"/>&nbsp;&nbsp;New
-									Post</a>
-								<div className="dropdown-divider"/>
-								<a className="dropdown-item" href="#"><i className="fa fa-sign-out"/>&nbsp;&nbsp;Sign Out</a>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</nav>
+		<ul className="nav justify-content-end">
+			<li className="nav-item">
+				<a className="nav-link active" href="https://bootcamp-coders.cnm.edu/~eyoung21/webdevjobs/Static-ui/navbar.php"/a>
+					<button className="fas fa-home fa-2x text-dark" data-target="Home Page Icon">
+					</button>
+
+
+		<li className="nav-item">
+			<a className="nav-link active" href="https://bootcamp-coders.cnm.edu/~eyoung21/webdevjobs/Static-ui/navbar.php"/a>
+	<button className="fas fa-users fa-2x text-dark" data-target="Recruiter Job Posting Page Icon">
+		</button>
+
+
+	<li className="nav-item">
+		<a className="nav-link active" href="https://bootcamp-coders.cnm.edu/~eyoung21/webdevjobs/Static-ui/navbar.php"/a>
+			<button className="fas fa-briefcase fa-2x text-dark" data-target="Saved Job Icon">
+			</button>
+	</li>
+</ul>
+</nav>
 </header>
 )
