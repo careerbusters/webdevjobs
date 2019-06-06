@@ -6,7 +6,6 @@ import {BrowserRouter} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faUser, faSignOutAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
-
 import {Home} from "./shared/components/Home";
 import {FourOhFour} from "./pages/FourOhFour";
 // import "./index.css";
@@ -14,7 +13,6 @@ import reducers from "./shared/reducers";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
-
 
 library.add(faUser, faSignOutAlt, faPencilAlt);
 
@@ -37,3 +35,6 @@ const Routing = (store) => (
 
 
 ReactDOM.render(Routing(store), document.querySelector('#root'));
+
+
+
