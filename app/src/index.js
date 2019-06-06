@@ -2,7 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import {Route,BrowserRouter, Switch} from "react-router-dom";
+import {Home} from "./pages/home/Home";
 
+const Routing = () => (
+	<>
+			<BrowserRouter>
+				<Switch>
+					<Route exact path="/" component={Home}/>
+				</Switch>
+			</BrowserRouter>
+	</>
+);
 
-const App = () => ( <h1 className="text-info">hello world</h1> );
-ReactDOM.render(<App/>, document.querySelector('#root'));
+ReactDOM.render(Routing() , document.querySelector("#root"));
