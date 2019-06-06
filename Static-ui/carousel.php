@@ -2,6 +2,7 @@
 
 <body>
 	<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+		<div class="container block">Web Dev Jobs</div>
 		<div class="carousel-inner">
 			<div class="carousel-item active">
 				<img src="/epic/images/jackCapestone.jpg" height="500" width="400" class="d-block w-100" alt="Example Job Description 1">
