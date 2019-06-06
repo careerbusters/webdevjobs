@@ -2,7 +2,38 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import {BrowserRouter} from "react-router-dom";
+import {Route, Switch} from "react-router";
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {faUser, faSignOutAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
+
+import {Home} from "./shared/components/Home";
+import {FourOhFour} from "./pages/FourOhFour";
+// import "./index.css";
+import reducers from "./shared/reducers";
+import {applyMiddleware, createStore} from "redux";
+import thunk from "redux-thunk";
+import {Provider} from "react-redux";
 
 
-const App = () => ( <h1 className="text-info">hello world</h1> );
-ReactDOM.render(<App/>, document.querySelector('#root'));
+library.add(faUser, faSignOutAlt, faPencilAlt);
+
+const store = createStore(reducers, applyMiddleware(thunk));
+
+const Routing = (store) => (
+
+	<>
+		<Provider store={store}>
+			<BrowserRouter>
+				<Switch>
+					{/*<Route exact path="/posts" component={Posts}/>*/}
+					<Route exact path="/" component={Home}/>
+					<Route component={FourOhFour}/>
+				</Switch>
+			</BrowserRouter>
+		</Provider>
+	</>
+);
+
+
+ReactDOM.render(Routing(store), document.querySelector('#root'));

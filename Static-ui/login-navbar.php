@@ -1,11 +1,13 @@
 <?php require_once ("head-utils.php");?>
 
-	<head>
-		<!--Required Meta Tags-->
-		<meta charset="UTF-8">
-		<!--<link rel="stylesheet" href="stylesheet.css"-->
-		<title>Web Dev Career Busters Login Page</title>
-	</head>
+<!--	<head>-->
+<!--		<!--Required Meta Tags-->-->
+<!--		<meta charset="UTF-8">-->
+<!--		<!--<link rel="stylesheet" href="stylesheet.css"-->-->
+<!--		<title>Web Dev Career Busters Login Page</title>-->
+<!--	</head>-->
+
+
 	<body>
 
 		<!--CSS Animated Border Background-->
@@ -24,4 +26,3 @@
 
 		</div>
 	</body>
-</html>

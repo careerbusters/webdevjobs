@@ -97,6 +97,3 @@
 <div id="output-area"></div>
 			</form>
 		</div>
-	<div>
-	</div>
-	</div>
