@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Signup = () => (
+export const SignUp = () => (
 <div className="container">
 	<form id="contact-form" method="post" action="../php/">
 		<div className="form-row">
