@@ -5,7 +5,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import {BrowserRouter} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faUser, faSignOutAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faSignOutAlt, faPencilAlt, faHome} from '@fortawesome/free-solid-svg-icons'
 import {Home} from "./shared/components/Home";
 import {FourOhFour} from "./pages/FourOhFour";
 // import "./index.css";
@@ -15,7 +15,8 @@ import thunk from "redux-thunk";
 import {Provider} from "react-redux";
 import {NavBar} from "./shared/components/NavBar";
 
-library.add(faUser, faSignOutAlt, faPencilAlt);
+
+library.add(faUser, faSignOutAlt, faPencilAlt, faHome);
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
