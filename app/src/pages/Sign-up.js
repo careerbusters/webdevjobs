@@ -1,9 +1,9 @@
 import React from "react";
-import {SignUpFormContent} from "../shared/components/sign-up/SignUpFormContent";
+import {SignUpForm} from "../shared/components/sign-up/SignUpForm";
 
 export const SignUp = () => (
 <>
-<SignUpFormContent/>
+<SignUpForm/>
 </>
 
 );
