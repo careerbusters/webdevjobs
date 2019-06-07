@@ -16,7 +16,7 @@ export const SignUpFormContent = (props) => {
 		handleReset
 	} = props;
 	return (
-
+<>
 			<form onSubmit={handleSubmit}>
 				<div className="form-group">
 					<label htmlFor="profileUserName">User Name</label>
@@ -217,6 +217,6 @@ export const SignUpFormContent = (props) => {
 			{
 				submitStatus && (<div className={submitStatus.type}>{submitStatus.message}</div>)
 			}
-
+</>
 	)
 };
