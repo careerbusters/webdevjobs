@@ -19,8 +19,7 @@ export const Login = () => (
 		<section>
 			<div className="container py-2 d-flex justify-content-center">
 				<div className="card" style={{width: "18rem"}}>
-					<img className="img mx-auto d-block my-3 rounded-circle" src="../shared/imgs/morganCaptain.jpg"
-						  className="card-img-top"
+					<img className="img card-img-top mx-auto d-block my-3 rounded-circle" src="../../public/imgs/morganCaptain.jpg"
 						  alt="Jack Daniel"/>
 					<div className="card-body">
 						<p className="card-text"></p>

@@ -67,7 +67,6 @@
 	<button id="button" type="button" class="btn btn-primary btn-lgr">Sign Up</button>
 	</div>
 	</div>
-	</div>
 
 </body>
 
