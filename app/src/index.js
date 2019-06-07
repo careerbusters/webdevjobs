@@ -13,7 +13,8 @@ import reducers from "./shared/reducers";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
-import {NavBar} from "./shared/components/NavBar";
+import {SignUp} from "./pages/Sign-up";
+import {Login} from "./pages/Login";
 
 
 
@@ -26,7 +27,6 @@ const Routing = (store) => (
 	<>
 		<Provider store={store}>
 			<BrowserRouter>
-				<NavBar/>
 				<Switch>
 					<Route exact path="/signup" component={SignUp}/>
 					<Route exact path="/login" component={Login}/>
