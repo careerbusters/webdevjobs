@@ -13,13 +13,11 @@ import reducers from "./shared/reducers";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
-<<<<<<< HEAD
 import {SignUp} from "./pages/Sign-up";
 import {Login} from "./pages/Login";
-=======
 import {NavBar} from "./shared/components/NavBar";
 import {SignUpForm} from "./shared/components/sign-up/SignUpForm";
->>>>>>> components
+
 
 
 
