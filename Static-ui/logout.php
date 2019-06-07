@@ -1,8 +1,7 @@
 <?php require_once("head-utils.php"); ?>
 <?php require_once("navbar.php"); ?>
-<!--
-@author ABQ Street Art
--->
+<?php require_once ("background.php");?>
+
 <section>
 	<!-- Modal: used live demo example from bootstrap, can call this modal using id logoutModal -->
 	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModal" aria-hidden="true">

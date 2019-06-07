@@ -5,8 +5,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import {BrowserRouter} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faUser, faSignOutAlt, faPencilAlt, faHome} from '@fortawesome/free-solid-svg-icons'
-import {Home} from "./shared/components/Home";
+import {faUser, faSignOutAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
+import {Home} from "./pages/Home";
 import {FourOhFour} from "./pages/FourOhFour";
 // import "./index.css";
 import reducers from "./shared/reducers";
@@ -17,7 +17,8 @@ import {NavBar} from "./shared/components/NavBar";
 import {SignUpForm} from "./shared/components/sign-up/SignUpForm";
 
 
-library.add(faUser, faSignOutAlt, faPencilAlt, faHome);
+
+library.add(faUser, faSignOutAlt, faPencilAlt);
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
@@ -28,7 +29,8 @@ const Routing = (store) => (
 			<BrowserRouter>
 				<NavBar/>
 				<Switch>
-					{/*<Route exact path="/posts" component={Posts}/>*/}
+					<Route exact path="/signup" component={SignUp}/>
+					<Route exact path="/login" component={Login}/>
 					<Route exact path="/" component={Home}/>
 					<Route component={FourOhFour}/>
 				</Switch>

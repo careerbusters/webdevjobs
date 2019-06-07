@@ -6,8 +6,13 @@ export const SignUp = () => (
 	<form id="contact-form" method="post" action="../php/">
 		<div className="form-row">
 			<div className="form-group col-md-6">
+<<<<<<< HEAD
 
 				<label for="name">Name</label>
+=======
+				 {/*user name*/}
+				<label htmlFor="name">Name</label>
+>>>>>>> develop
 				<div className="input-group">
 					<div className="input-group-prepend">
 					</div>
@@ -15,10 +20,14 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 
+=======
+		{/*user email address*/}
+>>>>>>> develop
 		<div className="form-row">
 			<div className="form-group col-md-6">
-				<label for="Address">Email Address</label>
+				<label htmlFor="Address">Email Address</label>
 				<div className="input-group">
 					<div className="input-group-prepend">
 
@@ -27,10 +36,14 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 
+=======
+		{/*user password */}
+>>>>>>> develop
 		<div className="form-row">
 			<div className="form-group col-md-6">
-				<label for="Zip Code">Password</label>
+				<label htmlFor="Zip Code">Password</label>
 				<div className="input-group">
 					<div className="input-group-prepend">
 
@@ -39,10 +52,14 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 
+=======
+		{/*user password confirmed */}
+>>>>>>> develop
 		<div className="form-row">
 			<div className="form-group col-md-6">
-				<label for="email">Confirm Password again</label>
+				<label htmlFor="email">Confirm Password again</label>
 				<div className="input-group">
 					<div className="input-group-prepend">
 
@@ -51,10 +68,14 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 
+=======
+		{/*user role */}
+>>>>>>> develop
 		<div className="form-row">
 			<div className="form-group col-md-6">
-				<label for="phone number">Role</label>
+				<label htmlFor="phone number">Role</label>
 				<div className="input-group">
 					<div className="input-group-prepend">
 
@@ -63,10 +84,10 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
-		<!-- user profile image -->
+		 {/*user profile image */}
 		<div className="form-row">
 			<div className="form-group col-md-6">
-				<label for="Subject">Profile Image</label>
+				<label htmlFor="Subject">Profile Image</label>
 				<div className="input-group">
 					<div className="input-group-prepend">
 
@@ -75,10 +96,10 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
-		<!-- user bio -->
+		 {/*user bio */}
 		<div className="form-row">
 			<div className="form-group col-md-6">
-				<label for="Message">Profile Bio</label>
+				<label htmlFor="Message">Profile Bio</label>
 				<div className="input-group">
 					<div className="input-group-prepend">
 
