@@ -1,6 +1,7 @@
 <?php require_once("head-utils.php"); ?>
 <?php require_once("Ui-footer.php"); ?>
-
+<?php require_once ("background.php");?>
+<?php require_once ("login-navbar.php");?>
 
 <!--Jumbotron-->
 <body>
@@ -20,7 +21,7 @@
 
 	<section>
 		<div class="container py-2 d-flex justify-content-center">
-			<div class="card" style="width: 18rem;">
+			<div class="card" style="width: 1">
 				<img class="img mx-auto d-block my-3 rounded-circle" src="images/jackCapestone.jpg" class="card-img-top"
 					  alt="Jack Daniel">
 				<div class="card-body">

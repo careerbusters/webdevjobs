@@ -14,15 +14,14 @@
 		<div class="block">
 
 		<!--Navbar-->
-		<header>
-			<ul class="nav justify-content-end">
-				<li class="nav-item">
-					<a class="nav-link active" href="#">Join Now</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Login</a>
-				</li>
-		</header>
+			<header>
+			<nav class="navbar navbar-dark bg-info fluid d-flex justify-content-end">
+				<form class="form-inline">
+					<button type="button" class="btn btn-outline-light">Join Now</button>
+					<button type="button" class="btn btn-outline-light">Login</button>
+				</form>
+			</nav>
+			</header>
 
 		</div>
 	</body>

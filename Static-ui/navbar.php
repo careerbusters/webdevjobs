@@ -1,4 +1,5 @@
 <?php require_once("head-utils.php"); ?>
+<?php require_once ("background.php");?>
 
 <head>
 	<!--Required Meta Tags-->
@@ -11,7 +12,8 @@
 	<!-- Just an image -->
 	<header>
 		<section>
-			<nav class="navbar navbar-light bg-light">
+			<div class="wrapper">
+			<nav class="navbar navbar-light bg-wrapper">
 				<a class="navbar-brand"  href="#">
 					<i class="fas fa-user-circle fa-2x" alt="Profile Icon"></i>
 				</a>
@@ -34,6 +36,8 @@
 			</a>
 		</ul>
 		</nav>
+			</div>
+			</div>
 		</section>
 	</header>
 
