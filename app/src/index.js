@@ -5,18 +5,28 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import {BrowserRouter} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import {library} from '@fortawesome/fontawesome-svg-core'
+<<<<<<< HEAD
 import {faUser, faSignOutAlt, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
 import {Home} from "./pages/Home";
+=======
+import {faUser, faSignOutAlt, faPencilAlt, faHome} from '@fortawesome/free-solid-svg-icons'
+import {Home} from "./shared/components/Home";
+>>>>>>> components
 import {FourOhFour} from "./pages/FourOhFour";
 // import "./index.css";
 import reducers from "./shared/reducers";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
+<<<<<<< HEAD
 import {SignUp} from "./pages/Sign-up";
 import {Login} from "./pages/Login";
+=======
+import {NavBar} from "./shared/components/NavBar";
+>>>>>>> components
 
-library.add(faUser, faSignOutAlt, faPencilAlt);
+
+library.add(faUser, faSignOutAlt, faPencilAlt, faHome);
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
@@ -25,6 +35,7 @@ const Routing = (store) => (
 	<>
 		<Provider store={store}>
 			<BrowserRouter>
+				<NavBar/>
 				<Switch>
 					<Route exact path="/signup" component={SignUp}/>
 					<Route exact path="/login" component={Login}/>
