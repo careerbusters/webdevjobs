@@ -2,19 +2,20 @@ import React from "react";
 
 export const SignUp = () => (
 <div className="container">
+	<form>
 	<form id="contact-form" method="post" action="../php/">
 		<div className="form-row">
 			<div className="form-group col-md-6">
-				<!-- user name -->
+
 				<label for="name">Name</label>
 				<div className="input-group">
 					<div className="input-group-prepend">
 					</div>
-					<input className="form-control" type="text" name="name" id="name" placeholder="Your name"/>
+					<input className="form-control" type="text" name="name" id="profileName" placeholder="Your name"/>
 				</div>
 			</div>
 		</div>
-		<!--user email address -->
+
 		<div className="form-row">
 			<div className="form-group col-md-6">
 				<label for="Address">Email Address</label>
@@ -22,11 +23,11 @@ export const SignUp = () => (
 					<div className="input-group-prepend">
 
 					</div>
-					<input className="form-control" type="text" name="Address" id="Email Address" placeholder="Email Address"/>
+					<input className="form-control" type="text" name="Address" id="profileEmailAddress" placeholder="Email Address"/>
 				</div>
 			</div>
 		</div>
-		<!--user password -->
+
 		<div className="form-row">
 			<div className="form-group col-md-6">
 				<label for="Zip Code">Password</label>
@@ -34,11 +35,11 @@ export const SignUp = () => (
 					<div className="input-group-prepend">
 
 					</div>
-					<input type="text" className="form-control" id="confirm password" placeholder="confirm password"/>
+					<input type="text" className="form-control" id="profilePassword" placeholder="confirm password"/>
 				</div>
 			</div>
 		</div>
-		<!--user password confirmed -->
+
 		<div className="form-row">
 			<div className="form-group col-md-6">
 				<label for="email">Confirm Password again</label>
@@ -46,11 +47,11 @@ export const SignUp = () => (
 					<div className="input-group-prepend">
 
 					</div>
-					<input className="form-control" type="text" name="confirm password again" id="confirm password again" placeholder="confirm password again"/>
+					<input className="form-control" type="text" name="confirm password again" id="profileConfirmPassword" placeholder="confirm password again"/>
 				</div>
 			</div>
 		</div>
-		<!--user role -->
+
 		<div className="form-row">
 			<div className="form-group col-md-6">
 				<label for="phone number">Role</label>
@@ -58,7 +59,7 @@ export const SignUp = () => (
 					<div className="input-group-prepend">
 
 					</div>
-					<input className="form-control" type="text" name="role" id="role" placeholder="please choose a role"/>
+					<input className="form-control" type="text" name="role" id="ProfileRole" placeholder="please choose a role"/>
 				</div>
 			</div>
 		</div>
@@ -70,7 +71,7 @@ export const SignUp = () => (
 					<div className="input-group-prepend">
 
 					</div>
-					<input className="form-control" type="text" name="Profile Image" id="Profile Image" placeholder="Profile Image"/>
+					<input className="form-control" type="text" name="Profile Image" id="profileImage" placeholder="Profile Image"/>
 				</div>
 			</div>
 		</div>
@@ -82,7 +83,7 @@ export const SignUp = () => (
 					<div className="input-group-prepend">
 
 					</div>
-					<textarea class="form-control" rows="5" id="Bio" name="Bio"
+					<textarea id="bio" "form-control" rows="5" name="Bio"
 								 placeholder="(2000 characters max)"></textarea>
 				</div>
 			</div>
