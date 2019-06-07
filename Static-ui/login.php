@@ -10,7 +10,7 @@
 			<div class="container py-2 d-flex justify-content-center text-content-center">
 				<div id="jumbotron" class="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
 					<div class="row">
-						<h1 class="display-2">Web Dev Career Busters Login</h1>
+						<h1 class="display-2">Web Dev Jobs Login</h1>
 					</div>
 				</div>
 			</div>
@@ -19,13 +19,12 @@
 
 	<!--Image Card-->
 
-	<section>
-		<div class="container py-2 d-flex justify-content-center">
-			<div class="card" style="width: 1">
-				<img class="img mx-auto d-block my-3 rounded-circle" src="images/jackCapestone.jpg" class="card-img-top"
-					  alt="Jack Daniel">
+		<div id="card" class="container justify-content-center">
+			<div class="card w-30">
+				<img class="img mx-auto d-block my-3 rounded-circle" src="login-pic.jpg" width="300" height="400" class="card-img-top"
+					  alt="Jane Hill">
 				<div class="card-body">
-					<p class="card-text">John Doe</p>
+					<p class="card-text text-center">Jane Hill</p>
 
 					<!--Login Form-->
 
@@ -48,6 +47,5 @@
 			</div>
 			</form>
 		</div>
-	</section>
 
 </body>

@@ -7,10 +7,22 @@
 	height: 20px;
 	position: relative;
 	width: 100%;
-	background: radial-gradient(ellipse farthest-side at top center, white, yellow, red, transparent)
+	background: radial-gradient(ellipse farthest-side at top center, darkgrey, white, grey, transparent)
 }
 
 #button {
 	margin: 5% 5% 5% 5%;
 }
 
+#card {
+	margin: 5% auto 10% auto;
+}
+
+h1 {
+	text-decoration: underline;
+	font-family: sans-serif;
+}
+
+#signup {
+	margin-bottom: 5%;
+}

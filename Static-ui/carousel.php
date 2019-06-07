@@ -1,6 +1,20 @@
 <?php require_once("head-utils.php"); ?>
 <?php require_once ("background.php");?>
 <?php require_once ("login-navbar.php");?>
+<?php require_once ("Ui-footer.php");?>
+
+<!--Jumbotron-->
+<section>
+	<div id="home" class="col-lg-offset-4">
+		<div class="container d-flex justify-content-center text-content-center">
+			<div id="jumbotron" class="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
+				<div class="row">
+					<h1 class="display-2">Web Dev Jobs</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 
 <!--Welcome Page Carousel-->
 <body>
@@ -27,28 +41,33 @@
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 				<span class="sr-only">Next</span>
 			</a>
+	</div>
 
 		<!--CSS Break-->
 		<section id="break"></section>
 
 			<!--Welcome Page Text-->
+		<br>
+		<br>
+		<br>
 			<blockquote class="blockquote text-center">
-				<p class="mb-0"><em>Welcome to Your Professional Web Dev Career Platform</em></p>
+				<p class="mb-0"><em>Welcome to Your Professional Web Dev Jobs Platform</em></p>
 			</blockquote>
-		</div>
-
+		<br>
+		<br>
 	<!--Welcome Page Text-->
 	<blockquote class="blockquote text-center">
 		<p class="mb-0"><em>If opportunity doesn't come knocking, build a website!</em></p>
 		<footer class="blockquote-footer text-secondary">Unknown</footer>
 	</blockquote>
-	</div>
 
 	<!--Sign Up Button-->
-	<div class="container fluid justify-content-end">
+	<div id="signup" class="container fluid justify-content-end">
 		<div class="row justify-content-center">
 	<button id="button" type="button" class="btn btn-primary btn-lgr">Sign Up</button>
 	</div>
 	</div>
+	</div>
+
 </body>
 
