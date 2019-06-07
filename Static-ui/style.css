@@ -23,6 +23,15 @@ h1 {
 	font-family: sans-serif;
 }
 
+h2 {
+	text-decoration: underline;
+	font-family: sans-serif;
+}
+
 #signup {
+	margin-bottom: 5%;
+}
+
+#dev {
 	margin-bottom: 5%;
 }

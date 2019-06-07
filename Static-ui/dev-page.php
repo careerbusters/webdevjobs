@@ -1,35 +1,29 @@
-<?php require_once("head-utils.php"); ?>
-<?php require_once("navbar.php"); ?>
-<?php require_once ("background.php"); ?>
+<?php require_once("head-utils.php");?>
+<?php require_once("navbar.php");?>
+<?php require_once ("background.php");?>
+<?php require_once("Ui-footer.php");?>
 
 <body>
+	<!--Dev Page Header-->
 	<section>
-		<div class="container text-center">
-			<h3>Developer Hub</h3>
+		<div id="dev" class="container text-center">
+			<h2>Developer Hub</h2>
 		</div>
-		<div class="container">
-			<div class="row justify-content-center my-5">
-				<div class="col-lg-9">
-					<div class="card text-center">
-						<div class="card-header justify-content-left">
-							Trystan Gray - Web Developer
-						</div>
-						<div class="card-body">
-							<img src="http://placemorty.us/300/200" class="card-img-top" alt="...">
-							<h5 class="card-title mt-1">Profile Bio</h5>
-							<p class="card-text">I am web dev, I go code code code. I am web dev, I go code code code. I am web
-								dev, I go code code code. I am web dev, I go code code code.</p>
-							<a href="#" class="btn btn-dark">Expand Profile</a>
-						</div>
-						<div class="card-footer text-muted">
-							Albuquerque, New Mexico
-						</div>
-					</div>
-				</div>
+
+		<!--User Cards-->
+		<div class="container justify-content-center">
+			<div class="row justify-content-center">
+		<div class="card-text text-center" style="width: 50rem;">
+			<img src="capstoneProfilePeep2.jpg" class="card-img-top" alt="Profile Example 1">
+			<div class="col-md-6 position-static p-4 pl-md-0">
+				<h5 class="mt-0">Will Iamm</h5>
+				<p class="text-wrap text-center">Seasoned Coder. Full-Stack Web Developer. I wear many hats. Making things and building teams!! </p>
+				<a href="#" class="stretched-link">More</a>
 			</div>
 		</div>
+		</div>
+		</div>
 	</section>
-	<?php require_once("Ui-footer.php"); ?>
 
 </body>
 
