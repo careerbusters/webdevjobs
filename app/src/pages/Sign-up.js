@@ -6,13 +6,13 @@ export const SignUp = () => (
 	<form id="contact-form" method="post" action="../php/">
 		<div className="form-row">
 			<div className="form-group col-md-6">
-<<<<<<< HEAD
+
 
 				<label for="name">Name</label>
-=======
+
 				 {/*user name*/}
 				<label htmlFor="name">Name</label>
->>>>>>> develop
+
 				<div className="input-group">
 					<div className="input-group-prepend">
 					</div>
@@ -20,11 +20,8 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
-<<<<<<< HEAD
 
-=======
 		{/*user email address*/}
->>>>>>> develop
 		<div className="form-row">
 			<div className="form-group col-md-6">
 				<label htmlFor="Address">Email Address</label>
@@ -36,11 +33,8 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
-<<<<<<< HEAD
 
-=======
 		{/*user password */}
->>>>>>> develop
 		<div className="form-row">
 			<div className="form-group col-md-6">
 				<label htmlFor="Zip Code">Password</label>
@@ -52,11 +46,9 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
-<<<<<<< HEAD
 
-=======
 		{/*user password confirmed */}
->>>>>>> develop
+
 		<div className="form-row">
 			<div className="form-group col-md-6">
 				<label htmlFor="email">Confirm Password again</label>
@@ -68,11 +60,9 @@ export const SignUp = () => (
 				</div>
 			</div>
 		</div>
-<<<<<<< HEAD
 
-=======
 		{/*user role */}
->>>>>>> develop
+
 		<div className="form-row">
 			<div className="form-group col-md-6">
 				<label htmlFor="phone number">Role</label>
