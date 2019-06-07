@@ -14,6 +14,7 @@ import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
 import {SignUp} from "./pages/Sign-up";
+import {Login} from "./pages/Login";
 
 library.add(faUser, faSignOutAlt, faPencilAlt);
 
@@ -26,7 +27,7 @@ const Routing = (store) => (
 			<BrowserRouter>
 				<Switch>
 					<Route exact path="/signup" component={SignUp}/>
-					{/*<Route exact path="/login" component={LogIn}/>*/}
+					<Route exact path="/login" component={Login}/>
 					<Route exact path="/" component={Home}/>
 					<Route component={FourOhFour}/>
 				</Switch>
