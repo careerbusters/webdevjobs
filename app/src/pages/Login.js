@@ -4,7 +4,7 @@ export const Login = () => (
 	<>
 		<section>
 			<div id="home" className="col-lg-offset-4">
-				<div className="container py-2 d-flex justify-content-center text-content-center">
+				<div className="container d-flex justify-content-center text-content-center">
 					<div id="jumbotron" className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
 						<div className="row">
 							<h1 className="display-2">Web Dev Career Busters Login</h1>
@@ -17,10 +17,8 @@ export const Login = () => (
 		{/*Image Card*/}
 
 		<section>
-			<div className="container py-2 d-flex justify-content-center">
+			<div className="container d-flex justify-content-center mb-2">
 				<div className="card" style={{width: "18rem"}}>
-					<img className="img card-img-top mx-auto d-block my-3 rounded-circle" src="../../public/imgs/morganCaptain.jpg"
-						  alt="Jack Daniel"/>
 					<div className="card-body">
 						<p className="card-text"></p>
 

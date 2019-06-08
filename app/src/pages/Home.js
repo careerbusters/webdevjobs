@@ -54,7 +54,6 @@ const HomeComponent = ()=>{
 								{/*Welcome Page Text*/}
 								<blockquote className="blockquote text-center">
 									<p className="mb-0"><em>If opportunity doesn't come knocking, build a website!</em></p>
-									<footer className="blockquote-footer text-secondary">Unknown</footer>
 								</blockquote>
 
 								{/*Sign Up Button*/}
