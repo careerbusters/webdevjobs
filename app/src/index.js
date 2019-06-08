@@ -16,7 +16,7 @@ import {SignUp} from "./pages/Sign-up";
 import {Login} from "./pages/Login";
 import {NavBar} from "./shared/components/NavBar";
 import {SignUpForm} from "./shared/components/sign-up/SignUpForm";
-import {faUser, faUserAlt, faSignOutAlt, faPencilAlt, faEnvelope, faLock, faImage, faGlasses, faBookReader, faHome, faBriefcase } from "@fortawesome/free-solid-svg-icons/";
+import {faUser, faUserAlt, faSignOutAlt, faPencilAlt, faEnvelope, faLock, faImage, faGlasses, faBookReader, faHome, faBriefcase} from "@fortawesome/free-solid-svg-icons/";
 
 
 

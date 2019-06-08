@@ -1,6 +1,7 @@
 import React from "react";
 import {LoginNavBar} from "../shared/components/Login-NavBar";
 import "../index.css";
+import {Footer} from "../shared/components/Footer";
 
 
 const HomeComponent = () => {
@@ -25,11 +26,11 @@ const HomeComponent = () => {
 						<div id="carousel" className="carousel slide justify-content-center center-content  height=500 width=900" data-ride="carousel">
 							<div className="carousel-inner height=500 width=900">
 								<div className="carousel-item active">
-									<img height="500" width="auto" className="img-fluid justify-content-center center-content " src="imgs/example-job-description-career-busters3.jpg"
+									<img height="500" width="auto" className="img-fluid  " src="imgs/example-job-description-career-busters3.jpg"
 										  alt="Example Job Description 1"/>
 								</div>
 								<div className="carousel-item">
-									<img height="500" width="auto" className="img-fluid justify-content-center center-content" src="imgs/example-job-description-career-busters1.jpg" 
+									<img height="500" width="auto" className="img-fluid justify-content-center center-content" src="imgs/example-job-description-career-busters1.jpg"
 										   alt="Example Job Description 2"/>
 								</div>
 								<div className="carousel-item">
@@ -71,6 +72,8 @@ const HomeComponent = () => {
 					<button id="button" type="button" className="btn btn-primary my-2 btn-lgr">Sign Up</button>
 				</div>
 			</div>
+
+			<Footer/>
 		</>
 	)
 };
