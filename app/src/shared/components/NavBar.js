@@ -17,7 +17,7 @@ export const NavBar = () => (
 
 		<li className="nav-item">
 			<a className="nav-link active" href="https://bootcamp-coders.cnm.edu/~eyoung21/webdevjobs/Static-ui/navbar.php"/>
-			<FontAwesomeIcon icon="Users-circle-2x" />
+			<FontAwesomeIcon icon="User-2x" />
 		</li>
 
 
