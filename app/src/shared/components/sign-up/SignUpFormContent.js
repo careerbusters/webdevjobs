@@ -27,7 +27,7 @@ export const SignUpFormContent = (props) => {
 					<div className="input-group">
 						<div className="input-group-prepend">
 							<div className="input-group-text">
-								<FontAwesomeIcon icon="User Name"/>
+								<FontAwesomeIcon icon="user"/>
 							</div>
 						</div>
 						<input
@@ -53,7 +53,7 @@ export const SignUpFormContent = (props) => {
 				<div className="input-group">
 				<div className="input-group-prepend">
 					<div className="input-group-text">
-						<FontAwesomeIcon icon="user"/>
+						<FontAwesomeIcon icon="glasses"/>
 					</div>
 				</div>
 				<select className="form-control" id="profileRole">
@@ -128,7 +128,7 @@ export const SignUpFormContent = (props) => {
 					<div className="input-group">
 						<div className="input-group-prepend">
 							<div className="input-group-text">
-								<FontAwesomeIcon icon="key"/>
+								<FontAwesomeIcon icon="lock"/>
 							</div>
 						</div>
 						<input
@@ -152,7 +152,7 @@ export const SignUpFormContent = (props) => {
 					<div className="input-group">
 						<div className="input-group-prepend">
 							<div className="input-group-text">
-								<FontAwesomeIcon icon="key"/>
+								<FontAwesomeIcon icon="lock"/>
 							</div>
 						</div>
 						<input
@@ -204,7 +204,7 @@ export const SignUpFormContent = (props) => {
 						<div className="input-group">
 							<div className="input-group-prepend">
 								<div className="input-group-text">
-									<FontAwesomeIcon icon="Bio"/>
+									<FontAwesomeIcon icon="book-reader"/>
 								</div>
 							</div>
 							<input
