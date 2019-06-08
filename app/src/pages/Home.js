@@ -55,6 +55,7 @@ const HomeComponent = () => {
 			<br/>
 			<br/>
 			<br/>
+			<div className="container">
 			<blockquote className="blockquote text-center">
 				<p className="mb-0"><em>Welcome to Your Professional Web Dev Jobs Platform!</em></p>
 			</blockquote>
@@ -63,7 +64,7 @@ const HomeComponent = () => {
 			<blockquote className="blockquote text-center">
 				<p className="mb-0"><em>If opportunity doesn't come knocking, build a website!</em></p>
 			</blockquote>
-
+			</div>
 			{/*Sign Up Button*/}
 			<div id="signup" className="container fluid justify-content-end">
 				<div className="row justify-content-center">
