@@ -7,7 +7,7 @@
 	height: 20px;
 	position: relative;
 	width: 100%;
-	background: radial-gradient(ellipse farthest-side at top center, darkgrey, white, grey, transparent)
+	background: radial-gradient(ellipse farthest-side at top center, darkgrey, white, cornflowerblue, transparent)
 }
 
 #button {
@@ -28,10 +28,18 @@ h2 {
 	font-family: sans-serif;
 }
 
+h3 {
+	text-decoration: underline;
+	font-family: sans-serif;
+}
+
 #signup {
 	margin-bottom: 5%;
 }
 
 #dev {
-	margin-bottom: 5%;
+	margin: 3% auto 5% auto;
+	alignment: center;
+	place-content: center;
 }
+
