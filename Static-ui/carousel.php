@@ -41,7 +41,8 @@
 				<div class="carousel-item">
 					<img src="example-job-description-career-busters3.jpg" height="500" width="300" class="d-block w-100" alt="Example Job Description 3">
 					<div class="carousel-caption d-none d-md-block">
-						<h3 class="text-dark">Join Now for more details</h3>
+						<h5>Third slide label</h5>
+						<p class="text-dark">Join Now for more details</p>
 					</div>
 				</div>
 			</div>
@@ -102,6 +103,7 @@
 	<div id="signup" class="container fluid justify-content-end">
 		<div class="row justify-content-center">
 	<button id="button" type="button" class="btn btn-primary btn-lgr">Sign Up</button>
+	</div>
 	</div>
 	</div>
 

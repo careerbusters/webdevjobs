@@ -43,3 +43,7 @@ h3 {
 	place-content: center;
 }
 
+#navbar {
+	alignment: left;
+}
+
