@@ -22,18 +22,18 @@ const HomeComponent = () => {
 			<div className="container" id="1">
 				<div className="row justify-content-center">
 					<div className="col-sm-10 justify-content-center">
-						<div id="carousel" className="carousel slide  height=500 width=900" data-ride="carousel">
+						<div id="carousel" className="carousel slide justify-content-center center-content  height=500 width=900" data-ride="carousel">
 							<div className="carousel-inner height=500 width=900">
 								<div className="carousel-item active">
-									<img src="imgs/example-job-description-career-busters3.jpg" height="500" width="auto"
+									<img height="500" width="auto" className="img-fluid justify-content-center center-content " src="imgs/example-job-description-career-busters3.jpg"
 										  alt="Example Job Description 1"/>
 								</div>
 								<div className="carousel-item">
-									<img src="imgs/example-job-description-career-busters1.jpg" height="500" width="auto"
+									<img height="500" width="auto" className="img-fluid justify-content-center center-content" src="imgs/example-job-description-career-busters1.jpg" 
 										   alt="Example Job Description 2"/>
 								</div>
 								<div className="carousel-item">
-									<img src="imgs/example-job-description-career-busters2.jpg" height="500" width="auto"
+									<img className="justify-content-center center-content" src="imgs/example-job-description-career-busters2.jpg" height="500" width="auto"
 										  alt="Example Job Description 3"/>
 								</div>
 							</div>
