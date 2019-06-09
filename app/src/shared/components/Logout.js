@@ -1,5 +1,5 @@
 import React from "react";
-export const Footer = () => (
+export const Logout = () => (
 	<div className="modal fade" id="logoutModal" tabIndex="-1" role="dialog" aria-labelledby="logoutModal"
 		  aria-hidden="true">
 		<div className="modal-dialog" role="document">

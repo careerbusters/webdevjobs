@@ -5,26 +5,27 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 export const NavBar = () => (
 <header>
 	<nav className="navbar navbar-light bg-light">
-		<a className="navbar-brand" href="#"/>
-			<FontAwesomeIcon icon="User-circle-2x" />
+		<a className="navbar-brand justify-content-start" href="">
+			<FontAwesomeIcon icon="user" />
+		</a>
+
+		<div>
+			<a className=" nav-item justify-content-end mx-3"  href="#">
+				<FontAwesomeIcon icon="home" />
+			</a>
 
 
-		<ul className="nav justify-content-end"/>
-			<li className="nav-item">
-				<a className="nav-link active" href="#"/>
-				<FontAwesomeIcon icon="Home-2x" />
-			</li>
 
-		<li className="nav-item">
-			<a className="nav-link active" href="#"/>
-			<FontAwesomeIcon icon="User-2x" />
-		</li>
+			<a className="nav-item justify-content-end mx-3" href="#">
+			<FontAwesomeIcon icon="user-alt" />
+			</a>
 
 
-	<li className="nav-item">
-		<a className="nav-link active" href="#"/>
-		<FontAwesomeIcon icon="Briefcase-2x" />
-	</li>
+
+		<a className="nav-item justify-content-end mx-3" href="#">
+		<FontAwesomeIcon icon="briefcase" />
+		</a>
+		</div>
 </nav>
 </header>
 );
