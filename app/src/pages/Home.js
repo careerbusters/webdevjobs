@@ -24,16 +24,16 @@ const HomeComponent = () => {
 				<div className="row justify-content-center">
 					<div className="col-sm-10 justify-content-center">
 						<div id="carousel" className="carousel slide justify-content-center center-content  height=500 width=900" data-ride="carousel">
-							<div className="carousel-inner height=500 width=900">
-								<div className="carousel-item active">
-									<img height="500" width="auto" className="img-fluid  " src="imgs/example-job-description-career-busters3.jpg"
+							<div className="justify-content-center center-content carousel-inner height=500 width=900">
+								<div className="justify-content-center center-content carousel-item active">
+									<img height="500" width="auto" className=" justify-content-center center-content " src="imgs/example-job-description-career-busters3.jpg"
 										  alt="Example Job Description 1"/>
 								</div>
-								<div className="carousel-item">
-									<img height="500" width="auto" className="img-fluid justify-content-center center-content" src="imgs/example-job-description-career-busters1.jpg"
+								<div className="justify-content-center center-content  carousel-item">
+									<img height="500" width="auto" className=" justify-content-center center-content" src="imgs/example-job-description-career-busters1.jpg"
 										   alt="Example Job Description 2"/>
 								</div>
-								<div className="carousel-item">
+								<div className="justify-content-center center-content carousel-item">
 									<img className="justify-content-center center-content" src="imgs/example-job-description-career-busters2.jpg" height="500" width="auto"
 										  alt="Example Job Description 3"/>
 								</div>
@@ -72,7 +72,6 @@ const HomeComponent = () => {
 					<button id="button" type="button" className="btn btn-primary my-2 btn-lgr">Sign Up</button>
 				</div>
 			</div>
-
 			<Footer/>
 		</>
 	)

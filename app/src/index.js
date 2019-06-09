@@ -18,6 +18,7 @@ import {NavBar} from "./shared/components/NavBar";
 import {SignUpForm} from "./shared/components/sign-up/SignUpForm";
 import {faUser, faUserAlt, faSignOutAlt, faPencilAlt, faEnvelope, faLock, faImage, faGlasses, faBookReader, faHome, faBriefcase} from "@fortawesome/free-solid-svg-icons/";
 import {DevPage} from "./pages/Dev";
+import {Jobs} from "./pages/Jobs";
 
 
 
@@ -34,6 +35,7 @@ const Routing = (store) => (
 				<Switch>
 					<Route exact path="/signup" component={SignUp}/>
 					<Route exact path="/devpage" component={DevPage}/>
+					<Route exact path="/jobs" component={Jobs}/>
 					<Route exact path="/login" component={Login}/>
 					<Route exact path="/" component={Home}/>
 					<Route component={FourOhFour}/>

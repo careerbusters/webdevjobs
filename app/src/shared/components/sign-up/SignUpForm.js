@@ -7,7 +7,7 @@ import {SignUpFormContent} from "./SignUpFormContent";
 
 export const SignUpForm = () => {
 	const signUp = {
-		profileUserName: "",
+		profileUsername: "",
 		profileEmail: "",
 		profileLocation: "",
 		profileRole: "",
@@ -19,7 +19,7 @@ export const SignUpForm = () => {
 
 	const [status, setStatus] = useState(null);
 	const validator = Yup.object().shape({
-		profileUserName: Yup.string()
+		profileUsername: Yup.string()
 			.required("user name is required"),
 		profileEmail: Yup.string()
 			.email("email must be a valid email")

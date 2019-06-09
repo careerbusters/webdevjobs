@@ -17,13 +17,13 @@ export const SignUpFormContent = (props) => {
 	} = props;
 	return (
 <>
-	<h1 className="text-center my-2"> Sign Up </h1>
-	<div className="container">
+	<h1 className="text-center my-3"> Sign Up </h1>
+	<div className="container bg-secondary p-2 mb-5">
 		<div className="row justify-content-center">
 			<div className="col-lg-8 justify-content-center">
 		<form onSubmit={handleSubmit}>
 				<div className="form-group">
-					<label htmlFor="profileUserName">User Name</label>
+					<label htmlFor="profileUsername">Username</label>
 					<div className="input-group">
 						<div className="input-group-prepend">
 							<div className="input-group-text">
@@ -32,17 +32,17 @@ export const SignUpFormContent = (props) => {
 						</div>
 						<input
 							className="form-control"
-							id="profileHandle"
+							id="profileUsername"
 							type="text"
-							value={values.profileUserName}
-							placeholder="User Name"
+							value={values.profileUsername}
+							placeholder="Username"
 							onChange={handleChange}
 							onBlur={handleBlur}
 						/>
 					</div>
-					{errors.profileUserName && touched.profileUserName && (
+					{errors.profileUsername && touched.profileUsername && (
 							<div className="alert alert-danger">
-								{errors.profileUserName}
+								{errors.profileUsername}
 							</div>
 						)
 					}
