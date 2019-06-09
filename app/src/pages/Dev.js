@@ -12,7 +12,7 @@ export const Dev = () => (
 		<div id="dev" className="container justify-content-center">
 			<div className="row justify-content-center">
 				<div className="card-text text-center" style="width: 50rem;">
-					<img src="capstoneProfilePeep2.jpg" className="card-img-top" alt="Profile Example 1"/>
+					<img src="/Static-ui/capstoneProfilePeep2.jpg" className="card-img-top" alt="Profile Example 1"/>
 						<div className="col-md-6 position-static p-4 pl-md-0">
 							<h5 className="mt-0">Will Iamm</h5>
 							<p className="text-wrap text-center">Seasoned Coder. Full-Stack Web Developer. I wear many hats.
@@ -26,7 +26,7 @@ export const Dev = () => (
 		<div id="dev" className="container justify-content-center">
 			<div className="row justify-content-center">
 				<div className="card-text text-center" style="width: 50rem;">
-					<img src="capstoneProfilePeep3.jpg" className="card-img-top" alt="Profile Example 1"/>
+					<img src="/Static-ui/capstoneProfilePeep3.jpg" className="card-img-top" alt="Profile Example 1"/>
 						<div className="col-md-6 position-static p-4 pl-md-0">
 							<h5 className="mt-0">Scott Pickles</h5>
 							<p className="text-wrap text-center">STrained and educated in the fundamental concepts and
@@ -42,7 +42,7 @@ export const Dev = () => (
 		<div id="dev" className="container justify-content-center">
 			<div className="row justify-content-center">
 				<div className="card-text text-center" style="width: 50rem;">
-					<img src="profilePeep4.jpg" className="card-img-top" alt="Profile Example 1"/>
+					<img src="/Static-ui/profilePeep4.jpg" className="card-img-top" alt="Profile Example 1"/>
 						<div className="col-md-6 position-static p-4 pl-md-0">
 							<h5 className="mt-0">Jenny Woo</h5>
 							<p className="text-wrap text-center">I am a software developer skilled in data visualization and
