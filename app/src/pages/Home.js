@@ -9,31 +9,31 @@ const HomeComponent = () => {
 		<>
 			<LoginNavBar>
 			</LoginNavBar>
-			<div id="home" className="col-lg-offset-4">
+			<div id="home" className="col-lg-offset-4 bg-secondary">
 				<div className="container d-flex justify-content-center text-content-center">
 					<div id="jumbotron"
 						  className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
 						<div className="row">
-							<h1 className="display-2">Web Dev Jobs</h1>
+							<h1 className="display-2 font-weight-bold">Web Dev Jobs</h1>
 						</div>
 					</div>
 				</div>
 
 			</div>
-			<div className="container" id="1">
+			<div className="container-fluid bg-secondary" id="1">
 				<div className="row justify-content-center">
 					<div className="col-sm-10 justify-content-center">
-						<div id="carousel" className="carousel slide justify-content-center center-content  height=500 width=900" data-ride="carousel">
+						<div id="carousel" className=" carousel slide justify-content-center center-content  height=500 width=900" data-ride="carousel">
 							<div className="justify-content-center center-content carousel-inner height=500 width=900">
 								<div className="justify-content-center center-content carousel-item active">
 									<img height="500" width="auto" className=" justify-content-center center-content " src="imgs/example-job-description-career-busters3.jpg"
 										  alt="Example Job Description 1"/>
 								</div>
-								<div className="justify-content-center center-content  carousel-item">
+								<div className=" justify-content-center center-content  carousel-item">
 									<img height="500" width="auto" className=" justify-content-center center-content" src="imgs/example-job-description-career-busters1.jpg"
 										   alt="Example Job Description 2"/>
 								</div>
-								<div className="justify-content-center center-content carousel-item">
+								<div className=" justify-content-center center-content carousel-item">
 									<img className="justify-content-center center-content" src="imgs/example-job-description-career-busters2.jpg" height="500" width="auto"
 										  alt="Example Job Description 3"/>
 								</div>
@@ -52,23 +52,19 @@ const HomeComponent = () => {
 					</div>
 				</div>
 			</div>
-			<div id="break"></div>
-			<br/>
-			<br/>
-			<br/>
-			<div className="container">
+
+			<div className="container-fluid pt-5 pb-1 bg-secondary">
 			<blockquote className="blockquote text-center">
 				<p className="mb-0"><em>Welcome to Your Professional Web Dev Jobs Platform!</em></p>
 			</blockquote>
-			<br/>
 			{/*Welcome Page Text*/}
 			<blockquote className="blockquote text-center">
 				<p className="mb-0"><em>If opportunity doesn't come knocking, build a website!</em></p>
 			</blockquote>
 			</div>
 			{/*Sign Up Button*/}
-			<div id="signup" className="container fluid justify-content-end">
-				<div className="row justify-content-center">
+			<div id="signup" className="container-fluid justify-content-end p-1 pb-5 bg-secondary ">
+				<div className="row justify-content-center bg-secondary">
 					<button id="button" type="button" className="btn btn-primary my-2 btn-lgr">Sign Up</button>
 				</div>
 			</div>

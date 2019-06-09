@@ -17,8 +17,16 @@ export const SignUpFormContent = (props) => {
 	} = props;
 	return (
 <>
-	<h1 className="text-center my-3"> Sign Up </h1>
-	<div className="container bg-secondary p-2 mb-5">
+	<div className="bg-info py-2 mt-0">
+		<div className="container d-flex justify-content-center text-content-center">
+			<div id="jumbotron"
+				  className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
+				<div className="row">
+					<h1 className="display-2 font-weight-bold">Web Dev Sign Up</h1>
+				</div>
+			</div>
+		</div>
+	<div className="container bg-secondary border border-dark p-2 mb-5">
 		<div className="row justify-content-center">
 			<div className="col-lg-8 justify-content-center">
 		<form onSubmit={handleSubmit}>
@@ -244,6 +252,7 @@ export const SignUpFormContent = (props) => {
 			</div>
 		</div>
 </div>
+	</div>
 </>
 	)
 };
