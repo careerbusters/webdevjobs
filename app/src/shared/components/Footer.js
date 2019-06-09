@@ -1,6 +1,4 @@
 import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-
 
 export const Footer = () => (
 	<footer className="container-fluid footer text-center fixed-bottom bg-dark">
