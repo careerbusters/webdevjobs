@@ -55,6 +55,25 @@ export const SignUpFormContent = (props) => {
 						)
 					}
 				</div>
+			{/*location must be in Albuquerque*/}
+			<div className="form-group">
+				<label htmlFor="profileLocation">Location</label>
+				<div className="input-group">
+					<div className="input-group-prepend">
+						<div className="input-group-text">
+							<FontAwesomeIcon icon="location"/>
+						</div>
+					</div>
+					<input
+						id="profileLocation"
+						className="form-control"
+						type="location"
+						placeholder="Location"
+						value={values.profileLocation}
+						onChange={handleChange}
+						onBlur={handleBlur}
+					/>
+				</div>
 
 			<div className="form-group">
 				<label htmlFor="profileRole">Role</label>
@@ -67,14 +86,21 @@ export const SignUpFormContent = (props) => {
 				<select className="form-control" id="profileRole">
 					<option>Developer</option>
 					<option>Freelancer</option>
-					<option>Recruiter</option>
-					<option>Marketer</option>
+					<option>Recruiters</option>
+					<option>Entrepreneurs</option>
 					<option>Other tech field</option>
+
+					<input
+						className="form-control"
+						id="profileRole"
+						type="role"
+						value={values.profileRole}
+						onChange={handleChange}
+						onBlur={handleBlur}
+					/>
 				</select>
 			</div>
 			</div>
-
-
 
 					{/*<div className="form-group">*/}
 						{/*<label htmlFor="ProfileRole">Role</label>*/}
@@ -243,7 +269,9 @@ export const SignUpFormContent = (props) => {
 
 
 				<FormDebugger {...props}/>
+			</div>
 			</form>
+			</div>
 
 			{console.log(submitStatus)}
 			{
@@ -252,7 +280,6 @@ export const SignUpFormContent = (props) => {
 			</div>
 		</div>
 </div>
-	</div>
 </>
 	)
 };

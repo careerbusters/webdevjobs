@@ -35,8 +35,7 @@ export const SignUpForm = () => {
 			.required("Password Confirm is required")
 			.min(8, "Password must be at least eight characters"),
 		profileImage: Yup.string()
-			.required("")
-			.min(8, "Password must be at least eight characters"),
+			.required(""),
 		profileBio: Yup.string()
 			.min(8, "content must be at least 8 characters")
 			.max(30000, "content must not exceed 30,000 characters")
