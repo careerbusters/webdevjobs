@@ -54,3 +54,8 @@ export const getAllRoles = () => async dispatch => {
 	const {data} = await httpConfig(`/apis/role/`);
 	dispatch({type: "GET_ALL_ROLES", payload: data})
 };
+
+export const getXSRF = () => async dispatch => {
+	const {data} = await httpConfig(`/apis/role/`);
+	dispatch({type: "GET_ALL_ROLES", payload: data})
+};
