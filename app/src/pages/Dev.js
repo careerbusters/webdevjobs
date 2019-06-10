@@ -7,7 +7,6 @@ export const DevPage = () => (
 		<NavBar/>
 		<body className="bg-secondary p-2">
 			{/*Dev Page Header*/}
-
 			<div className="container d-flex justify-content-center text-content-center">
 				<div id="jumbotron"
 					  className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
