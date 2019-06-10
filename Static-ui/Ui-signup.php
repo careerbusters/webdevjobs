@@ -65,6 +65,18 @@
 					</div>
 				</div>
 				</div>
+				<!--user role -->
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="phone number">Location</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fas fa-location"></i></span>
+							</div>
+							<input class="form-control" type="text" name="location" id="profileLocation" placeholder="please enter a location">
+						</div>
+					</div>
+				</div>
 				<!-- user profile image -->
 				<div class="form-row">
 				<div class="form-group col-md-6">
