@@ -61,7 +61,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-glasses"></i></span>
 						</div>
-						<input class="form-control" type="text" name="role" id="role" placeholder="please choose a role">
+						<input class="form-control" type="text" name="role" id="profileRole" placeholder="please choose a role">
 					</div>
 				</div>
 				</div>
