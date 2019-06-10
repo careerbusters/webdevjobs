@@ -15,8 +15,11 @@ export const SignUpFormContent = (props) => {
 		handleSubmit,
 		handleReset
 	} = props;
+	console.log (props);
 	return (
+
 <>
+
 	<div className="bg-info py-2 mt-0">
 		<div className="container d-flex justify-content-center text-content-center">
 			<div id="jumbotron"
@@ -64,17 +67,23 @@ export const SignUpFormContent = (props) => {
 							<FontAwesomeIcon icon="location"/>
 						</div>
 					</div>
-					<select className="form-control" id="profileLocation">
+					<select 		id="profileLocation"
+									 className="form-control"
+									 placeholder="Location"
+									 value={values.profileLocation}
+									 onChange={handleChange}
+
+					>
+						<option>Select</option>
 						<option>Albuquerque</option>
-					<input
-						id="profileLocation"
-						className="form-control"
-						type="location"
-						placeholder="Location"
-						value={values.profileLocation}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
+					{/*<input*/}
+					{/*	id="profileLocation"*/}
+					{/*	className="form-control"*/}
+					{/*	placeholder="Location"*/}
+					{/*	value={values.profileLocation}*/}
+					{/*	onChange={handleChange}*/}
+					{/*	onBlur={handleBlur}*/}
+					{/*/>*/}
 					</select>
 				</div>
 			</div>
@@ -88,21 +97,28 @@ export const SignUpFormContent = (props) => {
 							<FontAwesomeIcon icon="glasses"/>
 						</div>
 					</div>
-				<select className="form-control" id="profileRole">
+				<select className="form-control"
+						  id="profileRole"
+						  // type="select"
+						  value={values.profileRole}
+						  onChange={handleChange}
+					// value={props.values.profileRole} className="form-control" id="profileRole"
+>
+					<option>Select</option>
 					<option>Developer</option>
 					<option>Freelancer</option>
 					<option>Recruiters</option>
 					<option>Entrepreneurs</option>
 					<option>Other tech field</option>
 
-					<input
-						className="form-control"
-						id="profileRole"
-						type="role"
-						value={values.profileRole}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
+					{/*<input*/}
+					{/*	className="form-control"*/}
+					{/*	id="profileRole"*/}
+					{/*	type="select"*/}
+					{/*	value={values.profileRole}*/}
+					{/*	onChange={handleChange}*/}
+					{/*	onBlur={handleBlur}*/}
+					{/*/>*/}
 				</select>
 				</div>
 			</div>
@@ -223,7 +239,7 @@ export const SignUpFormContent = (props) => {
 						</div>
 						<input
 							className="form-control"
-							id="profilePhone"
+							id="profileImage"
 							type="text"
 							value={values.profileImage}
 							placeholder="Enter image"
