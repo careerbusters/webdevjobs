@@ -17,58 +17,90 @@ export const SignUpFormContent = (props) => {
 	} = props;
 	return (
 <>
-			<form onSubmit={handleSubmit}>
+	<div className="bg-info py-2 mt-0">
+		<div className="container d-flex justify-content-center text-content-center">
+			<div id="jumbotron"
+				  className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
+				<div className="row">
+					<h1 className="display-2 font-weight-bold">Web Dev Sign Up</h1>
+				</div>
+			</div>
+		</div>
+	<div className="container bg-secondary border border-dark p-2 mb-5">
+		<div className="row justify-content-center">
+			<div className="col-lg-8 justify-content-center">
+		<form onSubmit={handleSubmit}>
 				<div className="form-group">
-					<label htmlFor="profileUserName">User Name</label>
+					<label htmlFor="profileUsername">Username</label>
 					<div className="input-group">
 						<div className="input-group-prepend">
 							<div className="input-group-text">
-								<FontAwesomeIcon icon="User Name"/>
+								<FontAwesomeIcon icon="user"/>
 							</div>
 						</div>
 						<input
 							className="form-control"
-							id="profileHandle"
+							id="profileUsername"
 							type="text"
-							value={values.profileUserName}
-							placeholder="User Name"
+							value={values.profileUsername}
+							placeholder="Username"
 							onChange={handleChange}
 							onBlur={handleBlur}
 						/>
 					</div>
-					{errors.profileUserName && touched.profileUserName && (
+					{errors.profileUsername && touched.profileUsername && (
 							<div className="alert alert-danger">
-								{errors.profileUserName}
+								{errors.profileUsername}
 							</div>
 						)
 					}
 				</div>
 
-					<div className="form-group">
-						<label htmlFor="ProfileRole">Role</label>
-						<div className="input-group">
-							<div className="input-group-prepend">
-								<div className="input-group-text">
-									<FontAwesomeIcon icon="Role"/>
-								</div>
-							</div>
-							<input
-								className="form-control"
-								id="profileRole"
-								type="text"
-								value={values.profileRole}
-								placeholder="profile role"
-								onChange={handleChange}
-								onBlur={handleBlur}
-							/>
-						</div>
-						{errors.profileRole && touched.profileRole && (
-								<div className="alert alert-danger">
-									{errors.profileRole}
-								</div>
-							)
-						}
+			<div className="form-group">
+				<label htmlFor="profileRole">Role</label>
+				<div className="input-group">
+				<div className="input-group-prepend">
+					<div className="input-group-text">
+						<FontAwesomeIcon icon="glasses"/>
 					</div>
+				</div>
+				<select className="form-control" id="profileRole">
+					<option>Developer</option>
+					<option>Freelancer</option>
+					<option>Recruiter</option>
+					<option>Marketer</option>
+					<option>Other tech field</option>
+				</select>
+			</div>
+			</div>
+
+
+
+					{/*<div className="form-group">*/}
+						{/*<label htmlFor="ProfileRole">Role</label>*/}
+						{/*<div className="input-group">*/}
+							{/*<div className="input-group-prepend">*/}
+								{/*<div className="input-group-text">*/}
+									{/*<FontAwesomeIcon icon="Role"/>*/}
+								{/*</div>*/}
+							{/*</div>*/}
+							{/*<input*/}
+								{/*className="form-control"*/}
+								{/*id="profileRole"*/}
+								{/*type="text"*/}
+								{/*value={values.profileRole}*/}
+								{/*placeholder="profile role"*/}
+								{/*onChange={handleChange}*/}
+								{/*onBlur={handleBlur}*/}
+							{/*/>*/}
+						{/*</div>*/}
+						{/*{errors.profileRole && touched.profileRole && (*/}
+								{/*<div className="alert alert-danger">*/}
+									{/*{errors.profileRole}*/}
+								{/*</div>*/}
+							{/*)*/}
+						{/*}*/}
+					{/*</div>*/}
 				{/*controlId must match what is passed to the initialValues prop*/}
 				<div className="form-group">
 					<label htmlFor="profileEmail">Email Address</label>
@@ -104,7 +136,7 @@ export const SignUpFormContent = (props) => {
 					<div className="input-group">
 						<div className="input-group-prepend">
 							<div className="input-group-text">
-								<FontAwesomeIcon icon="key"/>
+								<FontAwesomeIcon icon="lock"/>
 							</div>
 						</div>
 						<input
@@ -128,7 +160,7 @@ export const SignUpFormContent = (props) => {
 					<div className="input-group">
 						<div className="input-group-prepend">
 							<div className="input-group-text">
-								<FontAwesomeIcon icon="key"/>
+								<FontAwesomeIcon icon="lock"/>
 							</div>
 						</div>
 						<input
@@ -180,7 +212,7 @@ export const SignUpFormContent = (props) => {
 						<div className="input-group">
 							<div className="input-group-prepend">
 								<div className="input-group-text">
-									<FontAwesomeIcon icon="Bio"/>
+									<FontAwesomeIcon icon="book-reader"/>
 								</div>
 							</div>
 							<input
@@ -199,8 +231,8 @@ export const SignUpFormContent = (props) => {
 					)}
 				</div>
 
-				<div className="form-group">
-					<button className="btn btn-primary mb-2" type="submit">Submit</button>
+				<div className="form-group mb-2 ">
+					<button className="btn btn-primary mx-2 mb-2" type="submit">Submit</button>
 					<button
 						className="btn btn-danger mb-2"
 						onClick={handleReset}
@@ -217,6 +249,10 @@ export const SignUpFormContent = (props) => {
 			{
 				submitStatus && (<div className={submitStatus.type}>{submitStatus.message}</div>)
 			}
+			</div>
+		</div>
+</div>
+	</div>
 </>
 	)
 };

@@ -1,6 +1,14 @@
 import React from "react";
+<<<<<<< HEAD
 export const Jobs = () => (
 	<>
+=======
+import {Footer} from "../shared/components/Footer";
+import {NavBar} from "../shared/components/NavBar";
+export const Jobs = () => (
+	<>
+		<NavBar/>
+>>>>>>> develop
 <body>
 	<div className="container text-center">
 		<h3>Job Postings</h3>
@@ -28,9 +36,16 @@ export const Jobs = () => (
 			</div>
 		</div>
 	</section>
+<<<<<<< HEAD
 	<?php require_once("Ui-footer.php"); ?>
 
 </body>
+=======
+
+
+</body>
+		<Footer/>
+>>>>>>> develop
 	</>
 
 
