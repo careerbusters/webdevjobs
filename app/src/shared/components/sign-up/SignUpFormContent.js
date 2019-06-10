@@ -57,7 +57,7 @@ export const SignUpFormContent = (props) => {
 				</div>
 
 			<div className="form-group">
-				<label htmlFor="ProfileRole">Role</label>
+				<label htmlFor="profileRole">Role</label>
 				<div className="input-group">
 				<div className="input-group-prepend">
 					<div className="input-group-text">
