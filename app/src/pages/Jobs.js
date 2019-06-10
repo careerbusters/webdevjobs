@@ -1,6 +1,9 @@
 import React from "react";
+import {Footer} from "../shared/components/Footer";
+import {NavBar} from "../shared/components/NavBar";
 export const Jobs = () => (
 	<>
+		<NavBar/>
 <body>
 	<div className="container text-center">
 		<h3>Job Postings</h3>
@@ -28,9 +31,10 @@ export const Jobs = () => (
 			</div>
 		</div>
 	</section>
-	<?php require_once("Ui-footer.php"); ?>
+
 
 </body>
+		<Footer/>
 	</>
 
 
