@@ -64,6 +64,8 @@ export const SignUpFormContent = (props) => {
 							<FontAwesomeIcon icon="location"/>
 						</div>
 					</div>
+					<select className="form-control" id="profileLocation">
+						<option>Albuquerque</option>
 					<input
 						id="profileLocation"
 						className="form-control"
@@ -73,16 +75,19 @@ export const SignUpFormContent = (props) => {
 						onChange={handleChange}
 						onBlur={handleBlur}
 					/>
+					</select>
 				</div>
+			</div>
+
 
 			<div className="form-group">
 				<label htmlFor="profileRole">Role</label>
 				<div className="input-group">
-				<div className="input-group-prepend">
-					<div className="input-group-text">
-						<FontAwesomeIcon icon="glasses"/>
+					<div className="input-group-prepend">
+						<div className="input-group-text">
+							<FontAwesomeIcon icon="glasses"/>
+						</div>
 					</div>
-				</div>
 				<select className="form-control" id="profileRole">
 					<option>Developer</option>
 					<option>Freelancer</option>
@@ -99,7 +104,7 @@ export const SignUpFormContent = (props) => {
 						onBlur={handleBlur}
 					/>
 				</select>
-			</div>
+				</div>
 			</div>
 
 					{/*<div className="form-group">*/}
@@ -269,7 +274,7 @@ export const SignUpFormContent = (props) => {
 
 
 				<FormDebugger {...props}/>
-			</div>
+
 			</form>
 			</div>
 

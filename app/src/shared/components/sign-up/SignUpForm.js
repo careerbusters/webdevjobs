@@ -20,20 +20,21 @@ export const SignUpForm = () => {
 	const [status, setStatus] = useState(null);
 	const validator = Yup.object().shape({
 		profileUsername: Yup.string()
-			.required("user name is required"),
+			.required("user name required")
+			.min(8, "user name required to be at least 8 characters"),
 		profileEmail: Yup.string()
 			.email("email must be a valid email")
 			.required('email is required'),
 		profileLocation: Yup.string()
-			.required("location must be Albuquerque"),
+			.required(""),
 		profileRole: Yup.string()
-			.required("role must be Developer, Freelancer, Recruiters, Employers, Entrepreneurs"),
+			.required(""),
 		profilePassword: Yup.string()
 			.required("Password is required")
-			.min(8, "Password must be at least eight characters"),
+			.min(8, "Password must be at least 8 characters"),
 		profilePasswordConfirm: Yup.string()
 			.required("Password Confirm is required")
-			.min(8, "Password must be at least eight characters"),
+			.min(8, "Password must be at least 8 characters"),
 		profileImage: Yup.string()
 			.required(""),
 		profileBio: Yup.string()
