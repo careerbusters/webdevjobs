@@ -29,7 +29,7 @@ try {
 	$pdo = $secrets->getPdoObject();
 
 	//determine which HTTP method was used
-	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, "4b9b8731-e401-4057-a73c-5dc4f127c437");
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, "35246e2b-926d-410d-bc88-719d09a809c5");
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
@@ -123,9 +123,8 @@ try {
 		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
-
 		// profile object needs to be created and prepare to insert into the database
-		$posting = new Posting(generateUuidV4(), $_SESSION["profile"]->getProfileId, $requestObject->roleId, $requestObject->postingContent, $requestObject->postingDate, $requestObject->postingEmail, $requestObject->postingEndDate, $requestObject->postingCompanyName, $requestObject->postingLocation, $requestObject->postingTitle, $requestObject->postingPay);
+		$posting = new Posting(generateUuidV4(), $_SESSION["profile"]->getProfileId, $requestObject->postingRoleId, $requestObject->postingContent, $requestObject->postingDate, $requestObject->postingEmail, $requestObject->postingEndDate, $requestObject->postingCompanyName, $requestObject->postingLocation, $requestObject->postingTitle, $requestObject->postingPay);
 		//insert the profile into the database
 		$posting->insert($pdo);
 
