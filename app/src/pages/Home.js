@@ -1,10 +1,17 @@
-import React from "react";
+import React, {useEffect} from 'react';
 import {LoginNavBar} from "../shared/components/Login-NavBar";
 import "../index.css";
 import {Footer} from "../shared/components/Footer";
+import {getXSRF} from "../shared/actions";
+import {httpConfig} from "../shared/misc/http-config";
 
 
 const HomeComponent = () => {
+	useEffect(() => {
+		httpConfig("/apis/earl-grey/");
+		},
+		[]
+	);
 	return (
 		<>
 			<LoginNavBar>

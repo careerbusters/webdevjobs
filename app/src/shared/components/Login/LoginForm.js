@@ -4,10 +4,11 @@ import {Formik} from "formik/dist/index";
 import * as Yup from "yup";
 import {Login} from "../../../pages/Login";
 import {LoginFormContent} from "./LoginContent";
+import {Redirect} from "react-router";
 
 
 
-export const LoginForm = () => {
+export const LoginForm = ({history}) => {
 	const validator = Yup.object().shape({
 		profileEmail: Yup.string()
 			.email("email must be a valid email")
@@ -24,7 +25,7 @@ export const LoginForm = () => {
 		profilePassword: ""
 	};
 
-	const submitSignIn = (values, {resetForm, setStatus}) => {
+	const submitLogin = (values, {resetForm, setStatus}) => {
 		httpConfig.post("/apis/login/", values)
 			.then(reply => {
 				let {message, type} = reply;
@@ -32,7 +33,7 @@ export const LoginForm = () => {
 				if(reply.status === 200 && reply.headers["x-jwt-token"]) {
 					window.localStorage.removeItem("jwt-token");
 					window.localStorage.setItem("jwt-token", reply.headers["x-jwt-token"]);
-					resetForm();
+					history.push('/devpage/');
 				}
 			});
 	};
@@ -41,7 +42,7 @@ export const LoginForm = () => {
 		<>
 			<Formik
 				initialValues={Login}
-				onSubmit={submitSignIn}
+				onSubmit={submitLogin}
 				validationSchema={validator}
 			>
 				{LoginFormContent}

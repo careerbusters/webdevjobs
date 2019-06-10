@@ -2,8 +2,10 @@ import React from "react";
 import {Footer} from "../shared/components/Footer";
 import {LoginForm} from "../shared/components/Login/LoginForm";
 
-export const Login = () => (
+export const Login = ({history}) => (
+
 	<>
+
 		<section>
 			<div id="home" className="col-lg-offset-4">
 				<div className="container-fluid bg-info pb-5 d-flex justify-content-center text-content-center">
@@ -31,7 +33,7 @@ export const Login = () => (
 					<div className="card-body">
 
 						{/*Login Form*/}
-<LoginForm/>
+<LoginForm history={history}/>
 						{/*<form>*/}
 							{/*<div className="form-group">*/}
 								{/*<label htmlFor="exampleInputEmail1">Email address</label>*/}
