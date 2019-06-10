@@ -4,12 +4,17 @@ import {NavBar} from "../shared/components/NavBar";
 export const Jobs = () => (
 	<>
 		<NavBar/>
-<body>
+<body className="bg-secondary pb-5 ">
 	<div className="container text-center">
-		<h3>Job Postings</h3>
+		<div id="jumbotron"
+			  className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
+			<div className="row justify-content-center">
+				<h1 className="display-2 font-weight-bold a">Job Postings</h1>
+			</div>
+		</div>
 	</div>
 	<section>
-		<div className="container">
+		<div className="container bg-dark mb-5 p-5">
 			<div className="row justify-content-center my-5">
 				<div className="col-lg-9">
 					<div className="card text-center">
@@ -17,11 +22,11 @@ export const Jobs = () => (
 							Fullstack Web Developer - RS21
 						</div>
 						<div className="card-body">
-							<h5 className="card-title mt-1">Job Valid Date</h5>
+							<h5 className="card-title text-left mt-1">Job Valid Date</h5>
 							<p className="card-text">I am web dev, I go code code code. I am web dev, I go code code code. I am
 								web
 								dev, I go code code code. I am web dev, I go code code code.</p>
-							<a href="#" className="btn btn-dark">Expand Profile</a>
+							<a href="#" className="btn btn-dark float-right">Expand Profile</a>
 						</div>
 						<div className="card-footer text-muted">
 							Albuquerque, New Mexico
