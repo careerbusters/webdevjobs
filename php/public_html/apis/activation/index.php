@@ -5,7 +5,7 @@ require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 use CareerBusters\WebDevJobs\Profile;
 /**
- * API to check profile activation status
+ * apis to check profile activation status
  * @author Nlovato
  */
 // Check the session. If it is not active, start the session.
