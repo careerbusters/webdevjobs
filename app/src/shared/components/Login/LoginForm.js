@@ -14,7 +14,7 @@ export const LoginForm = ({history}) => {
 			.required('email is required'),
 		profilePassword: Yup.string()
 			.required("Password is required")
-			.min(3, "Password must be at least eight characters")
+			.min(3, "Password must be at least three characters")
 	});
 
 
