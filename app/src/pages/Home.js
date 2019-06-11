@@ -19,7 +19,7 @@ const HomeComponent = () => {
 			<div id="home" className="col-lg-offset-4 bg-secondary">
 				<div className="container d-flex justify-content-center text-content-center">
 					<div id="jumbotron"
-						  className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
+						  className="jumbotron p-5 mb-2 bg-transparent text-body text-align .bg-transparent">
 						<div className="row">
 							<h1 className="display-2 font-weight-bold">Web Dev Jobs</h1>
 						</div>
@@ -27,22 +27,58 @@ const HomeComponent = () => {
 				</div>
 
 			</div>
-			<div className="container-fluid bg-secondary" id="1">
+			<div className="container-fluid bg-secondary pb-5" id="1">
 				<div className="row justify-content-center">
 					<div className="col-sm-10 justify-content-center">
 						<div id="carousel" className=" carousel slide justify-content-center center-content  height=500 width=900" data-ride="carousel">
 							<div className="justify-content-center center-content carousel-inner height=500 width=900">
 								<div className="justify-content-center center-content carousel-item active">
-									<img height="500" width="auto" className=" justify-content-center center-content " src="imgs/example-job-description-career-busters3.jpg"
-										  alt="Example Job Description 1"/>
+									<div className="card text-center">
+										<div className="card-header justify-content-left">
+											Fullstack Web Developer - RS21
+										</div>
+										<div className="card-body">
+											<h5 className="card-title text-left mt-1">Job Valid Date</h5>
+											<p className="card-text">I am web dev, I go code code code. I am web dev, I go code code code. I am
+												web
+												dev, I go code code code. I am web dev, I go code code code.</p>
+										</div>
+										<div className="card-footer text-muted">
+											Albuquerque, New Mexico
+										</div>
+									</div>
 								</div>
 								<div className=" justify-content-center center-content  carousel-item">
-									<img height="500" width="auto" className=" justify-content-center center-content" src="imgs/example-job-description-career-busters1.jpg"
-										   alt="Example Job Description 2"/>
+									<div className="card text-center">
+										<div className="card-header justify-content-left">
+											Fullstack Web Developer - RS21
+										</div>
+										<div className="card-body">
+											<h5 className="card-title text-left mt-1">Job Valid Date</h5>
+											<p className="card-text">I am web dev, I go code code code. I am web dev, I go code code code. I am
+												web
+												dev, I go code code code. I am web dev, I go code code code.</p>
+										</div>
+										<div className="card-footer text-muted">
+											Albuquerque, New Mexico
+										</div>
+									</div>
 								</div>
 								<div className=" justify-content-center center-content carousel-item">
-									<img className="justify-content-center center-content" src="imgs/example-job-description-career-busters2.jpg" height="500" width="auto"
-										  alt="Example Job Description 3"/>
+									<div className="card text-center">
+										<div className="card-header justify-content-left">
+											Fullstack Web Developer - RS21
+										</div>
+										<div className="card-body">
+											<h5 className="card-title text-left mt-1">Job Valid Date</h5>
+											<p className="card-text">I am web dev, I go code code code. I am web dev, I go code code code. I am
+												web
+												dev, I go code code code. I am web dev, I go code code code.</p>
+										</div>
+										<div className="card-footer text-muted">
+											Albuquerque, New Mexico
+										</div>
+									</div>
 								</div>
 							</div>
 							<a className="carousel-control-prev" href="#carouselExampleControls" role="button"
@@ -60,7 +96,7 @@ const HomeComponent = () => {
 				</div>
 			</div>
 
-			<div className="container-fluid pt-5 pb-1 bg-secondary">
+			<div className="container-fluid pt-5 pb-5 bg-secondary">
 			<blockquote className="blockquote text-center">
 				<p className="mb-0"><em>Welcome to Your Professional Web Dev Jobs Platform!</em></p>
 			</blockquote>
