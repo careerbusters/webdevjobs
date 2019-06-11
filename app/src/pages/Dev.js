@@ -18,7 +18,7 @@ export const DevPage = () => (
 			{/*User Cards*/}
 			<div className="container bg-dark justify-content-center p-3 mb-5">
 				<div className="row justify-content-center">
-					<div className="col-sm-10 justify-content-center">
+					<div className="col-sm-8 justify-content-center">
 						<div id="dev">
 								<div className="card bg-light border-primary">
 									<img src="/imgs/morganCaptain.jpg" height="auto" width="auto" className="card-img-top p-1"
