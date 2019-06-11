@@ -36,7 +36,16 @@ try {
 		//have to decode json and turn it into a php object
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
-		//verify that profile password is present
+
+		//verify that role name is present
+		if(empty($requestObject->roleId) === true) {
+			throw(new \InvalidArgumentException("role Id must be present", 405));
+		}else{
+//			$roleUuid = new uuid
+			if(empty (Role::getRoleByRoleId($pdo, $requestObject->roleId)) === true){
+				throw(new \InvalidArgumentException("must input a valid role", 405));
+			}
+		}
 		//profile Bio is a required field
 		if(empty($requestObject->profileBio) === true) {
 			throw(new \InvalidArgumentException("profile Bio is empty", 405));
@@ -66,15 +75,8 @@ try {
 		if(empty($requestObject->profilePasswordConfirm) === true) {
 			throw(new \InvalidArgumentException("Must input valid password", 405));
 		}
-		//verify that role name is present
-		if(empty($requestObject->roleId) === true) {
-			throw(new \InvalidArgumentException("role Id must be present", 405));
-		}else{
-//			$roleUuid = new uuid
-			if(empty (Role::getRoleByRoleId($pdo, $requestObject->roleId)) === true){
-				throw(new \InvalidArgumentException("must input a valid role", 405));
-			}
-		}
+
+
 		/*do the values below  get assigned on sign up or after activation?
 		$profileUsername = $_SERVER['HTTP_Profile_Username'];
 		$profileIpAddress = $_SERVER['SERVER_ADDR'];
