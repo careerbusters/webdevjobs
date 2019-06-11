@@ -105,9 +105,9 @@ export const SignUpFormContent = (props) => {
 					// value={props.values.profileRole} className="form-control" id="profileRole"
 >
 					<option>Select</option>
-					<option>Developer</option>
+					<option value="">Developer</option>
 					<option>Freelancer</option>
-					<option>Recruiters</option>
+					<option value="">Recruiters</option>
 					<option>Entrepreneurs</option>
 					<option>Other tech field</option>
 
