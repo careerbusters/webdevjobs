@@ -124,7 +124,7 @@ try {
 		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
 		// profile object needs to be created and prepare to insert into the database
-		$posting = new Posting(generateUuidV4(), $_SESSION["profile"]->getProfileId, $requestObject->postingRoleId, $requestObject->postingContent, $requestObject->postingDate, $requestObject->postingEmail, $requestObject->postingEndDate, $requestObject->postingCompanyName, $requestObject->postingLocation, $requestObject->postingTitle, $requestObject->postingPay);
+		$posting = new Posting(generateUuidV4(), $_SESSION["profile"]->getProfileId(), $requestObject->postingRoleId, $requestObject->postingCompanyName, $requestObject->postingContent, $requestObject->postingDate, $requestObject->postingEmail, $requestObject->postingEndDate, $requestObject->postingLocation, $requestObject->postingTitle, $requestObject->postingPay);
 		//insert the profile into the database
 		$posting->insert($pdo);
 
