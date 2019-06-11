@@ -97,7 +97,7 @@ try {
 		//make sure URL is /public_html/api/activation/$activation
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "/api/activation/?activation=" . $profileActivationToken;
+		$urlglue = $basePath . "/apis/activation/?activation=" . $profileActivationToken;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
