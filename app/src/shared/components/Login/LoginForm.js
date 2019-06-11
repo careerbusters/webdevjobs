@@ -2,9 +2,8 @@ import React from 'react';
 import {httpConfig} from "../../misc/http-config.js";
 import {Formik} from "formik/dist/index";
 import * as Yup from "yup";
-import {Login} from "../../../pages/Login";
 import {LoginFormContent} from "./LoginContent";
-import {Redirect} from "react-router";
+
 
 
 

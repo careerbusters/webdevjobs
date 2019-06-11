@@ -286,8 +286,6 @@ export const SignUpFormContent = (props) => {
 					>Reset
 					</button>
 				</div>
-
-
 			</form>
 			</div>
 
