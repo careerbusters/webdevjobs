@@ -10,7 +10,7 @@ export const SignUpForm = () => {
 		profileUsername: "",
 		profileEmail: "",
 		profileLocation: "",
-		profileRole: "",
+		roleId: "",
 		profilePassword: "",
 		profilePasswordConfirm: "",
 		profileImage: "",
@@ -27,7 +27,7 @@ export const SignUpForm = () => {
 			.required('email is required'),
 		profileLocation: Yup.string()
 			.required("picking a location is required"),
-		profileRole: Yup.string()
+		roleId: Yup.string()
 			.required("you must pick a role"),
 		profilePassword: Yup.string()
 			.required("Password is required")

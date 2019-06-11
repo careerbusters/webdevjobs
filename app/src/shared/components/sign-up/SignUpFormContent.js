@@ -90,7 +90,7 @@ export const SignUpFormContent = (props) => {
 
 
 			<div className="form-group">
-				<label htmlFor="profileRole">Role</label>
+				<label htmlFor="roleId">Role</label>
 				<div className="input-group">
 					<div className="input-group-prepend">
 						<div className="input-group-text">
@@ -98,18 +98,18 @@ export const SignUpFormContent = (props) => {
 						</div>
 					</div>
 				<select className="form-control"
-						  id="profileRole"
+						  id="roleId"
 						  // type="select"
-						  value={values.profileRole}
+						  value={values.roleId}
 						  onChange={handleChange}
 					// value={props.values.profileRole} className="form-control" id="profileRole"
 >
 					<option>Select</option>
-					<option value="">Developer</option>
-					<option>Freelancer</option>
-					<option value="">Recruiters</option>
-					<option>Entrepreneurs</option>
-					<option>Other tech field</option>
+					<option value="74fa46bd-8bec-485d-a756-1f1b9d8112c9">Developer</option>
+					<option value="990090de-3557-4eea-95cd-1fa29d852ec8">Freelancer</option>
+					<option value="3ef74507-2eff-45ac-b41b-f4269263965f">Recruiters</option>
+					<option value="58fb1399-833d-46d6-aae7-287b04204cb5">Entrepreneurs</option>
+					<option value="b404f20f-9d27-4edf-9305-943e95d5bd10">Other tech field</option>
 
 					{/*<input*/}
 					{/*	className="form-control"*/}
