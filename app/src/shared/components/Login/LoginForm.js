@@ -2,9 +2,8 @@ import React from 'react';
 import {httpConfig} from "../../misc/http-config.js";
 import {Formik} from "formik/dist/index";
 import * as Yup from "yup";
-import {Login} from "../../../pages/Login";
 import {LoginFormContent} from "./LoginContent";
-import {Redirect} from "react-router";
+
 
 
 
@@ -15,7 +14,7 @@ export const LoginForm = ({history}) => {
 			.required('email is required'),
 		profilePassword: Yup.string()
 			.required("Password is required")
-			.min(3, "Password must be at least eight characters")
+			.min(3, "Password must be at least three characters")
 	});
 
 

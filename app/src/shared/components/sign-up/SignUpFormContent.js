@@ -1,5 +1,4 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {FormDebugger} from "../FormDebugger";
 import React from "react";
 
 export const SignUpFormContent = (props) => {
@@ -15,8 +14,11 @@ export const SignUpFormContent = (props) => {
 		handleSubmit,
 		handleReset
 	} = props;
+	console.log (props);
 	return (
+
 <>
+
 	<div className="bg-info py-2 mt-0">
 		<div className="container d-flex justify-content-center text-content-center">
 			<div id="jumbotron"
@@ -61,45 +63,63 @@ export const SignUpFormContent = (props) => {
 				<div className="input-group">
 					<div className="input-group-prepend">
 						<div className="input-group-text">
-							<FontAwesomeIcon icon="location"/>
+							<FontAwesomeIcon icon="thumbtack"/>
 						</div>
 					</div>
-					<input
-						id="profileLocation"
-						className="form-control"
-						type="location"
-						placeholder="Location"
-						value={values.profileLocation}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
+					<select 		id="profileLocation"
+									 className="form-control"
+									 placeholder="Location"
+									 value={values.profileLocation}
+									 onChange={handleChange}
+
+					>
+						<option>Select</option>
+						<option>Albuquerque</option>
+					{/*<input*/}
+					{/*	id="profileLocation"*/}
+					{/*	className="form-control"*/}
+					{/*	placeholder="Location"*/}
+					{/*	value={values.profileLocation}*/}
+					{/*	onChange={handleChange}*/}
+					{/*	onBlur={handleBlur}*/}
+					{/*/>*/}
+					</select>
 				</div>
+			</div>
+
 
 			<div className="form-group">
-				<label htmlFor="profileRole">Role</label>
+				<label htmlFor="roleId">Role</label>
 				<div className="input-group">
-				<div className="input-group-prepend">
-					<div className="input-group-text">
-						<FontAwesomeIcon icon="glasses"/>
+					<div className="input-group-prepend">
+						<div className="input-group-text">
+							<FontAwesomeIcon icon="glasses"/>
+						</div>
 					</div>
-				</div>
-				<select className="form-control" id="profileRole">
-					<option>Developer</option>
-					<option>Freelancer</option>
-					<option>Recruiters</option>
-					<option>Entrepreneurs</option>
-					<option>Other tech field</option>
+				<select className="form-control"
+						  id="roleId"
+						  // type="select"
+						  value={values.roleId}
+						  onChange={handleChange}
+					// value={props.values.profileRole} className="form-control" id="profileRole"
+>
+					<option>Select</option>
+					<option value="74fa46bd-8bec-485d-a756-1f1b9d8112c9">Developer</option>
+					<option value="990090de-3557-4eea-95cd-1fa29d852ec8">Freelancer</option>
+					<option value="3ef74507-2eff-45ac-b41b-f4269263965f">Recruiters</option>
+					<option value="58fb1399-833d-46d6-aae7-287b04204cb5">Entrepreneurs</option>
+					<option value="b404f20f-9d27-4edf-9305-943e95d5bd10">Other tech field</option>
 
-					<input
-						className="form-control"
-						id="profileRole"
-						type="role"
-						value={values.profileRole}
-						onChange={handleChange}
-						onBlur={handleBlur}
-					/>
+					{/*<input*/}
+					{/*	className="form-control"*/}
+					{/*	id="profileRole"*/}
+					{/*	type="select"*/}
+					{/*	value={values.profileRole}*/}
+					{/*	onChange={handleChange}*/}
+					{/*	onBlur={handleBlur}*/}
+					{/*/>*/}
 				</select>
-			</div>
+				</div>
 			</div>
 
 					{/*<div className="form-group">*/}
@@ -218,7 +238,7 @@ export const SignUpFormContent = (props) => {
 						</div>
 						<input
 							className="form-control"
-							id="profilePhone"
+							id="profileImage"
 							type="text"
 							value={values.profileImage}
 							placeholder="Enter image"
@@ -266,10 +286,6 @@ export const SignUpFormContent = (props) => {
 					>Reset
 					</button>
 				</div>
-
-
-				<FormDebugger {...props}/>
-			</div>
 			</form>
 			</div>
 
