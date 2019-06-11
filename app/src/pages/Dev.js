@@ -21,7 +21,8 @@ export const DevPage = () => (
 					<div className="col-sm-8 justify-content-center">
 						<div id="dev">
 								<div className="card bg-light border-primary">
-									<h5 className="text-center p-3">Marty Bonacci</h5>
+									<h2 className="text-center p-3">Marty Bonacci</h2>
+									<h3 className="text-center p-2">Freelancer</h3>
 									<p className="text-center mx-3">
 										I’ve been lucky enough to have the pleasure of Designing and Programming Websites for the last handful of years.
 										I first worked as a Graphic Designer at a Printing Facility, designing everything from Business Cards and Logos to flyers, brochures, and huge banners.
