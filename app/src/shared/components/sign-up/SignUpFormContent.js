@@ -228,29 +228,29 @@ export const SignUpFormContent = (props) => {
 
 
 
-				<div className="form-group">
-					<label htmlFor="profileImage">Profile Image</label>
-					<div className="input-group">
-						<div className="input-group-prepend">
-							<div className="input-group-text">
-								<FontAwesomeIcon icon="image"/>
-							</div>
-						</div>
-						<input
-							className="form-control"
-							id="profileImage"
-							type="text"
-							value={values.profileImage}
-							placeholder="Enter image"
-							onChange={handleChange}
-							onBlur={handleBlur}
-						/>
-					</div>
-					{errors.profileImage && touched.profileImage && (
-						<div className="alert alert-danger">{errors.profileImage}
-						</div>
-					)}
-				</div>
+				{/*<div className="form-group">*/}
+				{/*	<label htmlFor="profileImage">Profile Image</label>*/}
+				{/*	<div className="input-group">*/}
+				{/*		<div className="input-group-prepend">*/}
+				{/*			<div className="input-group-text">*/}
+				{/*				<FontAwesomeIcon icon="image"/>*/}
+				{/*			</div>*/}
+				{/*		</div>*/}
+				{/*		<input*/}
+				{/*			className="form-control"*/}
+				{/*			id="profileImage"*/}
+				{/*			type="text"*/}
+				{/*			value={values.profileImage}*/}
+				{/*			placeholder="Enter image"*/}
+				{/*			onChange={handleChange}*/}
+				{/*			onBlur={handleBlur}*/}
+				{/*		/>*/}
+				{/*	</div>*/}
+				{/*	{errors.profileImage && touched.profileImage && (*/}
+				{/*		<div className="alert alert-danger">{errors.profileImage}*/}
+				{/*		</div>*/}
+				{/*	)}*/}
+				{/*</div>*/}
 
 
 				<div className="form-group">
@@ -294,7 +294,7 @@ export const SignUpFormContent = (props) => {
 				submitStatus && (<div className={submitStatus.type}>{submitStatus.message}</div>)
 			}
 			</div>
-		</div>
+	</div>
 </div>
 </>
 	)
