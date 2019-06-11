@@ -42,9 +42,8 @@ export const SignUpForm = () => {
 			.max(30000, "content must not exceed 30,000 characters")
 	});
 
-	const submitSignUp = (values, {resetForm}) => {
-		httpConfig.post("/apis/signup/", values);
-		httpConfig.role("/apis/role/", values)
+	const submitSignUp = (values, {resetForm, setStatus}) => {
+		httpConfig.post("/apis/signup/", values)
 			.then(reply => {
 					let {message, type} = reply;
 					setStatus({message, type});
