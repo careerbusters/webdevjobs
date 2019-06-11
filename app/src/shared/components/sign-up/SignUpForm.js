@@ -26,9 +26,9 @@ export const SignUpForm = () => {
 			.email("email must be a valid email")
 			.required('email is required'),
 		profileLocation: Yup.string()
-			.required("Albuquerque"),
+			.required("picking a location is required"),
 		profileRole: Yup.string()
-			.required(""),
+			.required("you must pick a role"),
 		profilePassword: Yup.string()
 			.required("Password is required")
 			.min(8, "Password must be at least 8 characters"),
@@ -43,7 +43,8 @@ export const SignUpForm = () => {
 	});
 
 	const submitSignUp = (values, {resetForm}) => {
-		httpConfig.post("/apis/signup/", values)
+		httpConfig.post("/apis/signup/", values);
+		httpConfig.role("/apis/role/", values)
 			.then(reply => {
 					let {message, type} = reply;
 					setStatus({message, type});
