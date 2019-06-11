@@ -25,8 +25,7 @@ export const DevPage = () => (
 										  alt="Profile Example 1"/>
 									<h5 className="text-center p-3">Marty Bonacci</h5>
 									<p className="text-center mx-3">Seasoned Coder. Full time DAD! Full-Stack Web Developer. I wear many hats.
-										Making
-										things and building teams!!</p>
+										Making things and building teams!!</p>
 									<a href="#" className="stretched-link text-right mb-2 mx-3">Read More...</a>
 								</div>
 							</div>

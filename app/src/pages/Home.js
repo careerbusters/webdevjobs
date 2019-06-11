@@ -69,12 +69,6 @@ const HomeComponent = () => {
 				<p className="mb-0"><em>If opportunity doesn't come knocking, build a website!</em></p>
 			</blockquote>
 			</div>
-			{/*Sign Up Button*/}
-			<div id="signup" className="container-fluid justify-content-end p-1 pb-5 bg-secondary ">
-				<div className="row justify-content-center bg-secondary">
-					<button id="button" type="button" className="btn btn-primary my-2 btn-lgr">Sign Up</button>
-				</div>
-			</div>
 			<Footer/>
 		</>
 	)
