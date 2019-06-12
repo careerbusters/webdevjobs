@@ -46,7 +46,7 @@ try {
 		if(empty($profileId) === false) {
 			$reply->data = Profile::getProfileByProfileId($pdo, $profileId);
 		} else if(empty($profileRoleId) === false) {
-			$reply->data = Profile::getProfileByProfileRoleId($pdo, $profileRoleId);
+			$reply->data = Profile::getProfileByProfileRoleId($pdo, $profileRoleId)->toArray();
 		} else if(empty($profileEmail) === false) {
 			$reply->data = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		} else if(empty($profileUsername) === false) {
