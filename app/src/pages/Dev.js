@@ -15,20 +15,31 @@ const DevComponent = (props) => {
 		[getProfileByProfileRoleId]
 	);
 
-	console.log(profiles)
+
+	const renderProfiles = () => {
+		if(profiles){
+			return profiles.map(profile =>{
+			return(<div>{profile.profileUsername}</div>)
+			})
+		}
+	};
+
+	console.log(profiles);
+
 	return (
 		<>
-			<NavBar/>
-			<div className="bg-secondary p-2">
-				{/*Dev Page Header*/}
-				<div className="container d-flex justify-content-center text-content-center">
-					<div id="jumbotron"
-						  className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">
-						<div className="row">
-							<h1 className="display-2 font-weight-bold">Developer Hub</h1>
-						</div>
-					</div>
-				</div>
+			{/*<NavBar/>*/}
+			{/*<div className="bg-secondary p-2">*/}
+			{/*	/!*Dev Page Header*!/*/}
+			{/*	<div className="container d-flex justify-content-center text-content-center">*/}
+			{/*		<div id="jumbotron"*/}
+			{/*			  className="jumbotron p-3 mb-2 bg-transparent text-body text-align .bg-transparent">*/}
+			{/*			<div className="row">*/}
+			{/*				<h1 className="display-2 font-weight-bold">Developer Hub</h1>*/}
+			{/*			</div>*/}
+			{/*		</div>*/}
+			{/*	</div>*/}
+				{renderProfiles()}
 				{/*User Cards*/}
 				{/*<DevCard/>*/}
 				{/*<div className="container bg-dark justify-content-center p-3 mb-5">*/}
@@ -62,9 +73,9 @@ const DevComponent = (props) => {
 				{/*		</div>*/}
 				{/*	</div>*/}
 				{/*</div>*/}
-			</div>
+			{/*</div>*/}
 
-			<Footer/>
+			{/*<Footer/>*/}
 		</>
 	)
 };
