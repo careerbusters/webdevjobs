@@ -1,5 +1,4 @@
 import React from "react";
-import Moment from "react-moment";
 
 
 const JobCardComponent = ({postings}) => {
@@ -16,7 +15,7 @@ const JobCardComponent = ({postings}) => {
 						</div>
 
 						<div className="card-body">
-							<h5 className="card-title text-left mt-1"><Moment unix>{index.postingDate}</Moment> apply until</h5>
+							<h5 className="card-title text-left mt-1">Pay: {index.postingPay}</h5>
 							<p className="card-text">{`${index.postingContent}`}</p>
 						</div>
 						<div className="card-footer text-muted">
