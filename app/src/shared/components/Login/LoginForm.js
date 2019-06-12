@@ -32,7 +32,7 @@ export const LoginForm = ({history}) => {
 				if(reply.status === 200 && reply.headers["x-jwt-token"]) {
 					window.localStorage.removeItem("jwt-token");
 					window.localStorage.setItem("jwt-token", reply.headers["x-jwt-token"]);
-					history.push('/devpage/');
+					history.push('/dev/74fa46bd-8bec-485d-a756-1f1b9d8112c9');
 				}
 			});
 	};
