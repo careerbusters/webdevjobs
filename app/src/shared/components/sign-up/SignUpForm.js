@@ -13,6 +13,7 @@ export const SignUpForm = () => {
 		roleId: "",
 		profilePassword: "",
 		profilePasswordConfirm: "",
+		profileImage: "",
 		profileBio: "",
 	};
 
