@@ -6,8 +6,8 @@ const DevCard = (props) => {
 	const {getProfileByProfileId, profile} = props;
 
 	useEffect(() => {
-		getProfileByProfileId("85886e8a-715b-471c-8efb-8a0d9e81e93e")
-	}, [getProfileByProfileId, "85886e8a-715b-471c-8efb-8a0d9e81e93e"]);
+		getProfileByProfileId("e8aaa70f-b03d-4c94-9f94-6b95ea95c64d")
+	}, [getProfileByProfileId, "e8aaa70f-b03d-4c94-9f94-6b95ea95c64d"]);
 
 	console.log(props);
 	const renderProfile = () => {
