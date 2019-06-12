@@ -10,7 +10,7 @@ export const NavBar = () => (
 		</a>
 
 		<div>
-			<a className="text-dark  nav-item justify-content-end mx-3"  href="/devpage/">
+			<a className="text-dark  nav-item justify-content-end mx-3"  href="/dev/">
 				<FontAwesomeIcon icon="home" />
 			</a>
 
