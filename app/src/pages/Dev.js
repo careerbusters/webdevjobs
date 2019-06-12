@@ -1,7 +1,6 @@
 import React from "react";
 import {NavBar} from "../shared/components/NavBar";
 import {Footer} from "../shared/components/Footer";
-import {Profile} from "../shared/components/dev/DevCard"
 export const DevPage = () => (
 	<>
 		<NavBar/>
@@ -16,7 +15,6 @@ export const DevPage = () => (
 				</div>
 			</div>
 			{/*User Cards*/}
-			<Profile/>
 			{/*<div className="container bg-dark justify-content-center p-3 mb-5">*/}
 			{/*	<div className="row justify-content-center">*/}
 			{/*		<div className="col-sm-8 justify-content-center">*/}
