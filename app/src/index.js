@@ -15,7 +15,7 @@ import {Provider} from "react-redux";
 import {SignUp} from "./pages/Sign-up";
 import {Login} from "./pages/Login";
 import {faUser, faUserAlt, faSignOutAlt, faPencilAlt, faEnvelope, faLock, faImage, faGlasses, faBookReader, faHome, faBriefcase, faThumbtack} from "@fortawesome/free-solid-svg-icons/";
-import {DevPage} from "./pages/Dev";
+import {DevCard} from "./pages/Dev";
 import {Jobs} from "./pages/Jobs";
 
 
@@ -32,7 +32,7 @@ const Routing = (store) => (
 			<BrowserRouter>
 				<Switch>
 					<Route exact path="/signup" component={SignUp}/>
-					<Route exact path="/devpage" component={DevPage}/>
+					<Route exact path="/devpage" component={DevCard}/>
 					<Route exact path="/jobs" component={Jobs}/>
 					<Route exact path="/login" component={Login}/>
 					<Route exact path="/" component={Home}/>

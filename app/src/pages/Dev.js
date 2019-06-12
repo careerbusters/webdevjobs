@@ -1,7 +1,7 @@
 import React from "react";
 import {NavBar} from "../shared/components/NavBar";
 import {Footer} from "../shared/components/Footer";
-export const DevPage = () => (
+export const DevCard = () => (
 	<>
 		<NavBar/>
 		<div className="bg-secondary p-2">
