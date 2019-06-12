@@ -6,7 +6,6 @@ import {getAllPostings} from "../actions/";
 
 const CarouselComponent = ({posting}) => {
 
-	console.log(posting);
 	return (
 		<>
 			<div id="carousel" className=" carousel slide justify-content-center center-content  height=500 width=900"
