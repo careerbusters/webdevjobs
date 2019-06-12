@@ -29,7 +29,6 @@ try {
 	$pdo = $secrets->getPdoObject();
 
 	//determine which HTTP method was used
-	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, "35246e2b-926d-410d-bc88-719d09a809c5");
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
@@ -124,7 +123,7 @@ try {
 		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
 		// profile object needs to be created and prepare to insert into the database
-		$posting = new Posting(generateUuidV4(), $_SESSION["profile"]->getProfileId(), $requestObject->postingRoleId, $requestObject->postingCompanyName, $requestObject->postingContent, $requestObject->postingDate, $requestObject->postingEmail, $requestObject->postingEndDate, $requestObject->postingLocation, $requestObject->postingTitle, $requestObject->postingPay);
+		$posting = new Posting(generateUuidV4(), $_SESSION["profile"]->getProfileId(), $requestObject->postingRoleId, $requestObject->postingCompanyName, $requestObject->postingContent, $requestObject->postingDate, $requestObject->postingEmail, $requestObject->postingEndDate, $requestObject->postingLocation, $requestObject->postingPay, $requestObject->postingTitle);
 		//insert the profile into the database
 		$posting->insert($pdo);
 

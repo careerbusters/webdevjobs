@@ -1,6 +1,5 @@
 
 import {httpConfig} from "../misc/http-config";
-
 export const getAllPostings = () => async dispatch => {
 	const {data} = await httpConfig("/apis/job-posting/");
 	dispatch({type: "GET_ALL_POSTINGS", payload: data})
