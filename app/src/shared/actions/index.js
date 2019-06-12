@@ -29,7 +29,7 @@ export const getProfileByProfileId = (profileId) => async dispatch => {
 };
 
 export const getProfileByProfileRoleId = (profileRoleId) => async dispatch => {
-	const {data} = await httpConfig(`/apis/profile/${profileRoleId}`);
+	const {data} = await httpConfig(`/apis/profile/?profileRoleId=${profileRoleId}`);
 	dispatch({type: "GET_PROFILE_BY_PROFILE_ROLE_ID", payload: data})
 };
 
