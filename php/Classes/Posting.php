@@ -557,5 +557,7 @@ VALUES(:postingId, :postingProfileId, :postingRoleId, :postingCompanyName, :post
 		$fields["postingId"] = $this->postingId->toString();
 		$fields["postingProfileId"] = $this->postingProfileId->toString();
 		$fields["postingRoleId"] = $this->postingRoleId->toString();
+		$fields["postingDate"] = round(floatval($this->postingDate->format("U.u")) * 1000);
+		$fields["postingEndDate"] = round(floatval($this->postingEndDate->format("U.u")) * 1000);
 		return ($fields);
 	}}

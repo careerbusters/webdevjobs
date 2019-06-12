@@ -1,4 +1,5 @@
 export default (state = [], action) => {
+	console.log(action);
 	switch(action.type) {
 		case "GET_ALL_POSTINGS":
 			return action.payload;
