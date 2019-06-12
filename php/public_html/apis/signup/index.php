@@ -56,9 +56,9 @@ try {
 		}
 
 			//verify that profile Image is present
-		if(empty($requestObject->profileImage) === true) {
-				throw(new \InvalidArgumentException("no profile image present", 405));
-			}
+//		if(empty($requestObject->profileImage) === true) {
+//				throw(new \InvalidArgumentException("null", 405));
+//			}
 //verify that profile location is present
 		if($requestObject->profileLocation !== "Albuquerque") {
 			throw(new \InvalidArgumentException("Location must be Albuquerque", 405));
