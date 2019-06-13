@@ -60,7 +60,7 @@ try {
 		} else if(empty($postingProfileId) === false) {
 			$reply->data = Posting::getPostingByPostingProfileId($pdo, $postingProfileId);
 		} else if(empty($postingRoleId) === false) {
-			$reply->data = Posting::getPostingByPostingRoleId($pdo, $postingRoleId);
+			$reply->data = Posting::getPostingByPostingRoleId($pdo, $postingRoleId)->toArray();
 		} else {
 			$reply->data = Posting::getAllPostings($pdo)->toArray();
 		}
